@@ -1,17 +1,21 @@
 package kandroid.config;
 
+import java.io.File;
+
+import kandroid.utils.Utils;
+
 public class Config {
 	
-	private static Config config;
+	private static class ConfigHolder {
+		static Config config = new Config();
+	}
 
 	public static void setConfig(Config config) {
-		Config.config = config;
+		ConfigHolder.config = config;
 	}
 
 	public static Config get() {
-		if (config == null)
-			config = new Config();
-		return config;
+		return ConfigHolder.config;
 	}
 
     public int getListenPort() {
@@ -41,8 +45,8 @@ public class Config {
 	public boolean isSaveKcsResponse() {
         return true;
     }
-	
-	public String getStorageDir() {
-		return null;
-	}
+
+    public File getSaveKcsApiFile(String fileName) {
+        return new File("./KCAPI/" + Utils.requireNonNull(fileName));
+    }
 }

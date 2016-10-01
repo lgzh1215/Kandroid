@@ -1,50 +1,90 @@
 package kandroid.observer.kcsapi;
 
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import kandroid.data.KCDatabase;
-import kandroid.data.RawData;
-import kandroid.data.ShipData;
-import kandroid.observer.ApiBase;
-import kandroid.utils.Utils;
+import com.google.gson.Gson;
 
 import java.util.List;
+
+import kandroid.data.AdmiralData;
+import kandroid.data.DockData;
+import kandroid.data.FleetData;
+import kandroid.data.KCDatabase;
+import kandroid.data.MaterialData;
+import kandroid.data.ShipData;
+import kandroid.observer.ApiBase;
+import kandroid.observer.RawData;
+import kandroid.utils.IDDictionary;
 
 public class api_port {
 
     public static class port extends ApiBase {
 
+        public static final String API_NAME = "api_port/port";
+
         @Override
         public void onDataReceived(RawData rawData) {
-            JsonObject json = Utils.JSON_PARSER.parse(rawData.toString()).getAsJsonObject();
+            Port port = new Gson().fromJson(rawData.toString(), Port.class);
 
             // api_material
-            KCDatabase.getInstance().material.loadFromResponse(getApiName(), json.get("api_material"));
+            List<Port.ApiData.ApiMaterial> api_material = port.api_data.api_material;
+            MaterialData materialData = KCDatabase.getInstance().material;
+            materialData.setFuel(api_material.get(0).api_value);
+            materialData.setAmmo(api_material.get(1).api_value);
+            materialData.setSteel(api_material.get(2).api_value);
+            materialData.setBauxite(api_material.get(3).api_value);
+            materialData.setInstantConstruction(api_material.get(4).api_value);
+            materialData.setInstantRepair(api_material.get(5).api_value);
+            materialData.setDevelopmentMaterial(api_material.get(6).api_value);
+            materialData.setModdingMaterial(api_material.get(7).api_value);
 
             // api_basic
-            KCDatabase.getInstance().admiral.loadFromResponse(getApiName(), json.get("api_basic"));
+            KCDatabase.getInstance().admiral.setData(port.api_data.api_basic);
 
             // api_ship
-            KCDatabase.getInstance().shipData.clear();
-            JsonArray api_ship = json.getAsJsonArray("api_ship");
-            for (JsonElement data : api_ship) {
-                int id = ((JsonObject) data).get("api_id").getAsInt();
+            IDDictionary<ShipData> shipData = KCDatabase.getInstance().shipData;
+            shipData.clear();
+            for (ShipData.ApiShip apiShip : port.api_data.api_ship) {
                 ShipData ship = new ShipData();
-                ship.loadFromResponse(getApiName(), data);
-                KCDatabase.getInstance().shipData.put(id, ship);
+                ship.setData(apiShip);
+                shipData.put(ship);
             }
 
             // api_ndock
+            IDDictionary<DockData> dockData = KCDatabase.getInstance().dockData;
+            for (Port.ApiData.ApiNdock apiNdock : port.api_data.api_ndock) {
+                int id = apiNdock.api_id;
+                DockData dock = dockData.get(id);
+                if (dock == null) {
+                    dock = new DockData();
+                    dock.setData(apiNdock);
+                    dockData.put(dock);
+                } else {
+                    dock.setData(apiNdock);
+                }
+            }
 
+            // api_deck_port
+            IDDictionary<FleetData> fleetDatas = KCDatabase.getInstance().fleetDatas;
+            for (Port.ApiData.ApiDeckPort apiDeckPort : port.api_data.api_deck_port) {
+                int id = apiDeckPort.api_id;
+                FleetData fleetData = fleetDatas.get(id);
+                if (fleetData == null) {
+                    fleetData = new FleetData();
+                    fleetData.setData(apiDeckPort);
+                    fleetDatas.put(fleetData);
+                } else {
+                    fleetData.setData(apiDeckPort);
+                }
+            }
+
+            KCDatabase.getInstance().combinedFlag = port.api_data.api_combined_flag;
 
             //TODO
         }
 
         @Override
         public String getApiName() {
-            return "api_port/port";
+            return API_NAME;
         }
 
         public static class Port {
@@ -55,6 +95,7 @@ public class api_port {
 
             public static class ApiData {
                 public ApiBasic api_basic;
+                public int api_combined_flag;
                 public int api_p_bgm_id;
                 public int api_parallel_quest_count;
                 public List<ApiMaterial> api_material;
@@ -63,41 +104,7 @@ public class api_port {
                 public List<ApiShip> api_ship;
                 public List<ApiLog> api_log;
 
-                public static class ApiBasic {
-                    public String api_member_id;
-                    public String api_nickname;
-                    public String api_nickname_id;
-                    public int api_active_flag;
-                    public long api_starttime;
-                    public int api_level;
-                    public int api_rank;
-                    public int api_experience;
-                    public Object api_fleetname;
-                    public String api_comment;
-                    public String api_comment_id;
-                    public int api_max_chara;
-                    public int api_max_slotitem;
-                    public int api_max_kagu;
-                    public int api_playtime;
-                    public int api_tutorial;
-                    public int api_count_deck;
-                    public int api_count_kdock;
-                    public int api_count_ndock;
-                    public int api_fcoin;
-                    public int api_st_win;
-                    public int api_st_lose;
-                    public int api_ms_count;
-                    public int api_ms_success;
-                    public int api_pt_win;
-                    public int api_pt_lose;
-                    public int api_pt_challenged;
-                    public int api_pt_challenged_win;
-                    public int api_firstflag;
-                    public int api_tutorial_progress;
-                    public int api_medals;
-                    public int api_large_dock;
-                    public List<Integer> api_furniture;
-                    public List<Integer> api_pvp;
+                public static class ApiBasic extends AdmiralData.ApiBasic {
                 }
 
                 public static class ApiMaterial {
@@ -106,60 +113,13 @@ public class api_port {
                     public int api_value;
                 }
 
-                public static class ApiDeckPort {
-                    public int api_member_id;
-                    public int api_id;
-                    public String api_name;
-                    public String api_name_id;
-                    public String api_flagship;
-                    public List<Integer> api_mission;
-                    public List<Integer> api_ship;
+                public static class ApiDeckPort extends FleetData.ApiDeck {
                 }
 
-                public static class ApiNdock {
-                    public int api_member_id;
-                    public int api_id;
-                    public int api_state;
-                    public int api_ship_id;
-                    public int api_complete_time;
-                    public String api_complete_time_str;
-                    public int api_item1;
-                    public int api_item2;
-                    public int api_item3;
-                    public int api_item4;
+                public static class ApiNdock extends DockData.ApiNdock {
                 }
 
-                public static class ApiShip {
-                    public int api_id;
-                    public int api_sortno;
-                    public int api_ship_id;
-                    public int api_lv;
-                    public int api_nowhp;
-                    public int api_maxhp;
-                    public int api_leng;
-                    public int api_slot_ex;
-                    public int api_backs;
-                    public int api_fuel;
-                    public int api_bull;
-                    public int api_slotnum;
-                    public int api_ndock_time;
-                    public int api_srate;
-                    public int api_cond;
-                    public int api_locked;
-                    public int api_locked_equip;
-                    public List<Integer> api_exp;
-                    public List<Integer> api_slot;
-                    public List<Integer> api_onslot;
-                    public List<Integer> api_kyouka;
-                    public List<Integer> api_ndock_item;
-                    public List<Integer> api_karyoku;
-                    public List<Integer> api_raisou;
-                    public List<Integer> api_taiku;
-                    public List<Integer> api_soukou;
-                    public List<Integer> api_kaihi;
-                    public List<Integer> api_taisen;
-                    public List<Integer> api_sakuteki;
-                    public List<Integer> api_lucky;
+                public static class ApiShip extends ShipData.ApiShip {
                 }
 
                 public static class ApiLog {

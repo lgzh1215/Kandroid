@@ -2,13 +2,15 @@ package kandroid.observer.kcsapi;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
-import kandroid.data.KCDatabase;
-import kandroid.data.RawData;
-import kandroid.observer.ApiBase;
-import kandroid.observer.POJO;
-import kandroid.utils.Identifiable;
 
 import java.util.List;
+
+import kandroid.data.KCDatabase;
+import kandroid.data.Start2Data;
+import kandroid.observer.ApiBase;
+import kandroid.observer.POJO;
+import kandroid.observer.RawData;
+import kandroid.utils.Identifiable;
 
 public class api_start2 extends ApiBase {
 	
@@ -17,7 +19,107 @@ public class api_start2 extends ApiBase {
     @Override
     protected void onDataReceived(RawData rawData) {
         ApiStart2 apiStart2 = new Gson().fromJson(rawData.toString(), ApiStart2.class);
-        KCDatabase.getInstance().master.setApiStart2(apiStart2);
+
+        // api_mst_ship
+        for (ApiStart2.ApiData.ApiMstShip apiMstShip : apiStart2.api_data.api_mst_ship) {
+            int id = apiMstShip.api_id;
+            Start2Data.MasterShipData ship = KCDatabase.getInstance().master.masterShipData.get(id);
+            if (ship == null) {
+                ship = new Start2Data.MasterShipData();
+                ship.setData(apiMstShip);
+                KCDatabase.getInstance().master.masterShipData.put(ship);
+            } else {
+                ship.setData(apiMstShip);
+            }
+        }
+
+        // api_mst_slotitem_equiptype
+        for (ApiStart2.ApiData.ApiMstSlotitemEquiptype apiMstSlotitemEquiptype : apiStart2.api_data.api_mst_slotitem_equiptype) {
+            int id = apiMstSlotitemEquiptype.api_id;
+            Start2Data.EquipmentType type = KCDatabase.getInstance().master.equipmentType.get(id);
+            if (type == null) {
+                type = new Start2Data.EquipmentType();
+                type.setData(apiMstSlotitemEquiptype);
+                KCDatabase.getInstance().master.equipmentType.put(type);
+            } else {
+                type.setData(apiMstSlotitemEquiptype);
+            }
+        }
+
+        // api_mst_stype 特別置換処理 mdzz
+        apiStart2.api_data.api_mst_stype.get(7).api_name = "巡洋戦艦";
+        for (ApiStart2.ApiData.ApiMstStype apiMstStype : apiStart2.api_data.api_mst_stype) {
+            int id = apiMstStype.api_id;
+            Start2Data.ShipType type = KCDatabase.getInstance().master.shipType.get(id);
+            if (type == null) {
+                type = new Start2Data.ShipType();
+                type.setData(apiMstStype);
+                KCDatabase.getInstance().master.shipType.put(type);
+            } else {
+                type.setData(apiMstStype);
+            }
+        }
+
+        // api_mst_slotitem
+        for (ApiStart2.ApiData.ApiMstSlotitem apiMstSlotitem : apiStart2.api_data.api_mst_slotitem) {
+            int id = apiMstSlotitem.api_id;
+            Start2Data.MasterEquipmentData equipment = KCDatabase.getInstance().master.masterEquipmentData.get(id);
+            if (equipment == null) {
+                equipment = new Start2Data.MasterEquipmentData();
+                equipment.setData(apiMstSlotitem);
+                KCDatabase.getInstance().master.masterEquipmentData.put(equipment);
+            } else {
+                equipment.setData(apiMstSlotitem);
+            }
+        }
+
+        // api_mst_useitem
+        for (ApiStart2.ApiData.ApiMstUseitem apiMstUseitem : apiStart2.api_data.api_mst_useitem) {
+            int id = apiMstUseitem.api_id;
+            Start2Data.MasterUseItemData useItem = KCDatabase.getInstance().master.masterUseItemData.get(id);
+            if (useItem == null) {
+                useItem = new Start2Data.MasterUseItemData();
+                useItem.setData(apiMstUseitem);
+                KCDatabase.getInstance().master.masterUseItemData.put(useItem);
+            } else {
+                useItem.setData( apiMstUseitem);
+            }
+        }
+
+        // api_mst_mapinfo
+        for (ApiStart2.ApiData.ApiMstMapinfo apiMstMapinfo : apiStart2.api_data.api_mst_mapinfo) {
+            int id = apiMstMapinfo.api_id;
+            Start2Data.MasterMapInfoData mapInfo = KCDatabase.getInstance().master.masterMapInfoData.get(id);
+            if (mapInfo == null) {
+                mapInfo = new Start2Data.MasterMapInfoData();
+                mapInfo.setData(apiMstMapinfo);
+                KCDatabase.getInstance().master.masterMapInfoData.put(mapInfo);
+            } else {
+                mapInfo.setData(apiMstMapinfo);
+            }
+        }
+
+        // api_mst_mission
+        for (ApiStart2.ApiData.ApiMstMission apiMstMission : apiStart2.api_data.api_mst_mission) {
+            int id = apiMstMission.api_id;
+            Start2Data.MissionData mission = KCDatabase.getInstance().master.missionData.get(id);
+            if (mission == null) {
+                mission = new Start2Data.MissionData();
+                mission.setData(apiMstMission);
+                KCDatabase.getInstance().master.missionData.put(mission);
+            } else {
+                mission.setData(apiMstMission);
+            }
+        }
+
+        // TODO api_mst_shipupgrade
+//        for (api_start2.ApiStart2.ApiData.ApiMstShipupgrade apiMstShipupgrade : apiStart2.api_data.api_mst_shipupgrade) {
+//            int idbefore = apiMstShipupgrade.api_current_ship_id;
+//            int idafter = apiMstShipupgrade.api_id;
+//            MasterShipData shipbefore = masterShipData.getApi(idbefore);
+//            MasterShipData shipafter = masterShipData.getApi(idafter);
+//            int level = apiMstShipupgrade.api_upgrade_level;
+//        }
     }
 
     @Override
@@ -155,7 +257,7 @@ public class api_start2 extends ApiBase {
                 public String api_name;
                 public int api_return_flag;
                 public int api_time;
-                public int api_use_bull;
+                public double api_use_bull;
                 public double api_use_fuel;
                 public List<Integer> api_win_item1;
                 public List<Integer> api_win_item2;

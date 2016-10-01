@@ -1,100 +1,48 @@
 package kandroid.data;
 
 import com.google.gson.annotations.SerializedName;
-import kandroid.observer.kcsapi.api_start2;
-import kandroid.observer.kcsapi.api_start2.ApiStart2.ApiData.*;
-import kandroid.observer.kcsapi.api_start2.IdentifiablePOJO;
-import kandroid.utils.IDDictionary;
-import kandroid.utils.Identifiable;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import kandroid.observer.kcsapi.api_start2.ApiStart2.ApiData.ApiMstMapinfo;
+import kandroid.observer.kcsapi.api_start2.ApiStart2.ApiData.ApiMstMission;
+import kandroid.observer.kcsapi.api_start2.ApiStart2.ApiData.ApiMstShip;
+import kandroid.observer.kcsapi.api_start2.ApiStart2.ApiData.ApiMstSlotitem;
+import kandroid.observer.kcsapi.api_start2.ApiStart2.ApiData.ApiMstSlotitemEquiptype;
+import kandroid.observer.kcsapi.api_start2.ApiStart2.ApiData.ApiMstStype;
+import kandroid.observer.kcsapi.api_start2.ApiStart2.ApiData.ApiMstUseitem;
+import kandroid.utils.IDDictionary;
+import kandroid.utils.Identifiable;
+
 public class Start2Data {
 
-    public IDDictionary<MasterShipData> masterShipDatas;
-
-    public Map<Integer, MasterShipData> masterShipData;
-    public Map<Integer, EquipmentType> equipmentType;
-    public Map<Integer, ShipType> shipType;
-    public Map<Integer, MasterEquipmentData> masterEquipmentData;
-    public Map<Integer, MasterUseItemData> masterUseItemData;
-    public Map<Integer, MapInfoData> mapInfoData;
-    public Map<Integer, MissionData> missionData;
+    public IDDictionary<MasterShipData> masterShipData;
+    public IDDictionary<EquipmentType> equipmentType;
+    public IDDictionary<ShipType> shipType;
+    public IDDictionary<MasterEquipmentData> masterEquipmentData;
+    public IDDictionary<MasterUseItemData> masterUseItemData;
+    public IDDictionary<MasterMapInfoData> masterMapInfoData;
+    public IDDictionary<MissionData> missionData;
 
     public Start2Data() {
-        masterShipData = new HashMap<>();
-        equipmentType = new HashMap<>();
-        shipType = new HashMap<>();
-        masterEquipmentData = new HashMap<>();
-        masterUseItemData = new HashMap<>();
-        mapInfoData = new HashMap<>();
-        missionData = new HashMap<>();
+        masterShipData = new IDDictionary<>();
+        equipmentType = new IDDictionary<>();
+        shipType = new IDDictionary<>();
+        masterEquipmentData = new IDDictionary<>();
+        masterUseItemData = new IDDictionary<>();
+        masterMapInfoData = new IDDictionary<>();
+        missionData = new IDDictionary<>();
     }
 
-    public void setApiStart2(api_start2.ApiStart2 apiStart2) {
-
-        // api_mst_ship
-        putListToMap(apiStart2.api_data.api_mst_ship, masterShipData, MasterShipData.class);
-
-        // api_mst_slotitem_equiptype
-        putListToMap(apiStart2.api_data.api_mst_slotitem_equiptype, equipmentType, EquipmentType.class);
-
-        // api_mst_stype 特別置換処理 mdzz
-        apiStart2.api_data.api_mst_stype.get(7).api_name = "巡洋戦艦";
-        putListToMap(apiStart2.api_data.api_mst_stype, shipType, ShipType.class);
-
-        // api_mst_slotitem
-        putListToMap(apiStart2.api_data.api_mst_slotitem, masterEquipmentData, MasterEquipmentData.class);
-
-        // api_mst_useitem
-        putListToMap(apiStart2.api_data.api_mst_useitem, masterUseItemData, MasterUseItemData.class);
-
-        // api_mst_mapinfo
-        putListToMap(apiStart2.api_data.api_mst_mapinfo, mapInfoData, MapInfoData.class);
-
-        // api_mst_mission
-        putListToMap(apiStart2.api_data.api_mst_mission, missionData, MissionData.class);
-
-        // TODO api_mst_shipupgrade
-//        for (api_start2.ApiStart2.ApiData.ApiMstShipupgrade apiMstShipupgrade : apiStart2.api_data.api_mst_shipupgrade) {
-//            int idbefore = apiMstShipupgrade.api_current_ship_id;
-//            int idafter = apiMstShipupgrade.api_id;
-//            MasterShipData shipbefore = masterShipData.get(idbefore);
-//            MasterShipData shipafter = masterShipData.get(idafter);
-//            int level = apiMstShipupgrade.api_upgrade_level;
-//        }
-    }
-
-	private static <
-	E extends IdentifiablePOJO,
-	L extends List<E>,
-	V extends POJOData<E>,
-	M extends Map<Integer, V>> void putListToMap(L list, M map, Class<V> clazz) {
-        for (E data : list) {
-            int id = data.getID();
-            if (map.containsKey(id)) {
-                map.get(id).setData(data);
-            } else {
-                V value = null;
-                try {
-                    value = clazz.newInstance();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                assert value != null;
-                value.setData(data);
-                map.put(id, value);
-            }
+    public static class MasterShipData extends Data<ApiMstShip> implements Identifiable {
+        public MasterShipData() {
         }
-    }
-
-    public class MasterShipData extends POJOData<ApiMstShip> implements Identifiable {
 
         public int getShipID() {
-			return data.api_id;
+            return data.api_id;
         }
 
         public int getAlbumNo() {
@@ -277,7 +225,7 @@ public class Start2Data {
         }
     }
 
-    public class EquipmentType extends POJOData<ApiMstSlotitemEquiptype> {
+    public static class EquipmentType extends Data<ApiMstSlotitemEquiptype> implements Identifiable {
 
         public int getTypeID() {
             return data.api_id;
@@ -286,9 +234,14 @@ public class Start2Data {
         public String getName() {
             return data.api_name;
         }
+
+        @Override
+        public int getID() {
+            return data.api_id;
+        }
     }
 
-    public class ShipType extends POJOData<ApiMstStype> {
+    public static class ShipType extends Data<ApiMstStype> implements Identifiable {
 
         private Map<Integer, Integer> api_equip_type;
 
@@ -331,9 +284,14 @@ public class Start2Data {
         public void setApi_equip_type(Map<Integer, Integer> api_equip_type) {
             this.api_equip_type = api_equip_type;
         }
+
+        @Override
+        public int getID() {
+            return data.api_id;
+        }
     }
 
-    public class MasterEquipmentData extends POJOData<ApiMstSlotitem> {
+    public static class MasterEquipmentData extends Data<ApiMstSlotitem> implements Identifiable {
 
         public int getEquipmentID() {
             return data.api_id;
@@ -414,9 +372,14 @@ public class Start2Data {
         public int getAircraftDistance() {
             return data.api_distance;
         }
+
+        @Override
+        public int getID() {
+            return data.api_id;
+        }
     }
 
-    public class MasterUseItemData extends POJOData<ApiMstUseitem> {
+    public static class MasterUseItemData extends Data<ApiMstUseitem> implements Identifiable {
 
         public int getItemID() {
             return data.api_id;
@@ -437,9 +400,14 @@ public class Start2Data {
         public String getDescription() {
             return data.api_description.get(0);
         }
+
+        @Override
+        public int getID() {
+            return data.api_id;
+        }
     }
 
-    public class MapInfoData extends POJOData<ApiMstMapinfo> {
+    public static class MasterMapInfoData extends Data<ApiMstMapinfo> implements Identifiable {
 
         public int getMapID() {
             return data.api_id;
@@ -472,9 +440,14 @@ public class Start2Data {
         public int getRequiredDefeatedCount() {
             return data.api_required_defeat_count;
         }
+
+        @Override
+        public int getID() {
+            return data.api_id;
+        }
     }
 
-    public class MissionData extends POJOData<ApiMstMission> {
+    public static class MissionData extends Data<ApiMstMission> implements Identifiable {
 
         public int getMissionID() {
             return data.api_id;
@@ -510,6 +483,11 @@ public class Start2Data {
 
         public boolean getCancelable() {
             return data.api_return_flag != 0;
-		}
+        }
+
+        @Override
+        public int getID() {
+            return data.api_id;
+        }
     }
 }

@@ -1,8 +1,5 @@
 package kandroid.proxy;
 
-import kandroid.config.Config;
-import kandroid.data.RawData;
-import kandroid.observer.ApiLoader;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.HttpProxy;
@@ -12,11 +9,18 @@ import org.eclipse.jetty.client.api.Response;
 import org.eclipse.jetty.proxy.AsyncProxyServlet;
 import org.eclipse.jetty.util.Callback;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import kandroid.config.Config;
+import kandroid.observer.RawData;
+import kandroid.observer.ApiLoader;
 
 public class MyProxyServlet extends AsyncProxyServlet {
 
@@ -44,13 +48,17 @@ public class MyProxyServlet extends AsyncProxyServlet {
     @Override
     protected void onProxyResponseSuccess(HttpServletRequest request, HttpServletResponse response,
                                           Response proxyResponse) {
-        System.out.println(request.getServerName()+" | " + request.getRequestURI());
+        System.out.println(request.getServerName() + " | " + request.getRequestURI());
         if (MyFilter.isNeed(request.getServerName(), response.getContentType())) {
             ByteArrayOutputStream stream = (ByteArrayOutputStream) request.getAttribute(MyFilter.RESPONSE_BODY);
             if (stream != null) {
                 byte[] postField = (byte[]) request.getAttribute(MyFilter.REQUEST_BODY);
-                System.out.println(new String(postField));
-                RawData data = new RawData(request.getRequestURI(),postField, stream.toByteArray());
+                try {
+                    System.out.println(URLDecoder.decode(new String(postField),"UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                RawData data = new RawData(request.getRequestURI(), postField, stream.toByteArray());
                 ApiLoader.load(data);
             }
         }
@@ -73,7 +81,7 @@ public class MyProxyServlet extends AsyncProxyServlet {
 
         private final HttpServletRequest httpRequest;
 
-        public RequestContentListener(HttpServletRequest request) {
+        RequestContentListener(HttpServletRequest request) {
             this.httpRequest = request;
         }
 

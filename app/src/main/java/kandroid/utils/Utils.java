@@ -1,20 +1,13 @@
 package kandroid.utils;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonParser;
-
-import java.util.*;
-import com.google.gson.*;
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public final class Utils {
 
-	static {
-		GSON = new GsonBuilder().serializeNulls().create();
-	}
-	
-    public static final Gson GSON;
-    public static final JsonParser JSON_PARSER = new JsonParser();
+    private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.getDefault());
 
     public static int[] listToArray(List<Integer> list) {
         int size = list.size();
@@ -37,5 +30,9 @@ public final class Utils {
 
     public static boolean equals(Object a, Object b) {
         return (a == b) || (a != null && a.equals(b));
+    }
+
+    public static String getDateString(Date date) {
+        return DATE_FORMAT.format(date);
     }
 }

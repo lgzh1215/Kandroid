@@ -1,13 +1,8 @@
 package kandroid.data;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import kandroid.observer.ApiBase;
-import kandroid.observer.kcsapi.api_port;
 
-import java.util.List;
-
-public class MaterialData implements ResponseDataListner {
+public class MaterialData {
 
     private int fuel;
     private int ammo;
@@ -18,20 +13,10 @@ public class MaterialData implements ResponseDataListner {
     private int developmentMaterial;
     private int moddingMaterial;
 
-    @Override
     public void loadFromResponse(String apiName, JsonElement data) {
         switch (apiName) {
             case "api_port/port":
             case "api_get_member/material":
-                JsonArray json = data.getAsJsonArray();
-//                fuel = json.getJSONObject(0).getIntValue("api_value");
-//                ammo = json.getJSONObject(1).getIntValue("api_value");
-//                steel = json.getJSONObject(2).getIntValue("api_value");
-//                bauxite = json.getJSONObject(3).getIntValue("api_value");
-//                instantConstruction = json.getJSONObject(4).getIntValue("api_value");
-//                instantRepair = json.getJSONObject(5).getIntValue("api_value");
-//                developmentMaterial = json.getJSONObject(6).getIntValue("api_value");
-//                moddingMaterial = json.getJSONObject(7).getIntValue("api_value");
                 break;
 
             case "api_req_hokyu/charge":

@@ -2,15 +2,16 @@ package kandroid.data;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import kandroid.observer.POJO;
-import kandroid.utils.CatException;
-import kandroid.data.Start2Data.*;
 
 import java.util.List;
 
-import kandroid.utils.*;
+import kandroid.data.Start2Data.MasterShipData;
+import kandroid.observer.POJO;
+import kandroid.utils.CatException;
+import kandroid.utils.Identifiable;
+import kandroid.utils.Utils;
 
-public class ShipData extends POJOData<ShipData.ApiShip> implements ResponseDataListner {
+public class ShipData extends Data<ShipData.ApiShip> implements Identifiable {
 
     public int getMasterID() {
         return data.api_id;
@@ -341,7 +342,6 @@ public class ShipData extends POJOData<ShipData.ApiShip> implements ResponseData
         return getExpansionSlot() != 0;
     }
 
-    @Override
     public void loadFromResponse(String apiName, JsonElement data) {
         switch (apiName) {
             case "api_port/port":
@@ -350,6 +350,20 @@ public class ShipData extends POJOData<ShipData.ApiShip> implements ResponseData
             default:
                 throw new CatException();
         }
+    }
+
+    public void repair() {
+        data.api_nowhp = getHPMax();
+        data.api_cond = Math.max(getCondition(), 40);
+
+        data.api_ndock_time = 0;
+        data.api_ndock_item.set(0, 0);
+        data.api_ndock_item.set(1, 0);
+    }
+
+    @Override
+    public int getID() {
+        return data.api_id;
     }
 
     public static class ApiShip extends POJO {

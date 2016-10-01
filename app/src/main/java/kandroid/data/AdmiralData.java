@@ -1,16 +1,15 @@
 package kandroid.data;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import kandroid.observer.POJO;
-import kandroid.utils.CatException;
 
 import java.util.Date;
 import java.util.List;
 
+import kandroid.observer.POJO;
 import kandroid.utils.Identifiable;
-import kandroid.utils.Utils;
 
-public class AdmiralData extends POJOData<AdmiralData.ApiBasic> implements ResponseDataListner, Identifiable {
+public class AdmiralData extends Data<AdmiralData.ApiBasic> implements Identifiable {
 
     public AdmiralData() {
         data = new ApiBasic();
@@ -92,19 +91,13 @@ public class AdmiralData extends POJOData<AdmiralData.ApiBasic> implements Respo
         return getLevel() * 250 + 750;
     }
 
-    @Override
     public void loadFromResponse(String apiName, JsonElement data) {
         switch (apiName) {
             case "api_get_member/basic":
-                ApiBasic apiBasic = Utils.GSON.fromJson(data, ApiBasic.class);
+                ApiBasic apiBasic = new Gson().fromJson(data, ApiBasic.class);
                 apiBasic.api_large_dock = this.data.api_large_dock;
                 setData(apiBasic);
                 break;
-            case "api_port/port":
-                setData(Utils.GSON.fromJson(data, ApiBasic.class));
-                break;
-            default:
-                throw new CatException();
         }
     }
 

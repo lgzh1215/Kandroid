@@ -1,48 +1,62 @@
-package kandroid.data;
+package kandroid.observer;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import java.util.zip.*;
-import kandroid.observer.*;
-import kandroid.utils.*;
-import org.apache.commons.io.*;
+import org.apache.commons.io.IOUtils;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLDecoder;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.zip.GZIPInputStream;
 
 public class RawData implements Runnable {
 
     private final String uri;
     private final byte[] request;
     private final byte[] response;
-    private final Map<String, String> postField;
+    private final Map<String, String> requestMap;
+    private final Date date = new Date();
 
     public RawData(String uri, byte[] request, byte[] response) {
+        this(uri, request, response, null);
+    }
+
+    public RawData(String uri, byte[] request, byte[] response, Map<String, String> requestMap) {
         this.uri = uri;
         this.request = request;
         this.response = response;
-        this.postField = null;
-    }
-
-    public RawData(String uri, Map<String, String> postField, byte[] response) {
-        this.uri = uri;
-        this.request = null;
-        this.response = response;
-        this.postField = postField;
+        this.requestMap = requestMap;
     }
 
     public String getUri() {
         return uri;
     }
 
+    public byte[] getRequest() {
+        return request;
+    }
+
     public byte[] getResponse() {
         return response;
     }
 
-    public RawData decode() {
+    public Date getDate() {
+        return date;
+    }
+
+    private RawData decode() {
         if (response.length > 0) {
             try {
-                Map<String, String> field = null;
+                String uri = this.uri;
+                if (uri.startsWith("/kcsapi/")) {
+                    uri = uri.substring(8);
+                }
+
+                Map<String, String> postField = null;
                 if (this.request != null) {
-                    field = getQueryMap(URLDecoder.decode(new String(this.request).trim(), "UTF-8"));
+                    postField = getRequestMap(URLDecoder.decode(new String(this.request).trim(), "UTF-8"));
                 }
 
                 InputStream stream = new ByteArrayInputStream(this.response);
@@ -58,7 +72,7 @@ public class RawData implements Runnable {
 
                 byte[] decodedData = IOUtils.toByteArray(stream);
 
-                return new RawData(getUri().substring(8), field, decodedData) {
+                return new RawData(uri, request, decodedData, postField) {
                     @Override
                     public String toString() {
                         return new String(getResponse());
@@ -71,7 +85,7 @@ public class RawData implements Runnable {
         return this;
     }
 
-    private static Map<String, String> getQueryMap(String query) {
+    private static Map<String, String> getRequestMap(String query) {
         String[] params = query.split("&");
         Map<String, String> map = new HashMap<>();
         for (String param : params) {
@@ -85,11 +99,17 @@ public class RawData implements Runnable {
         }
         return map;
     }
-	
-	@Override
-	public void run() {
-		RawData rawData = decode();
-		ApiBase api = ApiLoader.get(rawData.getUri());
-		Utils.requireNonNull(api).receivedData(rawData);
-	}
+
+    @Override
+    public void run() {
+        try {
+            RawData rawData = decode();
+            ApiLoader.save(rawData);
+            ApiBase api = ApiLoader.getApi(rawData.getUri());
+            if (api != null) api.onDataReceived(rawData);
+            String s;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

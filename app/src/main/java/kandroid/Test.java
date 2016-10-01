@@ -1,14 +1,18 @@
 package kandroid;
 
-import kandroid.utils.IDDictionary;
+import kandroid.observer.ApiLoader;
+import kandroid.proxy.MyProxyServer;
 import kandroid.utils.Identifiable;
 
-import java.io.IOException;
+public class Test implements Identifiable {
 
-public class Test implements Identifiable{
+    static void startKandroidService() {
+        ApiLoader.start();
+        MyProxyServer.start();
+    }
 
-    public static void main(String[] args) throws IOException {
-
+    public static void main(String[] args) throws Exception {
+        startKandroidService();
     }
 
     @Override
