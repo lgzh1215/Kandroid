@@ -15,8 +15,7 @@ public class KCDatabase {
     public IDDictionary<ShipData> shipData;
     public IDDictionary<DockData> dockData;
 
-    public int combinedFlag;
-    public IDDictionary<FleetData> fleetDatas;
+    public FleetManager fleets;
 
     public IDDictionary<MapInfoData> mapInfoDatas;
 
@@ -31,7 +30,7 @@ public class KCDatabase {
         shipData = new IDDictionary<>();
         dockData = new IDDictionary<>();
 
-        fleetDatas = new IDDictionary<>();
+        fleets = new FleetManager();
 
         mapInfoDatas = new IDDictionary<>();
     }

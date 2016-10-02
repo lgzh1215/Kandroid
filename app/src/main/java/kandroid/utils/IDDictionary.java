@@ -135,6 +135,7 @@ public class IDDictionary<T extends Identifiable> extends AbstractSet<T> {
     }
 
     @Override
+    @Deprecated
     public boolean add(T t) {
         return !t.equals(put(t));
     }

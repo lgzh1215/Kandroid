@@ -42,6 +42,10 @@ public class RawData implements Runnable {
         return response;
     }
 
+    public Map<String, String> getRequestMap() {
+        return requestMap;
+    }
+
     public Date getDate() {
         return date;
     }

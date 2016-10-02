@@ -348,7 +348,9 @@ public class api_get_member {
                 }
             }
 
-            //TODO
+            for (FleetData fleetData : KCDatabase.getInstance().fleets.fleetDatas) {
+                fleetData.loadFromResponse(getApiName(), rawData);
+            }
         }
 
         @Override
@@ -374,7 +376,7 @@ public class api_get_member {
         protected void onDataReceived(RawData rawData) {
             Deck deck = new Gson().fromJson(rawData.toString(), Deck.class);
 
-            IDDictionary<FleetData> fleetDatas = KCDatabase.getInstance().fleetDatas;
+            IDDictionary<FleetData> fleetDatas = KCDatabase.getInstance().fleets.fleetDatas;
             for (Deck.ApiData apiData : deck.api_data) {
                 int id = apiData.api_id;
                 FleetData fleetData = fleetDatas.get(id);

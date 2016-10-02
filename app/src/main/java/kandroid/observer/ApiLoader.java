@@ -11,6 +11,8 @@ import java.util.concurrent.Executors;
 import kandroid.config.Config;
 import kandroid.observer.kcsapi.api_get_member;
 import kandroid.observer.kcsapi.api_port;
+import kandroid.observer.kcsapi.api_req_mission;
+import kandroid.observer.kcsapi.api_req_nyukyo;
 import kandroid.observer.kcsapi.api_start2;
 import kandroid.utils.Utils;
 
@@ -70,26 +72,41 @@ public class ApiLoader {
     }
 
     public static ApiBase getApi(String apiName) {
-        return ApiHolder.APIS.get(apiName);
+        return ApiHolder.get(apiName);
     }
 
     private final static class ApiHolder {
-        final static HashMap<String, ApiBase> APIS;
+        private final static HashMap<String, ApiBase> APIS = new HashMap<>();
 
-        static {
-            APIS = new HashMap<>();
-            APIS.put(api_start2.API_NAME, new api_start2());
-
-            APIS.put(api_get_member.require_info.API_NAME, new api_get_member.require_info());
-            APIS.put(api_get_member.slot_item.API_NAME, new api_get_member.slot_item());
-            APIS.put(api_get_member.kdock.API_NAME, new api_get_member.kdock());
-            APIS.put(api_get_member.useitem.API_NAME, new api_get_member.useitem());
-
-            APIS.put(api_port.port.API_NAME, new api_port.port());
-            APIS.put(api_get_member.material.API_NAME, new api_get_member.material());
-            APIS.put(api_get_member.basic.API_NAME, new api_get_member.basic());
-            APIS.put(api_get_member.ndock.API_NAME, new api_get_member.ndock());
-            APIS.put(api_get_member.deck.API_NAME, new api_get_member.deck());
+        public static void put(ApiBase apiBase) {
+            APIS.put(apiBase.getApiName(), apiBase);
         }
+
+        public static ApiBase get(String apiName) {
+            return APIS.get(apiName);
+        }
+    }
+
+    static {
+        ApiHolder.put(new api_start2());
+
+        ApiHolder.put(new api_get_member.require_info());
+        ApiHolder.put(new api_get_member.slot_item());
+        ApiHolder.put(new api_get_member.kdock());
+        ApiHolder.put(new api_get_member.useitem());
+
+        ApiHolder.put(new api_port.port());
+        ApiHolder.put(new api_get_member.material());
+        ApiHolder.put(new api_get_member.basic());
+        ApiHolder.put(new api_get_member.ndock());
+        ApiHolder.put(new api_get_member.deck());
+
+        ApiHolder.put(new api_get_member.mapinfo());
+
+        ApiHolder.put(new api_req_nyukyo.start());
+        ApiHolder.put(new api_req_nyukyo.speedchange());
+
+        ApiHolder.put(new api_req_mission.start());
+        ApiHolder.put(new api_req_mission.result());
     }
 }

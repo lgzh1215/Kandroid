@@ -4,14 +4,14 @@ import com.google.gson.JsonElement;
 
 public class MaterialData {
 
-    private int fuel;
-    private int ammo;
-    private int steel;
-    private int bauxite;
-    private int instantConstruction;
-    private int instantRepair;
-    private int developmentMaterial;
-    private int moddingMaterial;
+    public int fuel;
+    public int ammo;
+    public int steel;
+    public int bauxite;
+    public int instantConstruction;
+    public int instantRepair;
+    public int developmentMaterial;
+    public int moddingMaterial;
 
     public void loadFromResponse(String apiName, JsonElement data) {
         switch (apiName) {
