@@ -10,8 +10,8 @@ import kandroid.observer.ApiBase;
 import kandroid.observer.RawData;
 
 public class api_start2 extends ApiBase {
-	
-	public static final String API_NAME = "api_start2";
+
+    public static final String API_NAME = "api_start2";
 
     @Override
     protected void onDataReceived(RawData rawData) {
@@ -79,7 +79,7 @@ public class api_start2 extends ApiBase {
                 useItem.setData(apiMstUseitem);
                 KCDatabase.getInstance().master.masterUseItemData.put(useItem);
             } else {
-                useItem.setData( apiMstUseitem);
+                useItem.setData(apiMstUseitem);
             }
         }
 
@@ -226,20 +226,10 @@ public class api_start2 extends ApiBase {
             }
 
             public static class ApiMstMapinfo extends Start2Data.MasterMapInfoData.ApiMstMapinfo {
-			}
+            }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
             public static class ApiMstMission extends Start2Data.MasterMissionData.ApiMstMission {
             }
-=======
-            public static class ApiMstMission extends Start2Data.MissionData.ApiMstMission {
-			}
->>>>>>> origin/develop
-=======
-            public static class ApiMstMission extends Start2Data.MissionData.ApiMstMission {
-			}
->>>>>>> origin/develop
 
             public static class ApiMstPayitem {
                 public String api_description;
@@ -251,7 +241,7 @@ public class api_start2 extends ApiBase {
             }
 
             public static class ApiMstShip extends Start2Data.MasterShipData.ApiMstShip {
-			}
+            }
 
             public static class ApiMstShipgraph {
                 public String api_filename;
@@ -287,32 +277,16 @@ public class api_start2 extends ApiBase {
             }
 
             public static class ApiMstSlotitem extends Start2Data.MasterEquipmentData.ApiMstSlotitem {
-			}
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> origin/develop
+            }
 
             public static class ApiMstSlotitemEquiptype extends Start2Data.EquipmentType.ApiMstSlotitemEquiptype {
-			}
+            }
 
             public static class ApiMstStype extends Start2Data.ShipType.ApiMstStype {
-			}
+            }
 
-<<<<<<< HEAD
-=======
-
-            public static class ApiMstSlotitemEquiptype extends Start2Data.EquipmentType.ApiMstSlotitemEquiptype {
-			}
-
-            public static class ApiMstStype extends Start2Data.ShipType.ApiMstStype {
-			}
-
->>>>>>> origin/develop
-=======
->>>>>>> origin/develop
             public static class ApiMstUseitem extends Start2Data.MasterUseItemData.ApiMstUseitem {
-			}
+            }
         }
     }
 }
