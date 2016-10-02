@@ -229,8 +229,13 @@ public class api_start2 extends ApiBase {
 			}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             public static class ApiMstMission extends Start2Data.MasterMissionData.ApiMstMission {
             }
+=======
+            public static class ApiMstMission extends Start2Data.MissionData.ApiMstMission {
+			}
+>>>>>>> origin/develop
 =======
             public static class ApiMstMission extends Start2Data.MissionData.ApiMstMission {
 			}
@@ -284,6 +289,9 @@ public class api_start2 extends ApiBase {
             public static class ApiMstSlotitem extends Start2Data.MasterEquipmentData.ApiMstSlotitem {
 			}
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/develop
 
             public static class ApiMstSlotitemEquiptype extends Start2Data.EquipmentType.ApiMstSlotitemEquiptype {
 			}
@@ -291,6 +299,7 @@ public class api_start2 extends ApiBase {
             public static class ApiMstStype extends Start2Data.ShipType.ApiMstStype {
 			}
 
+<<<<<<< HEAD
 =======
 
             public static class ApiMstSlotitemEquiptype extends Start2Data.EquipmentType.ApiMstSlotitemEquiptype {
@@ -299,6 +308,8 @@ public class api_start2 extends ApiBase {
             public static class ApiMstStype extends Start2Data.ShipType.ApiMstStype {
 			}
 
+>>>>>>> origin/develop
+=======
 >>>>>>> origin/develop
             public static class ApiMstUseitem extends Start2Data.MasterUseItemData.ApiMstUseitem {
 			}

@@ -27,7 +27,11 @@ public class Start2Data {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     public static class MasterShipData extends Data<MasterShipData.ApiMstShip> implements Identifiable {
+=======
+    public static class MasterShipData extends Data<Start2Data.MasterShipData.ApiMstShip> implements Identifiable {
+>>>>>>> origin/develop
 =======
     public static class MasterShipData extends Data<Start2Data.MasterShipData.ApiMstShip> implements Identifiable {
 >>>>>>> origin/develop
@@ -249,7 +253,11 @@ public class Start2Data {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     public static class EquipmentType extends Data<EquipmentType.ApiMstSlotitemEquiptype> implements Identifiable {
+=======
+    public static class EquipmentType extends Data<Start2Data.EquipmentType.ApiMstSlotitemEquiptype> implements Identifiable {
+>>>>>>> origin/develop
 =======
     public static class EquipmentType extends Data<Start2Data.EquipmentType.ApiMstSlotitemEquiptype> implements Identifiable {
 >>>>>>> origin/develop
@@ -275,7 +283,11 @@ public class Start2Data {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     public static class ShipType extends Data<ShipType.ApiMstStype> implements Identifiable {
+=======
+    public static class ShipType extends Data<Start2Data.ShipType.ApiMstStype> implements Identifiable {
+>>>>>>> origin/develop
 =======
     public static class ShipType extends Data<Start2Data.ShipType.ApiMstStype> implements Identifiable {
 >>>>>>> origin/develop
@@ -529,7 +541,11 @@ public class Start2Data {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     public static class MasterEquipmentData extends Data<MasterEquipmentData.ApiMstSlotitem> implements Identifiable {
+=======
+    public static class MasterEquipmentData extends Data<Start2Data.MasterEquipmentData.ApiMstSlotitem> implements Identifiable {
+>>>>>>> origin/develop
 =======
     public static class MasterEquipmentData extends Data<Start2Data.MasterEquipmentData.ApiMstSlotitem> implements Identifiable {
 >>>>>>> origin/develop
@@ -652,7 +668,11 @@ public class Start2Data {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     public static class MasterUseItemData extends Data<MasterUseItemData.ApiMstUseitem> implements Identifiable {
+=======
+    public static class MasterUseItemData extends Data<Start2Data.MasterUseItemData.ApiMstUseitem> implements Identifiable {
+>>>>>>> origin/develop
 =======
     public static class MasterUseItemData extends Data<Start2Data.MasterUseItemData.ApiMstUseitem> implements Identifiable {
 >>>>>>> origin/develop
@@ -693,7 +713,11 @@ public class Start2Data {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     public static class MasterMapInfoData extends Data<MasterMapInfoData.ApiMstMapinfo> implements Identifiable {
+=======
+    public static class MasterMapInfoData extends Data<Start2Data.MasterMapInfoData.ApiMstMapinfo> implements Identifiable {
+>>>>>>> origin/develop
 =======
     public static class MasterMapInfoData extends Data<Start2Data.MasterMapInfoData.ApiMstMapinfo> implements Identifiable {
 >>>>>>> origin/develop
@@ -750,7 +774,11 @@ public class Start2Data {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     public static class MasterMissionData extends Data<MasterMissionData.ApiMstMission> implements Identifiable {
+=======
+    public static class MissionData extends Data<Start2Data.MissionData.ApiMstMission> implements Identifiable {
+>>>>>>> origin/develop
 =======
     public static class MissionData extends Data<Start2Data.MissionData.ApiMstMission> implements Identifiable {
 >>>>>>> origin/develop
