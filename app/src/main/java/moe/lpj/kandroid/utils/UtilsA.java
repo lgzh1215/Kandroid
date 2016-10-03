@@ -9,7 +9,7 @@ public class UtilsA {
         return (T) v.findViewById(id);
     }
 
-    public static <T> T findViewById(Activity activity, int id) {
-        return (T) activity.findViewById(id);
+    public static <T> T findViewById(Activity a, int id) {
+        return (T) a.findViewById(id);
     }
 }

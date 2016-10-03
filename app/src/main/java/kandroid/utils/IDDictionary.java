@@ -36,7 +36,7 @@ public class IDDictionary<T extends Identifiable> extends AbstractSet<T> {
             }
         } catch (ClassCastException | NullPointerException e) {
             return false;
-        } 
+        }
 
         return true;
     }
@@ -207,7 +207,6 @@ public class IDDictionary<T extends Identifiable> extends AbstractSet<T> {
     public Iterator<T> iterator() {
         return new ValueIterator();
     }
-
 
     /* ------------------------------------------------------------ */
     // iterators and set views
@@ -593,7 +592,7 @@ public class IDDictionary<T extends Identifiable> extends AbstractSet<T> {
         }
 
         public final int hashCode() {
-            return key ^ Utils.hashCode(value);
+            return key ^ (value != null ? value.hashCode() : 0);
         }
 
         public final T setValue(T newValue) {
@@ -607,7 +606,8 @@ public class IDDictionary<T extends Identifiable> extends AbstractSet<T> {
                 return true;
             if (o instanceof IDDictionary.Node) {
                 Node<? extends Identifiable> e = (Node<? extends Identifiable>) o;
-                if (key == e.getKey() && Utils.equals(value, e.getValue()))
+                Object b = e.getValue();
+                if (key == e.getKey() && ((value == b) || (value != null && value.equals(b))))
                     return true;
             }
             return false;
@@ -666,7 +666,7 @@ public class IDDictionary<T extends Identifiable> extends AbstractSet<T> {
                     p = pr;
                 else if (pk == key)
                     return p;
-                else throw new CatException();
+                else throw new RuntimeException("这种情况可能发生么");
             } while (p != null);
             return null;
         }
