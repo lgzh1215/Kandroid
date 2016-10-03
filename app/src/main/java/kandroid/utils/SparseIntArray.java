@@ -1,3 +1,5 @@
+package kandroid.utils;
+
 public class SparseIntArray implements Cloneable {
     private int[] mKeys;
     private int[] mValues;

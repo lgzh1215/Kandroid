@@ -1,11 +1,10 @@
 package kandroid.proxy;
 
 import java.util.HashSet;
-import java.util.Set;
 
 public final class MyFilter {
 
-    private static final Set<String> SERVER_NAMES;
+    private static final HashSet<String> SERVER_NAMES;
     public static final String CONTENT_TYPE_FILTER = "text/plain";
     public static final String REQUEST_BODY = "req-body";
     public static final String RESPONSE_BODY = "res-body";

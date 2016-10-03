@@ -3,13 +3,12 @@ package kandroid.data;
 import com.google.gson.annotations.SerializedName;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import kandroid.observer.POJO;
 import kandroid.utils.IDDictionary;
 import kandroid.utils.Identifiable;
+import kandroid.utils.SparseIntArray;
 
 public class Start2Data {
 
@@ -274,7 +273,7 @@ public class Start2Data {
 
     public static class ShipType extends Data<ShipType.ApiMstStype> implements Identifiable {
 
-        private Map<Integer, Integer> api_equip_type;
+        private transient SparseIntArray api_equip_type;
 
         public int getTypeID() {
             return data.api_id;
@@ -292,28 +291,23 @@ public class Start2Data {
             return data.api_scnt;
         }
 
-        // api_equip_type 特別置換処理 mdzz
-        public Map<Integer, Integer> getEquipmentType() {
+        // api_equip_type 特别置换处理 mdzz
+        public SparseIntArray getEquipmentType() {
             if (api_equip_type == null) {
-                api_equip_type = new HashMap<>();
-                Field[] fields = data.api_equip_type.getClass().getDeclaredFields();
-                for (Field field : fields) {
-                    field.setAccessible(true);
-                    int name = Integer.parseInt(field.getAnnotation(SerializedName.class).value());
-                    int value = 0;
-                    try {
-                        value = (int) field.get(data.api_equip_type);
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
+                synchronized (this) {
+                    api_equip_type = new SparseIntArray(100);
+                    Field[] fields = data.api_equip_type.getClass().getDeclaredFields();
+                    for (Field field : fields) {
+                        try {
+                            int name = Integer.parseInt(field.getAnnotation(SerializedName.class).value());
+                            int value = (int) field.get(data.api_equip_type);
+                            api_equip_type.put(name, value);
+                        } catch (IllegalAccessException ignored) {
+                        }
                     }
-                    api_equip_type.put(name, value);
                 }
             }
             return api_equip_type;
-        }
-
-        public void setApi_equip_type(Map<Integer, Integer> api_equip_type) {
-            this.api_equip_type = api_equip_type;
         }
 
         @Override
