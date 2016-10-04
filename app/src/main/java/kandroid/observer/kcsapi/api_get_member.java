@@ -12,6 +12,7 @@ import kandroid.data.FleetData;
 import kandroid.data.KCDatabase;
 import kandroid.data.MapInfoData;
 import kandroid.data.MaterialData;
+import kandroid.data.ShipData;
 import kandroid.data.UseItem;
 import kandroid.observer.ApiBase;
 import kandroid.observer.POJO;
@@ -29,7 +30,7 @@ public class api_get_member {
             Require_info require_info = new Gson().fromJson(rawData.toString(), Require_info.class);
 
             // api_slot_item
-            IDDictionary<EquipmentData> equipmentData = KCDatabase.getInstance().equipmentData;
+            IDDictionary<EquipmentData> equipmentData = KCDatabase.getInstance().equipments;
             equipmentData.clear();
             for (Require_info.ApiData.ApiSlotItem apiSlotItem : require_info.api_data.api_slot_item) {
                 EquipmentData equipment = new EquipmentData();
@@ -74,7 +75,7 @@ public class api_get_member {
 
             public static class ApiData {
                 public ApiBasic api_basic;
-                public ApiUnsetslot api_unsetslot;
+                public Object api_unsetslot;
                 public List<ApiSlotItem> api_slot_item;
                 public List<ApiKdock> api_kdock;
                 public List<ApiUseitem> api_useitem;
@@ -83,57 +84,6 @@ public class api_get_member {
                 public static class ApiBasic {
                     public int api_member_id;
                     public int api_firstflag;
-                }
-
-                public static class ApiUnsetslot {
-                    public int api_slottype1;
-                    public int api_slottype9;
-                    public int api_slottype11;
-                    public int api_slottype12;
-                    public int api_slottype13;
-                    public int api_slottype15;
-                    public int api_slottype16;
-                    public int api_slottype17;
-                    public int api_slottype18;
-                    public int api_slottype19;
-                    public int api_slottype20;
-                    public int api_slottype24;
-                    public int api_slottype25;
-                    public int api_slottype26;
-                    public int api_slottype27;
-                    public int api_slottype28;
-                    public int api_slottype29;
-                    public int api_slottype31;
-                    public int api_slottype32;
-                    public int api_slottype33;
-                    public int api_slottype34;
-                    public int api_slottype35;
-                    public int api_slottype36;
-                    public int api_slottype37;
-                    public int api_slottype38;
-                    public int api_slottype39;
-                    public int api_slottype40;
-                    public int api_slottype41;
-                    public int api_slottype42;
-                    public int api_slottype44;
-                    public int api_slottype45;
-                    public int api_slottype46;
-                    public int api_slottype47;
-                    public int api_slottype48;
-                    public List<Integer> api_slottype2;
-                    public List<Integer> api_slottype3;
-                    public List<Integer> api_slottype4;
-                    public List<Integer> api_slottype5;
-                    public List<Integer> api_slottype6;
-                    public List<Integer> api_slottype7;
-                    public List<Integer> api_slottype8;
-                    public List<Integer> api_slottype10;
-                    public List<Integer> api_slottype14;
-                    public List<Integer> api_slottype21;
-                    public List<Integer> api_slottype22;
-                    public List<Integer> api_slottype23;
-                    public List<Integer> api_slottype30;
-                    public List<Integer> api_slottype43;
                 }
 
                 public static class ApiSlotItem extends EquipmentData.ApiSlotItem {
@@ -190,7 +140,7 @@ public class api_get_member {
         protected void onDataReceived(RawData rawData) {
             Slot_item slot_item = new Gson().fromJson(rawData.toString(), Slot_item.class);
 
-            IDDictionary<EquipmentData> equipmentData = KCDatabase.getInstance().equipmentData;
+            IDDictionary<EquipmentData> equipmentData = KCDatabase.getInstance().equipments;
             equipmentData.clear();
             for (Slot_item.ApiData apiData : slot_item.api_data) {
                 EquipmentData equipment = new EquipmentData();
@@ -438,6 +388,187 @@ public class api_get_member {
             public List<ApiData> api_data;
 
             public static class ApiData extends MapInfoData.ApiMapInfo {
+            }
+        }
+    }
+
+    public static class ship2 extends ApiBase {
+        public static final String API_NAME = "api_get_member/ship2";
+
+        @Override
+        protected void onDataReceived(RawData rawData) {
+            Ship2 ship2 = new Gson().fromJson(rawData.toString(), Ship2.class);
+            KCDatabase kcDatabase = KCDatabase.getInstance();
+
+            // api_data
+            IDDictionary<ShipData> shipData = kcDatabase.ships;
+            shipData.clear();
+            for (ShipData.ApiShip apiShip : ship2.api_data) {
+                ShipData ship = new ShipData();
+                ship.setData(apiShip);
+                shipData.put(ship);
+            }
+
+            // api_data_deck
+            IDDictionary<FleetData> fleetDatas = kcDatabase.fleets.fleetDatas;
+            for (FleetData.ApiDeck apiDeck : ship2.api_data_deck) {
+                int id = apiDeck.api_id;
+                FleetData fleetData = fleetDatas.get(id);
+                if (fleetData == null) {
+                    fleetData = new FleetData();
+                    fleetData.setData(apiDeck);
+                    fleetDatas.put(fleetData);
+                } else {
+                    fleetData.setData(apiDeck);
+                }
+            }
+        }
+
+        @Override
+        public String getApiName() {
+            return API_NAME;
+        }
+
+        public static class Ship2 {
+            public int api_result;
+            public String api_result_msg;
+            public List<ApiData> api_data;
+            public List<ApiDataDeck> api_data_deck;
+
+            public static class ApiData extends ShipData.ApiShip {
+            }
+
+            public static class ApiDataDeck extends FleetData.ApiDeck {
+            }
+        }
+    }
+
+    public static class ship3 extends ApiBase {
+
+        public static final String API_NAME = "api_get_member/ship3";
+
+        @Override
+        protected void onDataReceived(RawData rawData) {
+            Ship3 ship3 = new Gson().fromJson(rawData.toString(), Ship3.class);
+            KCDatabase kcDatabase = KCDatabase.getInstance();
+
+            // api_ship_data
+            for (Ship3.ApiData.ApiShipData apiShipData : ship3.api_data.api_ship_data) {
+                int id = apiShipData.api_id;
+
+                ShipData ship = kcDatabase.ships.get(id);
+                ship.setData(apiShipData);
+
+                for (int equipmentId : ship.getSlot()) {
+                    if (equipmentId == -1) continue;
+                    if (!kcDatabase.equipments.containsKey(equipmentId)) {
+                        EquipmentData newEquipment = new EquipmentData();
+                        EquipmentData.ApiSlotItem apiSlotItem = new EquipmentData.ApiSlotItem();
+                        apiSlotItem.api_id = equipmentId;
+                        apiSlotItem.api_slotitem_id = 1;
+                        newEquipment.setData(apiSlotItem);
+                        kcDatabase.equipments.put(newEquipment);
+                    }
+                }
+            }
+
+            // api_deck_data
+            IDDictionary<FleetData> fleetDatas = kcDatabase.fleets.fleetDatas;
+            for (Ship3.ApiData.ApiDeckData apiDeckData : ship3.api_data.api_deck_data) {
+                int id = apiDeckData.api_id;
+                FleetData fleetData = fleetDatas.get(id);
+                if (fleetData == null) {
+                    fleetData = new FleetData();
+                    fleetData.setData(apiDeckData);
+                    fleetDatas.put(fleetData);
+                } else {
+                    fleetData.setData(apiDeckData);
+                }
+            }
+        }
+
+        @Override
+        public String getApiName() {
+            return API_NAME;
+        }
+
+        public static class Ship3 {
+            public int api_result;
+            public String api_result_msg;
+            public ApiData api_data;
+
+            public static class ApiData {
+                public Object api_slot_data;
+                public List<ApiShipData> api_ship_data;
+                public List<ApiDeckData> api_deck_data;
+
+                public static class ApiShipData extends ShipData.ApiShip {
+                }
+
+                public static class ApiDeckData extends FleetData.ApiDeck {
+                }
+            }
+        }
+
+    }
+
+    public static class ship_deck extends ApiBase {
+
+        public static final String API_NAME = "api_get_member/ship_deck";
+
+        @Override
+        protected void onDataReceived(RawData rawData) {
+            ShipDeck shipDeck = new Gson().fromJson(rawData.toString(), ShipDeck.class);
+            KCDatabase kcDatabase = KCDatabase.getInstance();
+
+            //api_ship_data
+            IDDictionary<ShipData> shipDatas = kcDatabase.ships;
+            for (ShipData.ApiShip apiShip : shipDeck.api_data.api_ship_data) {
+                int id = apiShip.api_id;
+                ShipData dock = shipDatas.get(id);
+                if (dock == null) {
+                    dock = new ShipData();
+                    dock.setData(apiShip);
+                    shipDatas.put(dock);
+                } else {
+                    dock.setData(apiShip);
+                }
+            }
+
+            //api_deck_data
+            IDDictionary<FleetData> fleetDatas = kcDatabase.fleets.fleetDatas;
+            for (FleetData.ApiDeck apiDeck : shipDeck.api_data.api_deck_data) {
+                int id = apiDeck.api_id;
+                FleetData fleetData = fleetDatas.get(id);
+                if (fleetData == null) {
+                    fleetData = new FleetData();
+                    fleetData.setData(apiDeck);
+                    fleetDatas.put(fleetData);
+                } else {
+                    fleetData.setData(apiDeck);
+                }
+            }
+        }
+
+        @Override
+        public String getApiName() {
+            return API_NAME;
+        }
+
+        public static class ShipDeck {
+            public int api_result;
+            public String api_result_msg;
+            public ApiData api_data;
+
+            public static class ApiData {
+                public List<ApiShipData> api_ship_data;
+                public List<ApiDeckData> api_deck_data;
+
+                public static class ApiShipData extends ShipData.ApiShip {
+                }
+
+                public static class ApiDeckData extends FleetData.ApiDeck {
+                }
             }
         }
     }

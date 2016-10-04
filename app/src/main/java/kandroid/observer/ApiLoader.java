@@ -108,5 +108,10 @@ public class ApiLoader {
 
         ApiHolder.put(new api_req_mission.start());
         ApiHolder.put(new api_req_mission.result());
+
+        ApiHolder.put(new api_get_member.ship3());
+        ApiHolder.put(new api_get_member.ship2());
+
+        ApiHolder.put(new api_get_member.ship_deck());
     }
 }

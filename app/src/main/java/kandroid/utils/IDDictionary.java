@@ -1,6 +1,10 @@
 package kandroid.utils;
 
-import java.util.*;
+import java.util.AbstractSet;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Set;
 
 public class IDDictionary<T extends Identifiable> extends AbstractSet<T> {
 
@@ -170,7 +174,12 @@ public class IDDictionary<T extends Identifiable> extends AbstractSet<T> {
     }
 
     @Override
+    @Deprecated
     public boolean contains(Object o) {
+        return containsValue(o);
+    }
+
+    public boolean containsValue(Object o) {
         Node<T>[] tab;
         T t;
         if ((tab = table) != null && size > 0) {
@@ -1108,9 +1117,7 @@ public class IDDictionary<T extends Identifiable> extends AbstractSet<T> {
                 return false;
             if (tl != null && !checkInvariants(tl))
                 return false;
-            if (tr != null && !checkInvariants(tr))
-                return false;
-            return true;
+            return !(tr != null && !checkInvariants(tr));
         }
     }
 }

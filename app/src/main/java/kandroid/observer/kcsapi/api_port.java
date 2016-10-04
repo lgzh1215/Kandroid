@@ -42,7 +42,7 @@ public class api_port {
             kcDatabase.admiral.setData(port.api_data.api_basic);
 
             // api_ship
-            IDDictionary<ShipData> shipData = kcDatabase.shipData;
+            IDDictionary<ShipData> shipData = kcDatabase.ships;
             shipData.clear();
             for (ShipData.ApiShip apiShip : port.api_data.api_ship) {
                 ShipData ship = new ShipData();

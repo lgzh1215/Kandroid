@@ -23,7 +23,7 @@ public class Config {
     }
 
     public boolean isUseProxy() {
-        return true;
+        return false;
     }
 
     public int getProxyPort() {

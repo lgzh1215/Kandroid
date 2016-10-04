@@ -21,7 +21,7 @@ public class api_req_nyukyo {
 
             KCDatabase kcDatabase = KCDatabase.getInstance();
 
-            ShipData ship = kcDatabase.shipData.get(shipId);
+            ShipData ship = kcDatabase.ships.get(shipId);
             kcDatabase.material.fuel -= ship.getRepairFuel();
             kcDatabase.material.steel -= ship.getRepairSteel();
             if (highSpeed == 1) {
@@ -52,7 +52,7 @@ public class api_req_nyukyo {
             KCDatabase kcDatabase = KCDatabase.getInstance();
             DockData dockData = kcDatabase.dockData.get(ndockId);
             if (dockData.getState() == 1 && dockData.getShipID() != 0) {
-                kcDatabase.shipData.get(dockData.getShipID()).repair();
+                kcDatabase.ships.get(dockData.getShipID()).repair();
                 dockData.getData().api_state = 0;
                 dockData.getData().api_ship_id = 0;
             }
