@@ -1,5 +1,6 @@
 package kandroid;
 
+import kandroid.config.Config;
 import kandroid.observer.ApiLoader;
 import kandroid.proxy.MyProxyServer;
 import kandroid.utils.Identifiable;
@@ -7,6 +8,7 @@ import kandroid.utils.Identifiable;
 public class Test implements Identifiable {
 
     static void startKandroidService() {
+        System.out.println(Config.get().toString());
         ApiLoader.start();
         MyProxyServer.start();
     }
