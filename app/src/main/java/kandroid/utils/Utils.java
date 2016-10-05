@@ -1,5 +1,7 @@
 package kandroid.utils;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -34,5 +36,13 @@ public final class Utils {
 
     public static String getDateString(Date date) {
         return DATE_FORMAT.format(date);
+    }
+
+    public static String md5(String s) {
+        try {
+            return new BigInteger(1, MessageDigest.getInstance("MD5").digest(s.getBytes())).toString(16);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
