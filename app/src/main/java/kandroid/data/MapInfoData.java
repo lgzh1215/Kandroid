@@ -10,7 +10,7 @@ public class MapInfoData extends Data<MapInfoData.ApiMapInfo> implements Identif
     }
 
     public Start2Data.MasterMapInfoData getMasterMapInfo() {
-        return KCDatabase.getInstance().master.masterMapInfoData.get(getMapID());
+        return KCDatabase.getMaster().masterMapInfoData.get(getMapID());
     }
 
     public int getMapAreaID() {

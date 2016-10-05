@@ -26,7 +26,7 @@ public class DockData extends Data<DockData.ApiNdock> implements Identifiable {
     @Override
     public void setData(ApiNdock data) {
         if (this.data != null && getState() == 1 && data.api_state == 0 && getShipID() != 0) {
-            KCDatabase.getInstance().ships.get(getID()).repair();
+            KCDatabase.getShips().get(getID()).repair();
         }
         super.setData(data);
     }

@@ -6,4 +6,8 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="nav_home">综合</string>
+    <string name="nav_girls">舰娘</string>
+    <string name="nav_equipment">装备</string>
+    <string name="nav_book">图鉴</string>
 </resources>

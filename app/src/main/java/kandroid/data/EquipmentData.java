@@ -26,7 +26,7 @@ public class EquipmentData extends Data<EquipmentData.ApiSlotItem> implements Id
     }
 
     public Start2Data.MasterEquipmentData getMasterEquipment() {
-        return KCDatabase.getInstance().master.masterEquipmentData.get(getMasterID());
+        return KCDatabase.getMaster().masterEquipmentData.get(getMasterID());
     }
 
     public String getName() {

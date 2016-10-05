@@ -2,8 +2,6 @@ package kandroid.config;
 
 import java.io.File;
 
-import kandroid.utils.Utils;
-
 public class Config {
 
     private static class ConfigHolder {
@@ -46,8 +44,36 @@ public class Config {
         return true;
     }
 
-    public File getSaveKcsApiFile(String fileName) {
-        return new File("./KCAPI/" + Utils.requireNonNull(fileName));
+    protected File getStorageDir() {
+        return new File("./");
+    }
+
+    public final File getSaveKcsApiFile(String fileName) {
+        File file = new File(getStorageDir(), "KCAPI");
+        if (fileName == null)
+            return file;
+        else
+            return new File(file, fileName);
+    }
+
+    public final File getSaveDataFile(String fileName) {
+        File file = new File(getStorageDir(), "data");
+        if (fileName == null)
+            return file;
+        else
+            return new File(file, fileName);
+    }
+
+    public final File getSaveUserFile(String fileName) {
+        File file = new File(getStorageDir(), "user");
+        if (fileName == null)
+            return file;
+        else
+            return new File(file, fileName);
+    }
+
+    public boolean isMultipleUserMode() {
+        return true;
     }
 
     @Override

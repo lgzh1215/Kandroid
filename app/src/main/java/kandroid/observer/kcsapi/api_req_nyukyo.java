@@ -19,19 +19,18 @@ public class api_req_nyukyo {
             int shipId = Integer.valueOf(requestMap.get("api_ship_id"));
             int highSpeed = Integer.valueOf(requestMap.get("api_highspeed"));
 
-            KCDatabase kcDatabase = KCDatabase.getInstance();
 
-            ShipData ship = kcDatabase.ships.get(shipId);
-            kcDatabase.material.fuel -= ship.getRepairFuel();
-            kcDatabase.material.steel -= ship.getRepairSteel();
+            ShipData ship = KCDatabase.getShips().get(shipId);
+            KCDatabase.getMaterial().fuel -= ship.getRepairFuel();
+            KCDatabase.getMaterial().steel -= ship.getRepairSteel();
             if (highSpeed == 1) {
                 ship.repair();
-                kcDatabase.material.instantRepair--;
+                KCDatabase.getMaterial().instantRepair--;
             } else if (ship.getRepairTime() < 60000) {
                 ship.repair();
             }
 
-            for (FleetData fleetData : kcDatabase.fleets.fleetDatas) {
+            for (FleetData fleetData : KCDatabase.getFleets().fleetDatas) {
                 fleetData.loadFromRequest(getApiName(), rawData);
             }
         }
@@ -49,17 +48,16 @@ public class api_req_nyukyo {
             Map<String, String> requestMap = rawData.getRequestMap();
             Integer ndockId = Integer.valueOf(requestMap.get("api_ndock_id"));
 
-            KCDatabase kcDatabase = KCDatabase.getInstance();
-            DockData dockData = kcDatabase.dockData.get(ndockId);
+            DockData dockData = KCDatabase.getDockData().get(ndockId);
             if (dockData.getState() == 1 && dockData.getShipID() != 0) {
-                kcDatabase.ships.get(dockData.getShipID()).repair();
+                KCDatabase.getShips().get(dockData.getShipID()).repair();
                 dockData.getData().api_state = 0;
                 dockData.getData().api_ship_id = 0;
             }
 
-            kcDatabase.material.instantRepair--;
+            KCDatabase.getMaterial().instantRepair--;
 
-            for (FleetData fleetData : kcDatabase.fleets.fleetDatas) {
+            for (FleetData fleetData : KCDatabase.getFleets().fleetDatas) {
                 fleetData.loadFromRequest(getApiName(), rawData);
             }
         }

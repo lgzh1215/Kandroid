@@ -279,7 +279,7 @@ public class ShipData extends Data<ShipData.ApiShip> implements Identifiable {
     }
 
     public MasterShipData getMasterShip() {
-        return KCDatabase.getInstance().master.masterShipData.get(getShipID());
+        return KCDatabase.getMaster().masterShipData.get(getShipID());
     }
 
     public int getRepairingDockID() {

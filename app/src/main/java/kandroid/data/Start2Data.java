@@ -12,6 +12,8 @@ import kandroid.utils.SparseIntArray;
 
 public class Start2Data {
 
+    public boolean isInited = false;
+
     public IDDictionary<MasterShipData> masterShipData;
     public IDDictionary<EquipmentType> equipmentType;
     public IDDictionary<ShipType> shipType;
@@ -31,9 +33,6 @@ public class Start2Data {
     }
 
     public static class MasterShipData extends Data<MasterShipData.ApiMstShip> implements Identifiable {
-
-        public MasterShipData() {
-        }
 
         public int getShipID() {
             return data.api_id;
@@ -65,7 +64,7 @@ public class Start2Data {
 
         public MasterShipData getRemodelAfterShip() {
             int remodelAfterShipID = getRemodelAfterShipID();
-            return remodelAfterShipID > 0 ? KCDatabase.getInstance().master.masterShipData.get(remodelAfterShipID) : null;
+            return remodelAfterShipID > 0 ? KCDatabase.getMaster().masterShipData.get(remodelAfterShipID) : null;
         }
 
         public int getRemodelBeforeShipID() {
@@ -74,7 +73,7 @@ public class Start2Data {
 
         public MasterShipData getRemodelBeforeShip() {
             int remodelBeforeShipID = getRemodelBeforeShipID();
-            return remodelBeforeShipID > 0 ? KCDatabase.getInstance().master.masterShipData.get(remodelBeforeShipID) : null;
+            return remodelBeforeShipID > 0 ? KCDatabase.getMaster().masterShipData.get(remodelBeforeShipID) : null;
         }
 
         public int getRemodelAmmo() {

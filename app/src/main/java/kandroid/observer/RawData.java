@@ -76,12 +76,7 @@ public class RawData implements Runnable {
 
                 byte[] decodedData = IOUtils.toByteArray(stream);
 
-                return new RawData(uri, request, decodedData, postField) {
-                    @Override
-                    public String toString() {
-                        return new String(getResponse());
-                    }
-                };
+                return new RawData(uri, request, decodedData, postField);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -110,10 +105,14 @@ public class RawData implements Runnable {
             RawData rawData = decode();
             ApiLoader.save(rawData);
             ApiBase api = ApiLoader.getApi(rawData.getUri());
-            if (api != null) api.onDataReceived(rawData);
-            String s;
+            if (api != null) api.loadData(rawData);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public String toString() {
+        return new String(getResponse());
     }
 }

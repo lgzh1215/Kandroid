@@ -16,15 +16,16 @@ public class api_start2 extends ApiBase {
     @Override
     protected void onDataReceived(RawData rawData) {
         ApiStart2 apiStart2 = new Gson().fromJson(rawData.toString(), ApiStart2.class);
+        Start2Data start2Data = KCDatabase.getMaster();
 
         // api_mst_ship
         for (ApiStart2.ApiData.ApiMstShip apiMstShip : apiStart2.api_data.api_mst_ship) {
             int id = apiMstShip.api_id;
-            Start2Data.MasterShipData ship = KCDatabase.getInstance().master.masterShipData.get(id);
+            Start2Data.MasterShipData ship = start2Data.masterShipData.get(id);
             if (ship == null) {
                 ship = new Start2Data.MasterShipData();
                 ship.setData(apiMstShip);
-                KCDatabase.getInstance().master.masterShipData.put(ship);
+                start2Data.masterShipData.put(ship);
             } else {
                 ship.setData(apiMstShip);
             }
@@ -33,11 +34,11 @@ public class api_start2 extends ApiBase {
         // api_mst_slotitem_equiptype
         for (ApiStart2.ApiData.ApiMstSlotitemEquiptype apiMstSlotitemEquiptype : apiStart2.api_data.api_mst_slotitem_equiptype) {
             int id = apiMstSlotitemEquiptype.api_id;
-            Start2Data.EquipmentType type = KCDatabase.getInstance().master.equipmentType.get(id);
+            Start2Data.EquipmentType type = start2Data.equipmentType.get(id);
             if (type == null) {
                 type = new Start2Data.EquipmentType();
                 type.setData(apiMstSlotitemEquiptype);
-                KCDatabase.getInstance().master.equipmentType.put(type);
+                start2Data.equipmentType.put(type);
             } else {
                 type.setData(apiMstSlotitemEquiptype);
             }
@@ -47,11 +48,11 @@ public class api_start2 extends ApiBase {
         apiStart2.api_data.api_mst_stype.get(7).api_name = "巡洋戦艦";
         for (ApiStart2.ApiData.ApiMstStype apiMstStype : apiStart2.api_data.api_mst_stype) {
             int id = apiMstStype.api_id;
-            Start2Data.ShipType type = KCDatabase.getInstance().master.shipType.get(id);
+            Start2Data.ShipType type = start2Data.shipType.get(id);
             if (type == null) {
                 type = new Start2Data.ShipType();
                 type.setData(apiMstStype);
-                KCDatabase.getInstance().master.shipType.put(type);
+                start2Data.shipType.put(type);
             } else {
                 type.setData(apiMstStype);
             }
@@ -60,11 +61,11 @@ public class api_start2 extends ApiBase {
         // api_mst_slotitem
         for (ApiStart2.ApiData.ApiMstSlotitem apiMstSlotitem : apiStart2.api_data.api_mst_slotitem) {
             int id = apiMstSlotitem.api_id;
-            Start2Data.MasterEquipmentData equipment = KCDatabase.getInstance().master.masterEquipmentData.get(id);
+            Start2Data.MasterEquipmentData equipment = start2Data.masterEquipmentData.get(id);
             if (equipment == null) {
                 equipment = new Start2Data.MasterEquipmentData();
                 equipment.setData(apiMstSlotitem);
-                KCDatabase.getInstance().master.masterEquipmentData.put(equipment);
+                start2Data.masterEquipmentData.put(equipment);
             } else {
                 equipment.setData(apiMstSlotitem);
             }
@@ -73,11 +74,11 @@ public class api_start2 extends ApiBase {
         // api_mst_useitem
         for (ApiStart2.ApiData.ApiMstUseitem apiMstUseitem : apiStart2.api_data.api_mst_useitem) {
             int id = apiMstUseitem.api_id;
-            Start2Data.MasterUseItemData useItem = KCDatabase.getInstance().master.masterUseItemData.get(id);
+            Start2Data.MasterUseItemData useItem = start2Data.masterUseItemData.get(id);
             if (useItem == null) {
                 useItem = new Start2Data.MasterUseItemData();
                 useItem.setData(apiMstUseitem);
-                KCDatabase.getInstance().master.masterUseItemData.put(useItem);
+                start2Data.masterUseItemData.put(useItem);
             } else {
                 useItem.setData(apiMstUseitem);
             }
@@ -86,11 +87,11 @@ public class api_start2 extends ApiBase {
         // api_mst_mapinfo
         for (ApiStart2.ApiData.ApiMstMapinfo apiMstMapinfo : apiStart2.api_data.api_mst_mapinfo) {
             int id = apiMstMapinfo.api_id;
-            Start2Data.MasterMapInfoData mapInfo = KCDatabase.getInstance().master.masterMapInfoData.get(id);
+            Start2Data.MasterMapInfoData mapInfo = start2Data.masterMapInfoData.get(id);
             if (mapInfo == null) {
                 mapInfo = new Start2Data.MasterMapInfoData();
                 mapInfo.setData(apiMstMapinfo);
-                KCDatabase.getInstance().master.masterMapInfoData.put(mapInfo);
+                start2Data.masterMapInfoData.put(mapInfo);
             } else {
                 mapInfo.setData(apiMstMapinfo);
             }
@@ -99,11 +100,11 @@ public class api_start2 extends ApiBase {
         // api_mst_mission
         for (ApiStart2.ApiData.ApiMstMission apiMstMission : apiStart2.api_data.api_mst_mission) {
             int id = apiMstMission.api_id;
-            Start2Data.MasterMissionData mission = KCDatabase.getInstance().master.masterMissionData.get(id);
+            Start2Data.MasterMissionData mission = start2Data.masterMissionData.get(id);
             if (mission == null) {
                 mission = new Start2Data.MasterMissionData();
                 mission.setData(apiMstMission);
-                KCDatabase.getInstance().master.masterMissionData.put(mission);
+                start2Data.masterMissionData.put(mission);
             } else {
                 mission.setData(apiMstMission);
             }
@@ -117,6 +118,8 @@ public class api_start2 extends ApiBase {
 //            MasterShipData shipafter = masterShipData.getApi(idafter);
 //            int level = apiMstShipupgrade.api_upgrade_level;
 //        }
+
+        KCDatabase.saveMaster();
     }
 
     @Override

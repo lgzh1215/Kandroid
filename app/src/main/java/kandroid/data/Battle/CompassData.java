@@ -64,25 +64,10 @@ public class CompassData extends Data<CompassData.ApiCompass> implements Respons
         }
     }
 
-//    public GetItemData[] GetItems() {
-//            dynamic item;
-//            if ( RawData.api_itemget() )
-//                item = RawData.api_itemget;
-//            else if ( RawData.api_itemget_eo_comment() )
-//                item = RawData.api_itemget_eo_comment;
-//            else
-//                yield break;
-//
-//            // item.IsArray だと参照できないため
-//            if ( !( ( (dynamic)item ).IsArray ) ) {
-//                yield return new GetItemData( (int)item.api_usemst, (int)item.api_id, (int)item.api_getcount );
-//
-//            } else {
-//                foreach ( dynamic i in item ) {
-//                    yield return new GetItemData( (int)i.api_usemst, (int)i.api_id, (int)i.api_getcount );
-//                }
-//            }
-//    }
+    @Deprecated
+    public GetItemData[] GetItems() {
+        throw new UnsupportedOperationException();
+    }
     //endregion
 
     public int getWhirlpoolItemID() {
@@ -107,7 +92,6 @@ public class CompassData extends Data<CompassData.ApiCompass> implements Respons
 
     public int getAirReconnaissanceResult() {
         return data.api_airsearch == null ? 0 : data.api_airsearch.api_result;
-
     }
 
     public boolean isHasAirRaid() {
@@ -115,11 +99,13 @@ public class CompassData extends Data<CompassData.ApiCompass> implements Respons
     }
 
     public int getAirRaidDamageKind() {
-        throw new UnsupportedOperationException();
+        if (isHasAirRaid())
+            return data.api_destruction_battle.api_lost_kind;
+        else return 0;
     }
 
     public MapInfoData getMapInfo() {
-        return KCDatabase.getInstance().mapInfoDatas.get(getMapAreaID() * 10 + getMapInfoID());
+        return KCDatabase.getMapInfoDatas().get(getMapAreaID() * 10 + getMapInfoID());
     }
 
     @Override
