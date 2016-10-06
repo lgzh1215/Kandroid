@@ -3,13 +3,16 @@ package moe.lpj.kandroid.utils;
 import android.app.Activity;
 import android.view.View;
 
-public class UtilsA {
+import kandroid.utils.Utils;
+
+@SuppressWarnings("unchecked")
+public class UtilsA extends Utils {
 
     public static <T> T findViewById(View v, int id) {
-        return (T) v.findViewById(id);
+        return requireNonNull((T) v.findViewById(id));
     }
 
     public static <T> T findViewById(Activity a, int id) {
-        return (T) a.findViewById(id);
+        return requireNonNull((T) a.findViewById(id));
     }
 }

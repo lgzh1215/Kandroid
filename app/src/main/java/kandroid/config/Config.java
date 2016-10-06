@@ -2,18 +2,20 @@ package kandroid.config;
 
 import java.io.File;
 
+import kandroid.utils.Utils;
+
 public class Config {
 
     private static class ConfigHolder {
-        static Config config = new Config();
+        static Config config = null;
     }
 
     public static void setConfig(Config config) {
-        ConfigHolder.config = config;
+        ConfigHolder.config = Utils.requireNonNull(config);
     }
 
     public static Config get() {
-        return ConfigHolder.config;
+        return Utils.requireNonNull(ConfigHolder.config);
     }
 
     public int getListenPort() {
@@ -77,7 +79,7 @@ public class Config {
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         StringBuilder stringBuilder = new StringBuilder().append(get().getClass().toString())
                 .append("\n监听端口:").append(getListenPort()).append('\n');
         if (isUseProxy()) {
