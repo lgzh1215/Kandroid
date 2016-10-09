@@ -103,8 +103,8 @@ public class RawData implements Runnable {
     public void run() {
         try {
             RawData rawData = decode();
-            ApiLoader.save(rawData);
-            ApiBase api = ApiLoader.getApi(rawData.getUri());
+            ApiLoader.INSTANCE.save(rawData);
+            ApiBase api = ApiLoader.INSTANCE.getApi(rawData.getUri());
             if (api != null) api.loadData(rawData);
         } catch (Exception e) {
             e.printStackTrace();

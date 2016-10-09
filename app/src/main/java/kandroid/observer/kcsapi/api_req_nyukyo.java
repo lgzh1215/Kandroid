@@ -21,11 +21,11 @@ public class api_req_nyukyo {
 
 
             ShipData ship = KCDatabase.getShips().get(shipId);
-            KCDatabase.getMaterial().fuel -= ship.getRepairFuel();
-            KCDatabase.getMaterial().steel -= ship.getRepairSteel();
+            KCDatabase.getMaterial().setFuel(KCDatabase.getMaterial().getFuel() - ship.getRepairFuel());
+            KCDatabase.getMaterial().setSteel(KCDatabase.getMaterial().getSteel() - ship.getRepairSteel());
             if (highSpeed == 1) {
                 ship.repair();
-                KCDatabase.getMaterial().instantRepair--;
+                KCDatabase.getMaterial().setInstantRepair(KCDatabase.getMaterial().getInstantRepair() - 1);
             } else if (ship.getRepairTime() < 60000) {
                 ship.repair();
             }
@@ -55,7 +55,7 @@ public class api_req_nyukyo {
                 dockData.getData().api_ship_id = 0;
             }
 
-            KCDatabase.getMaterial().instantRepair--;
+            KCDatabase.getMaterial().setInstantRepair(KCDatabase.getMaterial().getInstantRepair() - 1);
 
             for (FleetData fleetData : KCDatabase.getFleets().fleetDatas) {
                 fleetData.loadFromRequest(getApiName(), rawData);
