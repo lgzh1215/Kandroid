@@ -30,7 +30,7 @@ public class api_get_member {
             Require_info require_info = new Gson().fromJson(rawData.toString(), Require_info.class);
 
             // api_slot_item
-            IDDictionary<EquipmentData> equipmentData = KCDatabase.getEquipments();
+            IDDictionary<EquipmentData> equipmentData = KCDatabase.INSTANCE.getEquipments();
             equipmentData.clear();
             for (Require_info.ApiData.ApiSlotItem apiSlotItem : require_info.api_data.api_slot_item) {
                 EquipmentData equipment = new EquipmentData();
@@ -39,7 +39,7 @@ public class api_get_member {
             }
 
             // api_kdock
-            IDDictionary<ArsenalData> arsenalData = KCDatabase.getArsenalData();
+            IDDictionary<ArsenalData> arsenalData = KCDatabase.INSTANCE.getArsenalData();
             for (Require_info.ApiData.ApiKdock apiKdock : require_info.api_data.api_kdock) {
                 int id = apiKdock.api_id;
                 ArsenalData kdock = arsenalData.get(id);
@@ -53,7 +53,7 @@ public class api_get_member {
             }
 
             // api_useitem
-            IDDictionary<UseItem> useItems = KCDatabase.getUseItems();
+            IDDictionary<UseItem> useItems = KCDatabase.INSTANCE.getUseItems();
             useItems.clear();
             for (Require_info.ApiData.ApiUseitem apiUseitem : require_info.api_data.api_useitem) {
                 UseItem useItem = new UseItem();
@@ -112,7 +112,7 @@ public class api_get_member {
         @Override
         protected void onDataReceived(RawData rawData) {
             Basic basic = new Gson().fromJson(rawData.toString(), Basic.class);
-            KCDatabase.getAdmiral().setData(basic.api_data);
+            KCDatabase.INSTANCE.getAdmiral().setData(basic.api_data);
         }
 
         @Override
@@ -140,7 +140,7 @@ public class api_get_member {
         protected void onDataReceived(RawData rawData) {
             Slot_item slot_item = new Gson().fromJson(rawData.toString(), Slot_item.class);
 
-            IDDictionary<EquipmentData> equipmentData = KCDatabase.getEquipments();
+            IDDictionary<EquipmentData> equipmentData = KCDatabase.INSTANCE.getEquipments();
             equipmentData.clear();
             for (Slot_item.ApiData apiData : slot_item.api_data) {
                 EquipmentData equipment = new EquipmentData();
@@ -175,7 +175,7 @@ public class api_get_member {
         protected void onDataReceived(RawData rawData) {
             Kdock kdock = new Gson().fromJson(rawData.toString(), Kdock.class);
 
-            IDDictionary<ArsenalData> arsenalData = KCDatabase.getArsenalData();
+            IDDictionary<ArsenalData> arsenalData = KCDatabase.INSTANCE.getArsenalData();
             for (Kdock.ApiData apiData : kdock.api_data) {
                 int id = apiData.api_id;
                 ArsenalData arsenal = arsenalData.get(id);
@@ -214,7 +214,7 @@ public class api_get_member {
             UseItem useItem = new Gson().fromJson(rawData.toString(), UseItem.class);
 
             // api_useitem
-            IDDictionary<kandroid.data.UseItem> useItems = KCDatabase.getUseItems();
+            IDDictionary<kandroid.data.UseItem> useItems = KCDatabase.INSTANCE.getUseItems();
             useItems.clear();
             for (UseItem.ApiData apiData : useItem.api_data) {
                 kandroid.data.UseItem item = new kandroid.data.UseItem();
@@ -247,7 +247,7 @@ public class api_get_member {
             Material material = new Gson().fromJson(rawData.toString(), Material.class);
             List<Material.ApiData> api_data = material.api_data;
 
-            MaterialData materialData = KCDatabase.getMaterial();
+            MaterialData materialData = KCDatabase.INSTANCE.getMaterial();
             materialData.setFuel(api_data.get(0).api_value);
             materialData.setAmmo(api_data.get(1).api_value);
             materialData.setSteel(api_data.get(2).api_value);
@@ -285,7 +285,7 @@ public class api_get_member {
         protected void onDataReceived(RawData rawData) {
             Ndock ndock = new Gson().fromJson(rawData.toString(), Ndock.class);
 
-            IDDictionary<DockData> dockData = KCDatabase.getDockData();
+            IDDictionary<DockData> dockData = KCDatabase.INSTANCE.getDockData();
             for (Ndock.ApiData apiData : ndock.api_data) {
                 int id = apiData.api_id;
                 DockData dock = dockData.get(id);
@@ -298,7 +298,7 @@ public class api_get_member {
                 }
             }
 
-            for (FleetData fleetData : KCDatabase.getFleets().fleetDatas) {
+            for (FleetData fleetData : KCDatabase.INSTANCE.getFleets().fleetDatas) {
                 fleetData.loadFromResponse(getApiName(), rawData);
             }
         }
@@ -326,7 +326,7 @@ public class api_get_member {
         protected void onDataReceived(RawData rawData) {
             Deck deck = new Gson().fromJson(rawData.toString(), Deck.class);
 
-            IDDictionary<FleetData> fleetDatas = KCDatabase.getFleets().fleetDatas;
+            IDDictionary<FleetData> fleetDatas = KCDatabase.INSTANCE.getFleets().fleetDatas;
             for (Deck.ApiData apiData : deck.api_data) {
                 int id = apiData.api_id;
                 FleetData fleetData = fleetDatas.get(id);
@@ -363,7 +363,7 @@ public class api_get_member {
         @Override
         protected void onDataReceived(RawData rawData) {
             MapInfo mapInfo = new Gson().fromJson(rawData.toString(), MapInfo.class);
-            IDDictionary<MapInfoData> mapInfoDatas = KCDatabase.getMapInfoDatas();
+            IDDictionary<MapInfoData> mapInfoDatas = KCDatabase.INSTANCE.getMapInfoDatas();
             for (MapInfo.ApiData apiData : mapInfo.api_data) {
                 int id = apiData.api_id;
                 MapInfoData mapInfoData = mapInfoDatas.get(id);
@@ -400,7 +400,7 @@ public class api_get_member {
             Ship2 ship2 = new Gson().fromJson(rawData.toString(), Ship2.class);
 
             // api_data
-            IDDictionary<ShipData> shipData = KCDatabase.getShips();
+            IDDictionary<ShipData> shipData = KCDatabase.INSTANCE.getShips();
             shipData.clear();
             for (ShipData.ApiShip apiShip : ship2.api_data) {
                 ShipData ship = new ShipData();
@@ -409,7 +409,7 @@ public class api_get_member {
             }
 
             // api_data_deck
-            IDDictionary<FleetData> fleetDatas = KCDatabase.getFleets().fleetDatas;
+            IDDictionary<FleetData> fleetDatas = KCDatabase.INSTANCE.getFleets().fleetDatas;
             for (FleetData.ApiDeck apiDeck : ship2.api_data_deck) {
                 int id = apiDeck.api_id;
                 FleetData fleetData = fleetDatas.get(id);
@@ -454,24 +454,24 @@ public class api_get_member {
             for (Ship3.ApiData.ApiShipData apiShipData : ship3.api_data.api_ship_data) {
                 int id = apiShipData.api_id;
 
-                ShipData ship = KCDatabase.getShips().get(id);
+                ShipData ship = KCDatabase.INSTANCE.getShips().get(id);
                 ship.setData(apiShipData);
 
                 for (int equipmentId : ship.getSlot()) {
                     if (equipmentId == -1) continue;
-                    if (!KCDatabase.getEquipments().containsKey(equipmentId)) {
+                    if (!KCDatabase.INSTANCE.getEquipments().containsKey(equipmentId)) {
                         EquipmentData newEquipment = new EquipmentData();
                         EquipmentData.ApiSlotItem apiSlotItem = new EquipmentData.ApiSlotItem();
                         apiSlotItem.api_id = equipmentId;
                         apiSlotItem.api_slotitem_id = 1;
                         newEquipment.setData(apiSlotItem);
-                        KCDatabase.getEquipments().put(newEquipment);
+                        KCDatabase.INSTANCE.getEquipments().put(newEquipment);
                     }
                 }
             }
 
             // api_deck_data
-            IDDictionary<FleetData> fleetDatas = KCDatabase.getFleets().fleetDatas;
+            IDDictionary<FleetData> fleetDatas = KCDatabase.INSTANCE.getFleets().fleetDatas;
             for (Ship3.ApiData.ApiDeckData apiDeckData : ship3.api_data.api_deck_data) {
                 int id = apiDeckData.api_id;
                 FleetData fleetData = fleetDatas.get(id);
@@ -519,7 +519,7 @@ public class api_get_member {
             ShipDeck shipDeck = new Gson().fromJson(rawData.toString(), ShipDeck.class);
 
             //api_ship_data
-            IDDictionary<ShipData> shipDatas = KCDatabase.getShips();
+            IDDictionary<ShipData> shipDatas = KCDatabase.INSTANCE.getShips();
             for (ShipData.ApiShip apiShip : shipDeck.api_data.api_ship_data) {
                 int id = apiShip.api_id;
                 ShipData dock = shipDatas.get(id);
@@ -533,7 +533,7 @@ public class api_get_member {
             }
 
             //api_deck_data
-            IDDictionary<FleetData> fleetDatas = KCDatabase.getFleets().fleetDatas;
+            IDDictionary<FleetData> fleetDatas = KCDatabase.INSTANCE.getFleets().fleetDatas;
             for (FleetData.ApiDeck apiDeck : shipDeck.api_data.api_deck_data) {
                 int id = apiDeck.api_id;
                 FleetData fleetData = fleetDatas.get(id);

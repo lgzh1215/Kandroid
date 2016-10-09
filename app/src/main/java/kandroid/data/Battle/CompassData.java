@@ -105,7 +105,7 @@ public class CompassData extends Data<CompassData.ApiCompass> implements Respons
     }
 
     public MapInfoData getMapInfo() {
-        return KCDatabase.getMapInfoDatas().get(getMapAreaID() * 10 + getMapInfoID());
+        return KCDatabase.INSTANCE.getMapInfoDatas().get(getMapAreaID() * 10 + getMapInfoID());
     }
 
     @Override

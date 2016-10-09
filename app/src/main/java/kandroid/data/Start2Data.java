@@ -64,7 +64,7 @@ public class Start2Data {
 
         public MasterShipData getRemodelAfterShip() {
             int remodelAfterShipID = getRemodelAfterShipID();
-            return remodelAfterShipID > 0 ? KCDatabase.getMaster().masterShipData.get(remodelAfterShipID) : null;
+            return remodelAfterShipID > 0 ? KCDatabase.INSTANCE.getMaster().masterShipData.get(remodelAfterShipID) : null;
         }
 
         public int getRemodelBeforeShipID() {
@@ -73,7 +73,7 @@ public class Start2Data {
 
         public MasterShipData getRemodelBeforeShip() {
             int remodelBeforeShipID = getRemodelBeforeShipID();
-            return remodelBeforeShipID > 0 ? KCDatabase.getMaster().masterShipData.get(remodelBeforeShipID) : null;
+            return remodelBeforeShipID > 0 ? KCDatabase.INSTANCE.getMaster().masterShipData.get(remodelBeforeShipID) : null;
         }
 
         public int getRemodelAmmo() {

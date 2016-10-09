@@ -16,7 +16,7 @@ public class api_start2 extends ApiBase {
     @Override
     protected void onDataReceived(RawData rawData) {
         ApiStart2 apiStart2 = new Gson().fromJson(rawData.toString(), ApiStart2.class);
-        Start2Data start2Data = KCDatabase.getMaster();
+        Start2Data start2Data = KCDatabase.INSTANCE.getMaster();
 
         // api_mst_ship
         for (ApiStart2.ApiData.ApiMstShip apiMstShip : apiStart2.api_data.api_mst_ship) {
@@ -119,7 +119,7 @@ public class api_start2 extends ApiBase {
 //            int level = apiMstShipupgrade.api_upgrade_level;
 //        }
 
-        KCDatabase.saveMaster();
+        KCDatabase.INSTANCE.saveMaster();
     }
 
     @Override

@@ -20,17 +20,17 @@ public class api_req_nyukyo {
             int highSpeed = Integer.valueOf(requestMap.get("api_highspeed"));
 
 
-            ShipData ship = KCDatabase.getShips().get(shipId);
-            KCDatabase.getMaterial().setFuel(KCDatabase.getMaterial().getFuel() - ship.getRepairFuel());
-            KCDatabase.getMaterial().setSteel(KCDatabase.getMaterial().getSteel() - ship.getRepairSteel());
+            ShipData ship = KCDatabase.INSTANCE.getShips().get(shipId);
+            KCDatabase.INSTANCE.getMaterial().setFuel(KCDatabase.INSTANCE.getMaterial().getFuel() - ship.getRepairFuel());
+            KCDatabase.INSTANCE.getMaterial().setSteel(KCDatabase.INSTANCE.getMaterial().getSteel() - ship.getRepairSteel());
             if (highSpeed == 1) {
                 ship.repair();
-                KCDatabase.getMaterial().setInstantRepair(KCDatabase.getMaterial().getInstantRepair() - 1);
+                KCDatabase.INSTANCE.getMaterial().setInstantRepair(KCDatabase.INSTANCE.getMaterial().getInstantRepair() - 1);
             } else if (ship.getRepairTime() < 60000) {
                 ship.repair();
             }
 
-            for (FleetData fleetData : KCDatabase.getFleets().fleetDatas) {
+            for (FleetData fleetData : KCDatabase.INSTANCE.getFleets().fleetDatas) {
                 fleetData.loadFromRequest(getApiName(), rawData);
             }
         }
@@ -48,16 +48,16 @@ public class api_req_nyukyo {
             Map<String, String> requestMap = rawData.getRequestMap();
             Integer ndockId = Integer.valueOf(requestMap.get("api_ndock_id"));
 
-            DockData dockData = KCDatabase.getDockData().get(ndockId);
+            DockData dockData = KCDatabase.INSTANCE.getDockData().get(ndockId);
             if (dockData.getState() == 1 && dockData.getShipID() != 0) {
-                KCDatabase.getShips().get(dockData.getShipID()).repair();
+                KCDatabase.INSTANCE.getShips().get(dockData.getShipID()).repair();
                 dockData.getData().api_state = 0;
                 dockData.getData().api_ship_id = 0;
             }
 
-            KCDatabase.getMaterial().setInstantRepair(KCDatabase.getMaterial().getInstantRepair() - 1);
+            KCDatabase.INSTANCE.getMaterial().setInstantRepair(KCDatabase.INSTANCE.getMaterial().getInstantRepair() - 1);
 
-            for (FleetData fleetData : KCDatabase.getFleets().fleetDatas) {
+            for (FleetData fleetData : KCDatabase.INSTANCE.getFleets().fleetDatas) {
                 fleetData.loadFromRequest(getApiName(), rawData);
             }
         }

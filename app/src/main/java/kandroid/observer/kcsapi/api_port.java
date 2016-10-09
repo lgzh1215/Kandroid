@@ -27,7 +27,7 @@ public class api_port {
 
             // api_material
             List<Port.ApiData.ApiMaterial> api_material = port.api_data.api_material;
-            MaterialData materialData = KCDatabase.getMaterial();
+            MaterialData materialData = KCDatabase.INSTANCE.getMaterial();
             materialData.setFuel(api_material.get(0).api_value);
             materialData.setAmmo(api_material.get(1).api_value);
             materialData.setSteel(api_material.get(2).api_value);
@@ -38,10 +38,10 @@ public class api_port {
             materialData.setModdingMaterial(api_material.get(7).api_value);
 
             // api_basic
-            KCDatabase.getAdmiral().setData(port.api_data.api_basic);
+            KCDatabase.INSTANCE.getAdmiral().setData(port.api_data.api_basic);
 
             // api_ship
-            IDDictionary<ShipData> shipData = KCDatabase.getShips();
+            IDDictionary<ShipData> shipData = KCDatabase.INSTANCE.getShips();
             shipData.clear();
             for (ShipData.ApiShip apiShip : port.api_data.api_ship) {
                 ShipData ship = new ShipData();
@@ -50,7 +50,7 @@ public class api_port {
             }
 
             // api_ndock
-            IDDictionary<DockData> dockData = KCDatabase.getDockData();
+            IDDictionary<DockData> dockData = KCDatabase.INSTANCE.getDockData();
             for (Port.ApiData.ApiNdock apiNdock : port.api_data.api_ndock) {
                 int id = apiNdock.api_id;
                 DockData dock = dockData.get(id);
@@ -64,7 +64,7 @@ public class api_port {
             }
 
             // api_deck_port
-            IDDictionary<FleetData> fleetDatas = KCDatabase.getFleets().fleetDatas;
+            IDDictionary<FleetData> fleetDatas = KCDatabase.INSTANCE.getFleets().fleetDatas;
             for (Port.ApiData.ApiDeckPort apiDeckPort : port.api_data.api_deck_port) {
                 int id = apiDeckPort.api_id;
                 FleetData fleetData = fleetDatas.get(id);
@@ -77,7 +77,7 @@ public class api_port {
                 }
             }
 
-            KCDatabase.getFleets().combinedFlag = port.api_data.api_combined_flag;
+            KCDatabase.INSTANCE.getFleets().combinedFlag = port.api_data.api_combined_flag;
 
             //TODO
         }
