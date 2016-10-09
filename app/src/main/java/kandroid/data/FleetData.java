@@ -61,7 +61,7 @@ public class FleetData extends Data<FleetData.ApiDeck> implements Identifiable, 
     }
 
     @Override
-    public int getID() {
+    public int getId() {
         return data.api_id;
     }
 

@@ -70,4 +70,12 @@ public class Utils {
             return new Date(json.getAsLong());
         }
     }
+
+    @SuppressWarnings("All")
+    @Deprecated
+    public static boolean isAssertOpen() {
+        boolean isAssertionOpen = false;
+        assert isAssertionOpen = true;
+        return isAssertionOpen;
+    }
 }

@@ -44,7 +44,7 @@ public class ArsenalData extends Data<ArsenalData.ApiKdock> implements Identifia
     }
 
     @Override
-    public int getID() {
+    public int getId() {
         return data.api_id;
     }
 

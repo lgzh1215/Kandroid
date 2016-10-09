@@ -16,7 +16,6 @@ out/
 # Gradle files
 .gradle/
 build/
-gradle/
 gradlew
 gradlew.bat
 gradle.properties
@@ -45,4 +44,5 @@ captures/
 
 # Debug files
 /KCAPI/
-/app/src/main/java/kandroid/Test.java
+/app/src/main/java/kandroid/KTest.java
+/app/src/main/java/kandroid/z/

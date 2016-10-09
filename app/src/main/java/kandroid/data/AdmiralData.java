@@ -102,7 +102,7 @@ public class AdmiralData extends Data<AdmiralData.ApiBasic> implements Identifia
     }
 
     @Override
-    public int getID() {
+    public int getId() {
         return data.api_member_id;
     }
 

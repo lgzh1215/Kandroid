@@ -362,7 +362,7 @@ public class ShipData extends Data<ShipData.ApiShip> implements Identifiable {
     }
 
     @Override
-    public int getID() {
+    public int getId() {
         return data.api_id;
     }
 

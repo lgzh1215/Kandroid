@@ -39,16 +39,16 @@ public class ApiLoader {
     }
 
     public static void save(RawData rawData) {
-        if (Config.get().isSaveKcsApi()) {
+        if (Config.Companion.getConfig().isSaveKcsApi()) {
 
             String date = null;
             try {
-                if (Config.get().isSaveKcsRequest()) {
+                if (Config.Companion.getConfig().isSaveKcsRequest()) {
                     byte[] request = rawData.getRequest();
                     if (request != null) {
                         date = Utils.getDateString(rawData.getDate());
                         String fileName = date + "Q@" + rawData.getUri().replace('/', '@') + ".txt";
-                        File file = Config.get().getSaveKcsApiFile(fileName);
+                        File file = Config.Companion.getConfig().getSaveKcsApiFile(fileName);
                         FileUtils.writeStringToFile(file, new String(request), Charset.defaultCharset());
                     }
                 }
@@ -57,12 +57,12 @@ public class ApiLoader {
             }
 
             try {
-                if (Config.get().isSaveKcsResponse()) {
+                if (Config.Companion.getConfig().isSaveKcsResponse()) {
                     if (date == null) {
                         date = Utils.getDateString(rawData.getDate());
                     }
                     String fileName = date + "S@" + rawData.getUri().replace('/', '@') + ".json";
-                    File file = Config.get().getSaveKcsApiFile(fileName);
+                    File file = Config.Companion.getConfig().getSaveKcsApiFile(fileName);
                     FileUtils.writeStringToFile(file, rawData.toString(), Charset.defaultCharset());
                 }
             } catch (Exception e) {

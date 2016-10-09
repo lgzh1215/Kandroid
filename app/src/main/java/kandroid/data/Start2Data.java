@@ -213,7 +213,7 @@ public class Start2Data {
         }
 
         @Override
-        public int getID() {
+        public int getId() {
             return data.api_id;
         }
 
@@ -259,7 +259,7 @@ public class Start2Data {
         }
 
         @Override
-        public int getID() {
+        public int getId() {
             return data.api_id;
         }
 
@@ -310,7 +310,7 @@ public class Start2Data {
         }
 
         @Override
-        public int getID() {
+        public int getId() {
             return data.api_id;
         }
 
@@ -598,7 +598,7 @@ public class Start2Data {
         }
 
         @Override
-        public int getID() {
+        public int getId() {
             return data.api_id;
         }
 
@@ -657,7 +657,7 @@ public class Start2Data {
         }
 
         @Override
-        public int getID() {
+        public int getId() {
             return data.api_id;
         }
 
@@ -706,7 +706,7 @@ public class Start2Data {
         }
 
         @Override
-        public int getID() {
+        public int getId() {
             return data.api_id;
         }
 
@@ -763,7 +763,7 @@ public class Start2Data {
         }
 
         @Override
-        public int getID() {
+        public int getId() {
             return data.api_id;
         }
 

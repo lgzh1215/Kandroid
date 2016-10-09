@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+@SuppressWarnings("All")
 public class IDDictionary<T extends Identifiable> extends AbstractSet<T> {
 
     static final int DEFAULT_INITIAL_CAPACITY = 1 << 4; // aka 16
@@ -62,7 +63,7 @@ public class IDDictionary<T extends Identifiable> extends AbstractSet<T> {
         sb.append('{');
         for (; ; ) {
             T e = i.next();
-            int key = e.getID();
+            int key = e.getId();
             sb.append(key);
             sb.append('=');
             sb.append(e == this ? "(this Set)" : e);
@@ -145,7 +146,7 @@ public class IDDictionary<T extends Identifiable> extends AbstractSet<T> {
     }
 
     public T put(T value) {
-        return putVal(value.getID(), value, false);
+        return putVal(value.getId(), value, false);
     }
 
     public void putAll(IDDictionary<? extends T> m) {
@@ -557,22 +558,22 @@ public class IDDictionary<T extends Identifiable> extends AbstractSet<T> {
 
     // Create a regular (non-tree) node
     Node<T> newNode(int key, T value, Node<T> next) {
-        return new Node<T>(key, value, next);
+        return new Node<>(key, value, next);
     }
 
     // For conversion from TreeNodes to plain nodes
     Node<T> replacementNode(Node<T> p, Node<T> next) {
-        return new Node<T>(p.key, p.value, next);
+        return new Node<>(p.key, p.value, next);
     }
 
     // Create a tree bin node
     TreeNode<T> newTreeNode(int key, T value, Node<T> next) {
-        return new TreeNode<T>(key, value, next);
+        return new TreeNode<>(key, value, next);
     }
 
     // For treeifyBin
     TreeNode<T> replacementTreeNode(Node<T> p, Node<T> next) {
-        return new TreeNode<T>(p.key, p.value, next);
+        return new TreeNode<>(p.key, p.value, next);
     }
 
     /* ------------------------------------------------------------ */
@@ -819,7 +820,7 @@ public class IDDictionary<T extends Identifiable> extends AbstractSet<T> {
                 p.red = c; // swap colors
                 TreeNode<T> sr = s.right;
                 TreeNode<T> pp = p.parent;
-                if (s == pr) { // p was s's direct parent
+                if (s == pr) { // p was ses'ses direct parent
                     p.parent = s;
                     s.right = p;
                 } else {

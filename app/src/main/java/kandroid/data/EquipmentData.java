@@ -38,7 +38,7 @@ public class EquipmentData extends Data<EquipmentData.ApiSlotItem> implements Id
     }
 
     @Override
-    public int getID() {
+    public int getId() {
         return data.api_id;
     }
 

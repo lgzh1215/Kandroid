@@ -14,7 +14,7 @@ public class UseItem extends Data<UseItem.ApiUseitem> implements Identifiable{
     }
 
     @Override
-    public int getID() {
+    public int getId() {
         return data.api_id;
     }
 

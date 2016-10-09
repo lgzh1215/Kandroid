@@ -21,7 +21,7 @@ public class KCDatabase {
             System.out.println("loadMaster");
             Start2Data start2Data = null;
             try {
-                File file = Config.get().getSaveDataFile("master");
+                File file = Config.Companion.getConfig().getSaveDataFile("master");
                 String data = FileUtils.readFileToString(file, Charset.defaultCharset());
                 start2Data = Utils.GSON.fromJson(data, Start2Data.class);
             } catch (Exception e) {
@@ -39,7 +39,7 @@ public class KCDatabase {
         private static SparseArray<String> loadUserList() {
             System.out.println("loadList");
             SparseArray<String> list = new SparseArray<>();
-            File[] files = Config.get().getSaveUserFile(null).listFiles();
+            File[] files = Config.Companion.getConfig().getSaveUserFile(null).listFiles();
             if (files != null) {
                 for (File file : files) {
                     String fileName = file.getName();
@@ -76,7 +76,7 @@ public class KCDatabase {
         public IDDictionary<MapInfoData> mapInfoDatas = new IDDictionary<>();
 
         @Override
-        public int getID() {
+        public int getId() {
             return id;
         }
 
@@ -96,7 +96,7 @@ public class KCDatabase {
         try {
             String name = getPlayerList().get(id);
             if (name != null) {
-                File file = Config.get().getSaveUserFile(String.valueOf(id) + '@' + name);
+                File file = Config.Companion.getConfig().getSaveUserFile(String.valueOf(id) + '@' + name);
                 String data = FileUtils.readFileToString(file, Charset.defaultCharset());
                 player = Utils.GSON.fromJson(data, Player.class);
             }
@@ -110,7 +110,7 @@ public class KCDatabase {
         Start2Data master = getMaster();
         if (!master.isInited) return;
         try {
-            File file = Config.get().getSaveDataFile("master");
+            File file = Config.Companion.getConfig().getSaveDataFile("master");
             String json = Utils.GSON.toJson(master);
             FileUtils.writeStringToFile(file, json, Charset.defaultCharset());
         } catch (Exception e) {
@@ -123,7 +123,7 @@ public class KCDatabase {
         String json;
         for (Player player : playerDatas) {
             try {
-                file = Config.get().getSaveDataFile(String.valueOf(player.id) + "@" + player.name);
+                file = Config.Companion.getConfig().getSaveDataFile(String.valueOf(player.id) + "@" + player.name);
                 json = Utils.GSON.toJson(player);
                 FileUtils.writeStringToFile(file, json, Charset.defaultCharset());
             } catch (Exception e) {

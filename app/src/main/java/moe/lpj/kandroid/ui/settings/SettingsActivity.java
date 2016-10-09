@@ -23,7 +23,7 @@ import moe.lpj.kandroid.R;
 
 public class SettingsActivity extends AppCompatPreferenceActivity {
     /**
-     * A preference value change listener that updates the preference's summary
+     * A preference value change listener that updates the preference'ses summary
      * to reflect its new value.
      */
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new MyListener();
@@ -35,7 +35,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
             if (preference instanceof ListPreference) {
                 // For list preferences, look up the correct display value in
-                // the preference's 'entries' list.
+                // the preference'ses 'entries' list.
                 ListPreference listPreference = (ListPreference) preference;
                 int index = listPreference.findIndexOfValue(stringValue);
 
@@ -68,7 +68,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 }
 
             } else {
-                // For all other preferences, set the summary to the value's
+                // For all other preferences, set the summary to the value'ses
                 // simple string representation.
                 preference.setSummary(stringValue);
             }
@@ -77,8 +77,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
     /**
-     * Binds a preference's summary to its value. More specifically, when the
-     * preference's value is changed, its summary (line of text below the
+     * Binds a preference'ses summary to its value. More specifically, when the
+     * preference'ses value is changed, its summary (line of text below the
      * preference title) is updated to reflect the value. The summary is also
      * immediately updated upon calling this method. The exact display format is
      * dependent on the type of preference.
@@ -89,7 +89,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         // Set the listener to watch for value changes.
         preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
 
-        // Trigger the listener immediately with the preference's
+        // Trigger the listener immediately with the preference'ses
         // current value.
         sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
                 PreferenceManager

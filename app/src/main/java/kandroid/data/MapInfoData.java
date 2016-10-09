@@ -66,7 +66,7 @@ public class MapInfoData extends Data<MapInfoData.ApiMapInfo> implements Identif
     }
 
     @Override
-    public int getID() {
+    public int getId() {
         return data.api_id;
     }
 
