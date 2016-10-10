@@ -676,7 +676,7 @@ public class IDDictionary<T extends Identifiable> extends AbstractSet<T> {
                     p = pr;
                 else if (pk == key)
                     return p;
-                else throw new RuntimeException("这种情况可能发生么");
+                else throw new RuntimeException("???");
             } while (p != null);
             return null;
         }

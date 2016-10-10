@@ -1,6 +1,7 @@
 package kandroid.proxy
 
 import java.util.*
+import kotlin.text.startsWith
 
 object MyFilter {
 
@@ -11,7 +12,7 @@ object MyFilter {
     val MAX_POST_FIELD_SIZE = 1024 * 1024
 
     init {
-        SERVERS = HashMap<String, String>()
+        SERVERS = HashMap<String, String>(30)
         SERVERS.put("203.104.209.71", "横須賀鎮守府")
         SERVERS.put("203.104.209.87", "呉鎮守府")
         SERVERS.put("125.6.184.16", "佐世保鎮守府")

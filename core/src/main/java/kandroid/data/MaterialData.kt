@@ -13,7 +13,7 @@ class MaterialData {
     var developmentMaterial: Int = 0
     var moddingMaterial: Int = 0
 
-    fun loadFromResponse(apiName: String, data: JsonElement) {
+    fun loadFromResponse(apiName: String, data: com.google.gson.JsonElement) {
         when (apiName) {
             "api_port/port", "api_get_member/material" -> {
             }

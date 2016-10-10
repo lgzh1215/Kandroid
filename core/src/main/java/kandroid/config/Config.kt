@@ -1,6 +1,7 @@
 package kandroid.config
 
 import java.io.File
+import kotlin.jvm.javaClass
 
 open class Config {
 

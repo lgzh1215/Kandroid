@@ -8,6 +8,8 @@ import java.nio.charset.Charset
 import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import kotlin.printStackTrace
+import kotlin.text.replace
 
 object ApiLoader {
 
@@ -42,7 +44,7 @@ object ApiLoader {
                         date = Utils.getDateString(rawData.date)
                         val fileName = "${date}Q@${rawData.uri.replace('/', '@')}.txt"
                         val file = Config.config.getSaveKcsApiFile(fileName)
-                        FileUtils.writeStringToFile(file, String(request), Charset.defaultCharset())
+                        org.apache.commons.io.FileUtils.writeStringToFile(file, String(request), Charset.defaultCharset())
                     }
                 }
             } catch (e: Exception) {
@@ -56,7 +58,7 @@ object ApiLoader {
                     }
                     val fileName = "${date}S@${rawData.uri.replace('/', '@')}.json"
                     val file = Config.config.getSaveKcsApiFile(fileName)
-                    FileUtils.writeStringToFile(file, rawData.toString(), Charset.defaultCharset())
+                    org.apache.commons.io.FileUtils.writeStringToFile(file, rawData.toString(), Charset.defaultCharset())
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

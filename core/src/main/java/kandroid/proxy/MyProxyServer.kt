@@ -8,12 +8,14 @@ import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.server.ServerConnector
 import org.eclipse.jetty.servlet.ServletContextHandler
 import org.eclipse.jetty.servlet.ServletHolder
+import java.lang.Long
 import java.net.BindException
 import java.util.concurrent.TimeUnit
+import kotlin.printStackTrace
 
 object MyProxyServer {
 
-    var server: Server? = null
+    var server: org.eclipse.jetty.server.Server? = null
 
     private var host: String? = null
     private var port: Int = 0
@@ -22,16 +24,16 @@ object MyProxyServer {
 
     fun start() {
         try {
-            server = Server()
+            server = org.eclipse.jetty.server.Server()
             updateSetting()
             setConnector()
 
-            val connectHandler = ConnectHandler()
+            val connectHandler = org.eclipse.jetty.proxy.ConnectHandler()
             server!!.handler = connectHandler
 
-            val servletContextHandler = ServletContextHandler(
-                    connectHandler, "/", ServletContextHandler.SESSIONS)
-            val holder = ServletHolder(MyProxyServlet())
+            val servletContextHandler = org.eclipse.jetty.servlet.ServletContextHandler(
+                    connectHandler, "/", org.eclipse.jetty.servlet.ServletContextHandler.SESSIONS)
+            val holder = org.eclipse.jetty.servlet.ServletHolder(MyProxyServlet())
             holder.setInitParameter("idleTimeout", java.lang.Long.toString(TimeUnit.MINUTES.toMillis(2)))
             holder.setInitParameter("timeout", java.lang.Long.toString(TimeUnit.MINUTES.toMillis(2)))
             servletContextHandler.addServlet(holder, "/*")
@@ -52,10 +54,10 @@ object MyProxyServer {
 
     private fun setConnector() {
         //SSL Support
-        val connector = ServerConnector(server)
+        val connector = org.eclipse.jetty.server.ServerConnector(server)
         connector.port = port
         connector.host = host
-        server!!.connectors = arrayOf<Connector>(connector)
+        server!!.connectors = arrayOf<org.eclipse.jetty.server.Connector>(connector)
     }
 
     private fun updateSetting(): Boolean {
@@ -69,8 +71,8 @@ object MyProxyServer {
             newProxyPort = Config.config.proxyPort
         }
 
-        if (StringUtils.equals(newHost, host) && newProxyPort == proxyPort &&
-                StringUtils.equals(newProxyHost, proxyHost) && newPort == port) {
+        if (org.apache.commons.lang3.StringUtils.equals(newHost, host) && newProxyPort == proxyPort &&
+                org.apache.commons.lang3.StringUtils.equals(newProxyHost, proxyHost) && newPort == port) {
             return false
         }
 
