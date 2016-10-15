@@ -1,21 +1,14 @@
 package kandroid.data
 
-import kandroid.observer.POJO
+import kandroid.newdata.JsonWrapper
 import kandroid.utils.Identifiable
+import kandroid.utils.json.get
+import kandroid.utils.json.int
 
-class UseItem : Data<UseItem.ApiUseitem>(), Identifiable {
+class UseItem : JsonWrapper(), Identifiable {
 
-    val itemID: Int
-        get() = data.api_id
+    val itemId: Int get() = data["api_id"].int()
+    val count: Int get() = data["api_count"].int()
 
-    val count: Int
-        get() = data.api_count
-
-    override val id: Int
-        get() = data.api_id
-
-    open class ApiUseitem : POJO() {
-        var api_id: Int = 0
-        var api_count: Int = 0
-    }
+    override val id: Int get() = itemId
 }

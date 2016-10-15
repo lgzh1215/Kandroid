@@ -1,7 +1,7 @@
 package kandroid.observer
 
 import kandroid.config.Config
-import kandroid.observer.newkcsapi.api_start2
+import kandroid.observer.kcsapi.api_start2
 import kandroid.utils.Utils
 import org.apache.commons.io.FileUtils
 import java.nio.charset.Charset

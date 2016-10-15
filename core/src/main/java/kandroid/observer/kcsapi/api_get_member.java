@@ -287,7 +287,7 @@ public class api_get_member {
 
             IDDictionary<DockData> dockData = KCDatabase.INSTANCE.getDockData();
             for (Ndock.ApiData apiData : ndock.api_data) {
-                int id = apiData.api_id;
+                int id = apiData.getApi_id();
                 DockData dock = dockData.get(id);
                 if (dock == null) {
                     dock = new DockData();
@@ -298,7 +298,7 @@ public class api_get_member {
                 }
             }
 
-            for (FleetData fleetData : KCDatabase.INSTANCE.getFleets().fleetDatas) {
+            for (FleetData fleetData : KCDatabase.INSTANCE.getFleets().getFleetDatas()) {
                 fleetData.loadFromResponse(getApiName(), rawData);
             }
         }
@@ -326,9 +326,9 @@ public class api_get_member {
         protected void onDataReceived(RawData rawData) {
             Deck deck = new Gson().fromJson(rawData.toString(), Deck.class);
 
-            IDDictionary<FleetData> fleetDatas = KCDatabase.INSTANCE.getFleets().fleetDatas;
+            IDDictionary<FleetData> fleetDatas = KCDatabase.INSTANCE.getFleets().getFleetDatas();
             for (Deck.ApiData apiData : deck.api_data) {
-                int id = apiData.api_id;
+                int id = apiData.getApi_id();
                 FleetData fleetData = fleetDatas.get(id);
                 if (fleetData == null) {
                     fleetData = new FleetData();
@@ -409,9 +409,9 @@ public class api_get_member {
             }
 
             // api_data_deck
-            IDDictionary<FleetData> fleetDatas = KCDatabase.INSTANCE.getFleets().fleetDatas;
+            IDDictionary<FleetData> fleetDatas = KCDatabase.INSTANCE.getFleets().getFleetDatas();
             for (FleetData.ApiDeck apiDeck : ship2.api_data_deck) {
-                int id = apiDeck.api_id;
+                int id = apiDeck.getApi_id();
                 FleetData fleetData = fleetDatas.get(id);
                 if (fleetData == null) {
                     fleetData = new FleetData();
@@ -452,7 +452,7 @@ public class api_get_member {
 
             // api_ship_data
             for (Ship3.ApiData.ApiShipData apiShipData : ship3.api_data.api_ship_data) {
-                int id = apiShipData.api_id;
+                int id = apiShipData.getApi_id();
 
                 ShipData ship = KCDatabase.INSTANCE.getShips().get(id);
                 ship.setData(apiShipData);
@@ -471,9 +471,9 @@ public class api_get_member {
             }
 
             // api_deck_data
-            IDDictionary<FleetData> fleetDatas = KCDatabase.INSTANCE.getFleets().fleetDatas;
+            IDDictionary<FleetData> fleetDatas = KCDatabase.INSTANCE.getFleets().getFleetDatas();
             for (Ship3.ApiData.ApiDeckData apiDeckData : ship3.api_data.api_deck_data) {
-                int id = apiDeckData.api_id;
+                int id = apiDeckData.getApi_id();
                 FleetData fleetData = fleetDatas.get(id);
                 if (fleetData == null) {
                     fleetData = new FleetData();
@@ -521,7 +521,7 @@ public class api_get_member {
             //api_ship_data
             IDDictionary<ShipData> shipDatas = KCDatabase.INSTANCE.getShips();
             for (ShipData.ApiShip apiShip : shipDeck.api_data.api_ship_data) {
-                int id = apiShip.api_id;
+                int id = apiShip.getApi_id();
                 ShipData dock = shipDatas.get(id);
                 if (dock == null) {
                     dock = new ShipData();
@@ -533,9 +533,9 @@ public class api_get_member {
             }
 
             //api_deck_data
-            IDDictionary<FleetData> fleetDatas = KCDatabase.INSTANCE.getFleets().fleetDatas;
+            IDDictionary<FleetData> fleetDatas = KCDatabase.INSTANCE.getFleets().getFleetDatas();
             for (FleetData.ApiDeck apiDeck : shipDeck.api_data.api_deck_data) {
-                int id = apiDeck.api_id;
+                int id = apiDeck.getApi_id();
                 FleetData fleetData = fleetDatas.get(id);
                 if (fleetData == null) {
                     fleetData = new FleetData();

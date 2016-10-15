@@ -1,11 +1,12 @@
-package kandroid.newdata
+package kandroid.data
 
+import com.google.gson.JsonElement
+import kandroid.newdata.JsonWrapper
+import kandroid.newdata.KCDatabase
 import kandroid.utils.IDDictionary
 import kandroid.utils.Identifiable
-import kandroid.utils.json.get
-import kandroid.utils.json.int
-import kandroid.utils.json.list
-import kandroid.utils.json.string
+import kandroid.utils.SparseBooleanArray
+import kandroid.utils.json.*
 
 class Start2Data {
 
@@ -110,31 +111,92 @@ class Start2Data {
         val aircraftDistance: Int get() = data["api_distance"].int()
         val isAbyssalEquipment: Boolean get() = equipmentId > 500
         val isListedInAlbum: Boolean get() = albumNo > 0
-        val cardType: Int get() = data["api_type"].list<Int>()[1]
-        val categoryType: Int get() = data["api_type"].list<Int>()[2]
+        val cardType: Int get() = data["api_type"][1].int()
+        val categoryType: Int get() = data["api_type"][2].int()
         val categoryTypeInstance: EquipmentType get() = KCDatabase.master.equipmentType[categoryType]
-        val iconType: Int get() = data["api_type"].list<Int>()[3]
+        val iconType: Int get() = data["api_type"][3].int()
 
         override val id: Int get() = equipmentId
     }
 
     class ShipType : JsonWrapper(), Identifiable {
-        override val id: Int get() = throw UnsupportedOperationException()
+
+        val typeId: Int get() = data["api_id"].int()
+        val sortId: Int get() = data["api_sortno"].int()
+        val mame: Int get() = data["api_name"].int()
+        val repairTime: Int get() = data["api_scnt"].int()
+
+        @Transient
+        private var needRefresh: Boolean = true
+        @delegate:Transient
+        private val _equipmentType: SparseBooleanArray by lazy { SparseBooleanArray(100) }
+        val equipmentType: SparseBooleanArray get() {
+            if (needRefresh) {
+                val obj = data["api_equip_type"].obj
+                if (obj != null) {
+                    _equipmentType.clear()
+                    for ((k, v) in obj.entrySet()) {
+                        _equipmentType.put(k.toInt(), v.int(0) != 0)
+                    }
+                }
+                needRefresh = false
+            }
+            return _equipmentType
+        }
+
+        override val id: Int get() = typeId
+
+        override fun loadFromResponse(apiName: String, responseData: JsonElement) {
+            super.loadFromResponse(apiName, responseData)
+            needRefresh = true
+        }
     }
 
     class EquipmentType : JsonWrapper(), Identifiable {
-        override val id: Int get() = throw UnsupportedOperationException()
+
+        val typeId: Int get() = data["api_id"].int()
+        val name: String get() = data["api_name"].string()
+
+        override val id: Int get() = typeId
     }
 
     class MasterUseItemData : JsonWrapper(), Identifiable {
-        override val id: Int get() = throw UnsupportedOperationException()
+
+        val itemId: Int get() = data["api_id"].int()
+        val useType: Int get() = data["api_usetype"].int()
+        val category: Int get() = data["api_category"].int()
+        val name: String get() = data["api_name"].string()
+        val description: String get() = data["api_description"][0].string()
+
+        override val id: Int get() = itemId
     }
 
     class MasterMapInfoData : JsonWrapper(), Identifiable {
-        override val id: Int get() = throw UnsupportedOperationException()
+
+        val mapId: Int get() = data["api_id"].int()
+        val mapAreaId: Int get() = data["api_maparea_id"].int()
+        val mapInfoId: Int get() = data["api_no"].int()
+        val name: String get() = data["api_name"].string()
+        val difficulty: Int get() = data["api_level"].int()
+        val operationName: String get() = data["api_opetext"].string()
+        val information: String get() = data["api_infotext"].string().replace("<br>", "")
+        val requiredDefeatedCount: Int get() = data["api_required_defeat_count"].int(-1)
+
+        override val id: Int get() = mapId
     }
 
     class MasterMissionData : JsonWrapper(), Identifiable {
-        override val id: Int get() = throw UnsupportedOperationException()
+
+        val missionId: Int get() = data["api_id"].int()
+        val mapAreaId: Int get() = data["api_maparea_id"].int()
+        val name: String get() = data["api_name"].string()
+        val detail: String get() = data["api_details"].string()
+        val time: Int get() = data["api_time"].int()
+        val difficulty: Int get() = data["api_difficulty"].int()
+        val fuel: Double get() = data["api_use_fuel"].double()
+        val ammo: Double get() = data["api_use_bull"].double()
+        val cancelable: Boolean get() = data["api_return_flag"].int() != 0
+
+        override val id: Int get() = missionId
     }
 }

@@ -30,7 +30,7 @@ public class api_req_nyukyo {
                 ship.repair();
             }
 
-            for (FleetData fleetData : KCDatabase.INSTANCE.getFleets().fleetDatas) {
+            for (FleetData fleetData : KCDatabase.INSTANCE.getFleets().getFleetDatas()) {
                 fleetData.loadFromRequest(getApiName(), rawData);
             }
         }
@@ -51,13 +51,13 @@ public class api_req_nyukyo {
             DockData dockData = KCDatabase.INSTANCE.getDockData().get(ndockId);
             if (dockData.getState() == 1 && dockData.getShipID() != 0) {
                 KCDatabase.INSTANCE.getShips().get(dockData.getShipID()).repair();
-                dockData.getData().api_state = 0;
-                dockData.getData().api_ship_id = 0;
+                dockData.getData().setApi_state(0);
+                dockData.getData().setApi_ship_id(0);
             }
 
             KCDatabase.INSTANCE.getMaterial().setInstantRepair(KCDatabase.INSTANCE.getMaterial().getInstantRepair() - 1);
 
-            for (FleetData fleetData : KCDatabase.INSTANCE.getFleets().fleetDatas) {
+            for (FleetData fleetData : KCDatabase.INSTANCE.getFleets().getFleetDatas()) {
                 fleetData.loadFromRequest(getApiName(), rawData);
             }
         }

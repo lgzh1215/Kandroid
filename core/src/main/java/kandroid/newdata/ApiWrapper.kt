@@ -1,10 +1,10 @@
 package kandroid.newdata
 
-abstract class ApiWrapper : JsonWrapper() {
+abstract class ApiWrapper : JsonWrapper(), RequestDataListener {
     var requestData: Map<String, String>? = null
         private set
 
-    fun loadFromRequest(apiName: String, requestData: Map<String, String>) {
+    override fun loadFromRequest(apiName: String, requestData: Map<String, String>) {
         this.requestData = requestData
     }
 }
