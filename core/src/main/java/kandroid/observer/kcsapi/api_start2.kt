@@ -1,16 +1,16 @@
 package kandroid.observer.kcsapi
 
 import kandroid.data.Start2Data
-import kandroid.newdata.KCDatabase
-import kandroid.observer.NewApiBase
+import kandroid.data.KCDatabase
+import kandroid.observer.ApiBase
 import kandroid.observer.RawData
 import kandroid.utils.json.*
 
-object api_start2 : NewApiBase() {
-    override val apiName: String get() = "api_start2"
+object api_start2 : ApiBase() {
+    override val name: String get() = "api_start2"
 
     override fun onDataReceived(rawData: RawData) {
-        val data = JsonParser.parse(rawData.responseString)["api_data"].obj ?: return
+        val data = rawData.api_data().obj ?: return
 
         // 特別置換処理
         data["api_mst_stype"][7]["api_name"] = "巡洋戦艦"
@@ -23,10 +23,10 @@ object api_start2 : NewApiBase() {
                 var ship = KCDatabase.master.masterShipData[id]
                 if (ship == null) {
                     ship = Start2Data.MasterShipData()
-                    ship.loadFromResponse(apiName, elem)
+                    ship.loadFromResponse(name, elem)
                     KCDatabase.master.masterShipData.put(ship)
                 } else {
-                    ship.loadFromResponse(apiName, elem)
+                    ship.loadFromResponse(name, elem)
                 }
 
             }
@@ -48,10 +48,10 @@ object api_start2 : NewApiBase() {
                 var equipmentType = KCDatabase.master.equipmentType[id]
                 if (equipmentType == null) {
                     equipmentType = Start2Data.EquipmentType()
-                    equipmentType.loadFromResponse(apiName, elem)
+                    equipmentType.loadFromResponse(name, elem)
                     KCDatabase.master.equipmentType.put(equipmentType)
                 } else {
-                    equipmentType.loadFromResponse(apiName, elem)
+                    equipmentType.loadFromResponse(name, elem)
                 }
             }
         }
@@ -64,10 +64,10 @@ object api_start2 : NewApiBase() {
                 var shipType = KCDatabase.master.shipType[id]
                 if (shipType == null) {
                     shipType = Start2Data.ShipType()
-                    shipType.loadFromResponse(apiName, elem)
+                    shipType.loadFromResponse(name, elem)
                     KCDatabase.master.shipType.put(shipType)
                 } else {
-                    shipType.loadFromResponse(apiName, elem)
+                    shipType.loadFromResponse(name, elem)
                 }
             }
         }
@@ -80,10 +80,10 @@ object api_start2 : NewApiBase() {
                 var equipment = KCDatabase.master.masterEquipmentData[id]
                 if (equipment == null) {
                     equipment = Start2Data.MasterEquipmentData()
-                    equipment.loadFromResponse(apiName, elem)
+                    equipment.loadFromResponse(name, elem)
                     KCDatabase.master.masterEquipmentData.put(equipment)
                 } else {
-                    equipment.loadFromResponse(apiName, elem)
+                    equipment.loadFromResponse(name, elem)
                 }
             }
         }
@@ -96,10 +96,10 @@ object api_start2 : NewApiBase() {
                 var useItem = KCDatabase.master.masterUseItemData[id]
                 if (useItem == null) {
                     useItem = Start2Data.MasterUseItemData()
-                    useItem.loadFromResponse(apiName, elem)
+                    useItem.loadFromResponse(name, elem)
                     KCDatabase.master.masterUseItemData.put(useItem)
                 } else {
-                    useItem.loadFromResponse(apiName, elem)
+                    useItem.loadFromResponse(name, elem)
                 }
             }
         }
@@ -112,10 +112,10 @@ object api_start2 : NewApiBase() {
                 var mapInfo = KCDatabase.master.masterMapInfoData[id]
                 if (mapInfo == null) {
                     mapInfo = Start2Data.MasterMapInfoData()
-                    mapInfo.loadFromResponse(apiName, elem)
+                    mapInfo.loadFromResponse(name, elem)
                     KCDatabase.master.masterMapInfoData.put(mapInfo)
                 } else {
-                    mapInfo.loadFromResponse(apiName, elem)
+                    mapInfo.loadFromResponse(name, elem)
                 }
             }
         }
@@ -128,10 +128,10 @@ object api_start2 : NewApiBase() {
                 var mapInfo = KCDatabase.master.masterMissionData[id]
                 if (mapInfo == null) {
                     mapInfo = Start2Data.MasterMissionData()
-                    mapInfo.loadFromResponse(apiName, elem)
+                    mapInfo.loadFromResponse(name, elem)
                     KCDatabase.master.masterMissionData.put(mapInfo)
                 } else {
-                    mapInfo.loadFromResponse(apiName, elem)
+                    mapInfo.loadFromResponse(name, elem)
                 }
             }
         }

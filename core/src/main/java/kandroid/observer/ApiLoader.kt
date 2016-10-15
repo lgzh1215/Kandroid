@@ -59,13 +59,13 @@ object ApiLoader {
         }
     }
 
-    val apiHolder = HashMap<String, NewApiBase>()
+    val apiHolder = HashMap<String, ApiBase>()
 
-    operator fun get(apiName: String): NewApiBase? {
+    operator fun get(apiName: String): ApiBase? {
         return apiHolder[apiName]
     }
 
     init {
-        apiHolder.put(api_start2.apiName, api_start2)
+        apiHolder.put(api_start2.name, api_start2)
     }
 }

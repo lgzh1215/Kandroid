@@ -1,12 +1,15 @@
 package kandroid.observer
 
+import com.google.gson.JsonElement
+import kandroid.utils.json.JsonParser
+import kandroid.utils.json.get
+
 abstract class ApiBase {
+    abstract val name: String
 
-    fun loadData(rawData: RawData) {
-        onDataReceived(rawData)
-    }
+    abstract fun onDataReceived(rawData: RawData)
 
-    protected abstract fun onDataReceived(rawData: RawData)
+    override fun toString(): String = name
 
-    abstract val apiName: String
+    protected fun RawData.api_data(): JsonElement? = JsonParser.parse(this.responseString)["api_data"]
 }

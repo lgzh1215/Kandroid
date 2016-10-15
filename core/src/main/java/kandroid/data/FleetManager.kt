@@ -2,8 +2,9 @@ package kandroid.data
 
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
-import kandroid.newdata.RequestDataListener
-import kandroid.newdata.ResponseDataListener
+import kandroid.observer.kcsapi.api_get_member
+import kandroid.observer.kcsapi.api_port
+import kandroid.utils.CatException
 import kandroid.utils.IDDictionary
 import kandroid.utils.json.get
 import kandroid.utils.json.int
@@ -22,7 +23,11 @@ class FleetManager : RequestDataListener, ResponseDataListener {
 
     override fun loadFromResponse(apiName: String, responseData: JsonElement) {
         when (apiName) {
-            "api_port/port" -> {
+            api_port.port.name,
+            api_get_member.deck.name,
+            api_get_member.ship2.name,
+            api_get_member.ship3.name,
+            api_get_member.ship_deck.name -> {
                 for (elem in responseData as JsonArray) {
                     val id = elem["api_id"].int()
                     var fleet = fleetDatas[id]
@@ -35,6 +40,10 @@ class FleetManager : RequestDataListener, ResponseDataListener {
                     }
                 }
             }
+            api_get_member.ndock.name -> {
+                fleetDatas.forEach { it.loadFromResponse(apiName, responseData) }
+            }
+            else -> CatException()
         }
     }
 

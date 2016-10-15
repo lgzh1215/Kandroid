@@ -1,8 +1,10 @@
 package kandroid.data
 
 import com.google.gson.JsonElement
-import kandroid.newdata.RequestDataListener
-import kandroid.newdata.ResponseDataListener
+import kandroid.data.RequestDataListener
+import kandroid.data.ResponseDataListener
+import kandroid.observer.kcsapi.api_get_member
+import kandroid.observer.kcsapi.api_port
 import kandroid.utils.json.get
 import kandroid.utils.json.int
 
@@ -23,8 +25,8 @@ class MaterialData : RequestDataListener, ResponseDataListener {
 
     override fun loadFromResponse(apiName: String, responseData: JsonElement) {
         when (apiName) {
-            "api_port/port",
-            "api_get_member/material" -> {
+            api_port.port.name,
+            api_get_member.material.name -> {
                 fuel = responseData[0]["api_value"].int(fuel)
                 ammo = responseData[1]["api_value"].int(ammo)
                 steel = responseData[2]["api_value"].int(steel)

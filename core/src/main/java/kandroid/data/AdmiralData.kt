@@ -1,7 +1,7 @@
 package kandroid.data
 
-import kandroid.newdata.JsonWrapper
-import kandroid.newdata.RequestDataListener
+import kandroid.data.JsonWrapper
+import kandroid.data.RequestDataListener
 import kandroid.utils.Identifiable
 import kandroid.utils.json.*
 import java.util.*

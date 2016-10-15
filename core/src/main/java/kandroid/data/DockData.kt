@@ -1,7 +1,6 @@
 package kandroid.data
 
 import com.google.gson.JsonElement
-import kandroid.newdata.JsonWrapper
 import kandroid.utils.Identifiable
 import kandroid.utils.json.get
 import kandroid.utils.json.int

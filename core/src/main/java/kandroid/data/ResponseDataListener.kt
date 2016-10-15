@@ -1,4 +1,4 @@
-package kandroid.newdata
+package kandroid.data
 
 import com.google.gson.JsonElement
 

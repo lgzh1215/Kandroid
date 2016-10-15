@@ -1,28 +1,30 @@
 package kandroid.observer.kcsapi
 
-
 import kandroid.data.DockData
-import kandroid.data.FleetData
 import kandroid.data.ShipData
-import kandroid.newdata.KCDatabase
+import kandroid.data.KCDatabase
 import kandroid.observer.ApiBase
 import kandroid.observer.RawData
-import kandroid.utils.json.*
+import kandroid.utils.json.array
+import kandroid.utils.json.get
+import kandroid.utils.json.int
+import kandroid.utils.json.obj
 
 object api_port {
+
     object port : ApiBase() {
-        override val apiName: String get() = "api_port/port"
+        override val name: String get() = "api_port/port"
 
         override fun onDataReceived(rawData: RawData) {
-            val data = JsonParser.parse(rawData.responseString)["api_data"] ?: return
+            val data = rawData.api_data().obj ?: return
 
             // api_material
             val api_material = data["api_material"].array
-            if (api_material != null) KCDatabase.material.loadFromResponse(apiName, api_material)
+            if (api_material != null) KCDatabase.material.loadFromResponse(name, api_material)
 
             // api_basic
             val api_basic = data["api_basic"].obj
-            if (api_basic != null) KCDatabase.admiral.loadFromResponse(apiName, api_basic)
+            if (api_basic != null) KCDatabase.admiral.loadFromResponse(name, api_basic)
 
             // api_ship
             val api_ship = data["api_ship"].array
@@ -30,7 +32,7 @@ object api_port {
                 KCDatabase.ships.clear()
                 for (elem in api_ship) {
                     val ship = ShipData()
-                    ship.loadFromResponse(apiName, elem)
+                    ship.loadFromResponse(name, elem)
                     KCDatabase.ships.put(ship)
                 }
             }
@@ -43,33 +45,22 @@ object api_port {
                     var dock = KCDatabase.docks[id]
                     if (dock == null) {
                         dock = DockData()
-                        dock.loadFromResponse(apiName, elem)
+                        dock.loadFromResponse(name, elem)
                         KCDatabase.docks.put(dock)
                     } else {
-                        dock.loadFromResponse(apiName, elem)
+                        dock.loadFromResponse(name, elem)
                     }
                 }
             }
 
             // api_deck_port
-            val fleetDatas = KCDatabase.fleets.fleetDatas
-            for (apiDeckPort in port.api_data.api_deck_port) {
-                val id = apiDeckPort.api_id
-                var fleetData: FleetData? = fleetDatas.get(id)
-                if (fleetData == null) {
-                    fleetData = FleetData()
-                    fleetData.data = apiDeckPort
-                    fleetDatas.put(fleetData)
-                } else {
-                    fleetData.data = apiDeckPort
-                }
+            val api_deck_port = data["api_deck_port"].array
+            if (api_deck_port != null) {
+                KCDatabase.fleets.loadFromResponse(name, api_deck_port)
+                KCDatabase.fleets.combinedFlag = data["api_combined_flag"].int()
             }
 
-            KCDatabase.fleets.combinedFlag = port.api_data.api_combined_flag
-
-            //TODO
+            //TODO 基地航空隊 配置転換系の処理
         }
-
-
     }
 }

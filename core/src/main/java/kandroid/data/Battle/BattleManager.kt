@@ -1,9 +1,11 @@
 package kandroid.data.Battle
 
-import kandroid.observer.RawData
+import com.google.gson.JsonElement
+import kandroid.data.ResponseDataListener
+import kandroid.observer.kcsapi.api_get_member
 import kandroid.utils.SparseIntArray
 
-class BattleManager  {
+class BattleManager : ResponseDataListener {
 
     var Compass: CompassData = CompassData()
 
@@ -43,7 +45,7 @@ class BattleManager  {
         CombinedMask(0x7FFF0000) //連合艦隊仕様
     }
 
-    fun loadFromResponse(apiName: String, rawData: RawData) {
+    override fun loadFromResponse(apiName: String, responseData: JsonElement) {
         when (apiName) {
             "api_req_map/start", "api_req_map/next" -> {
                 BattleDay = null
@@ -51,7 +53,10 @@ class BattleManager  {
                 Result = null
                 BattleMode = BattleModes.Undefined
                 Compass = CompassData()
-                Compass.loadFromResponse(apiName, rawData)
+//                Compass.loadFromResponse(apiName, rawData)
+            }
+            api_get_member.slot_item.name -> {
+                DroppedEquipmentCount = 0
             }
         }
     }

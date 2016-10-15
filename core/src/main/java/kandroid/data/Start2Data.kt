@@ -1,8 +1,8 @@
 package kandroid.data
 
 import com.google.gson.JsonElement
-import kandroid.newdata.JsonWrapper
-import kandroid.newdata.KCDatabase
+import kandroid.data.JsonWrapper
+import kandroid.data.KCDatabase
 import kandroid.utils.IDDictionary
 import kandroid.utils.Identifiable
 import kandroid.utils.SparseBooleanArray

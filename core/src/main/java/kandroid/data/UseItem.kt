@@ -1,6 +1,6 @@
 package kandroid.data
 
-import kandroid.newdata.JsonWrapper
+import kandroid.data.JsonWrapper
 import kandroid.utils.Identifiable
 import kandroid.utils.json.get
 import kandroid.utils.json.int

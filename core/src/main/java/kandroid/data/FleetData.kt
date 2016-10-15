@@ -1,77 +1,74 @@
 package kandroid.data
 
 import com.google.gson.JsonElement
-import kandroid.newdata.JsonWrapper
-import kandroid.observer.POJO
-import kandroid.observer.RawData
+import kandroid.data.JsonWrapper
+import kandroid.data.KCDatabase
+import kandroid.data.RequestDataListener
+import kandroid.observer.kcsapi.api_get_member
+import kandroid.observer.kcsapi.api_port
 import kandroid.utils.Identifiable
+import kandroid.utils.json.*
 import java.util.*
 
-class FleetData : JsonWrapper(), Identifiable {
+class FleetData : JsonWrapper(), RequestDataListener, Identifiable {
 
-    val isInSortie: Boolean = false
+    val fleetID: Int get() = data["api_id"].int()
+    val name: String get() = data["api_name"].string()
+    val expeditionState: Int get() = data["api_mission"][0].int()
+    val expeditionDestination: Int get() = data["api_mission"][1].int()
+    val expeditionTime: Date get() = Date(data["api_mission"][2].long())
+    val members: List<Int> get() = data["api_ship"].list()
 
-    val fleetID: Int
-        get() = data.api_id
+    val membersInstance: List<ShipData> get() = members.mapNotNull { KCDatabase.ships[it] }
+    val membersWithoutEscaped: List<ShipData> get() = members.mapNotNull {
+        if (_escapedShipList.contains(it)) null else KCDatabase.ships[it]
+    }
 
-    val name: String
-        get() = data.api_name
+    private var _escapedShipList: ArrayList<Int> = ArrayList()
+    val escapedShipList: List<Int> get() = _escapedShipList
 
-    val expeditionState: Int
-        get() = data.api_mission!![0]
+    var isInSortie: Boolean = false
+    var conditionTime: Date? = null
+    var isConditionTimeLocked: Boolean = true
 
-    val expeditionDestination: Int
-        get() = data.api_mission!![1]
+    operator fun get(index: Int): Int = members[index]
 
-    val expeditionTime: Date
-        get() = Date(data.api_mission!![2].toLong())
+    override val id: Int get() = fleetID
 
-    val members: List<Int>
-        get() = data.api_ship
-
-    val membersInstance: List<ShipData>
-        get() = throw UnsupportedOperationException()
-
-    val membersWithoutEscaped: List<ShipData>
-        get() = throw UnsupportedOperationException()
-
-    val escapedShipList: List<Int>
-        get() = throw UnsupportedOperationException()
-
-    val conditionTime: Date
-        get() = throw UnsupportedOperationException()
-
-    val isConditionTimeLocked: Boolean
-        get() = throw UnsupportedOperationException()
-
-    override val id: Int
-        get() = data.api_id
-
-    fun loadFromRequest(apiName: String, rawData: RawData) {
+    override fun loadFromRequest(apiName: String, requestData: Map<String, String>) {
         when (apiName) {
-            "api_req_nyukyo/start", "api_req_nyukyo/speedchange" -> ShortenConditionTimer()
+            "api_req_nyukyo/start",
+            "api_req_nyukyo/speedchange" -> ShortenConditionTimer()
         }
     }
 
     private fun ShortenConditionTimer() {
-        //TODO
+    }
+
+    private fun UnlockConditionTimer() {
+
     }
 
     override fun loadFromResponse(apiName: String, responseData: JsonElement) {
         when (apiName) {
-            "api_get_member/ndock" -> ShortenConditionTimer()
+            api_port.port.name -> {
+                super.loadFromResponse(apiName, responseData)
+
+                _escapedShipList.clear()
+                if (isInSortie) {
+                }
+                isInSortie = false
+
+                UnlockConditionTimer()
+                ShortenConditionTimer()
+            }
+            api_get_member.ndock.name,
+            "api_req_kousyou/destroyship",
+            "api_get_member/ship3",
+            "api_req_kaisou/powerup" -> ShortenConditionTimer()
         }
     }
 
-    //TODO
 
-    open class ApiDeck : POJO() {
-        var api_member_id: Int = 0
-        var api_id: Int = 0
-        var api_name: String? = null
-        var api_name_id: String? = null
-        var api_flagship: String? = null
-        var api_mission: List<Int>? = null
-        var api_ship: List<Int>? = null
-    }
+    //TODO
 }

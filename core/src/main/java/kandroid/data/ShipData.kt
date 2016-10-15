@@ -2,8 +2,9 @@ package kandroid.data
 
 import com.google.gson.JsonElement
 import kandroid.data.Start2Data.MasterShipData
-import kandroid.newdata.JsonWrapper
-import kandroid.newdata.RequestDataListener
+import kandroid.observer.kcsapi.api_get_member
+import kandroid.observer.kcsapi.api_port
+import kandroid.utils.CatException
 import kandroid.utils.Identifiable
 import kandroid.utils.json.get
 import kandroid.utils.json.int
@@ -114,7 +115,13 @@ class ShipData : JsonWrapper(), RequestDataListener, Identifiable {
 
     override fun loadFromResponse(apiName: String, responseData: JsonElement) {
         when (apiName) {
-            "api_port/port" -> super.loadFromResponse(apiName, responseData)
+            api_port.port.name,
+            api_get_member.ship2.name,
+            api_get_member.ship3.name,
+            api_get_member.ship_deck.name -> {
+                super.loadFromResponse(apiName, responseData)
+            }
+            else -> throw CatException()
         }
     }
 
