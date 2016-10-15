@@ -15,6 +15,7 @@ public class api_start2 extends ApiBase {
 
     @Override
     protected void onDataReceived(RawData rawData) {
+
         ApiStart2 apiStart2 = new Gson().fromJson(rawData.toString(), ApiStart2.class);
         Start2Data start2Data = KCDatabase.INSTANCE.getMaster();
 

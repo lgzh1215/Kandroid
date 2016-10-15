@@ -1,10 +1,9 @@
 package kandroid.data.Battle
 
-import kandroid.data.ResponseDataListner
 import kandroid.observer.RawData
 import kandroid.utils.SparseIntArray
 
-class BattleManager : ResponseDataListner {
+class BattleManager  {
 
     var Compass: CompassData = CompassData()
 
@@ -44,7 +43,7 @@ class BattleManager : ResponseDataListner {
         CombinedMask(0x7FFF0000) //連合艦隊仕様
     }
 
-    override fun loadFromResponse(apiName: String, rawData: RawData) {
+    fun loadFromResponse(apiName: String, rawData: RawData) {
         when (apiName) {
             "api_req_map/start", "api_req_map/next" -> {
                 BattleDay = null

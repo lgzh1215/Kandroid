@@ -3,11 +3,10 @@ package kandroid.data.Battle
 import kandroid.data.Data
 import kandroid.data.KCDatabase
 import kandroid.data.MapInfoData
-import kandroid.data.ResponseDataListner
 import kandroid.observer.POJO
 import kandroid.observer.RawData
 
-class CompassData : Data<CompassData.ApiCompass>(), ResponseDataListner {
+class CompassData : Data<CompassData.ApiCompass>() {
 
     val mapAreaID: Int
         get() = data.api_maparea_id
@@ -80,7 +79,7 @@ class CompassData : Data<CompassData.ApiCompass>(), ResponseDataListner {
     val mapInfo: MapInfoData
         get() = KCDatabase.mapInfoDatas.get(mapAreaID * 10 + mapInfoID)
 
-    override fun loadFromResponse(apiName: String, rawData: RawData) {
+    fun loadFromResponse(apiName: String, rawData: RawData) {
         // TODO
     }
 

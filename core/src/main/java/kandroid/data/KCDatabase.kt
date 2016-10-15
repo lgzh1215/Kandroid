@@ -2,10 +2,8 @@ package kandroid.data
 
 import kandroid.config.Config
 import kandroid.utils.IDDictionary
-import kandroid.utils.Utils
-import org.apache.commons.io.FileUtils
+import kandroid.utils.json.GSON
 import java.nio.charset.Charset
-import kotlin.printStackTrace
 
 object KCDatabase {
 
@@ -15,7 +13,7 @@ object KCDatabase {
         try {
             val file = Config.config.getSaveDataFile("master")
             val data = org.apache.commons.io.FileUtils.readFileToString(file, Charset.defaultCharset())
-            start2Data = Utils.GSON.fromJson(data, Start2Data::class.java)
+            start2Data = GSON.fromJson(data, Start2Data::class.java)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -34,7 +32,7 @@ object KCDatabase {
         if (!master.isInited) return
         try {
             val file = Config.config.getSaveDataFile("master")
-            val json = Utils.GSON.toJson(master)
+            val json = GSON.toJson(master)
             org.apache.commons.io.FileUtils.writeStringToFile(file, json, Charset.defaultCharset())
         } catch (e: Exception) {
             e.printStackTrace()

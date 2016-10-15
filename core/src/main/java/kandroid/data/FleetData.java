@@ -8,7 +8,7 @@ import kandroid.observer.POJO;
 import kandroid.observer.RawData;
 import kandroid.utils.Identifiable;
 
-public class FleetData extends Data<FleetData.ApiDeck> implements Identifiable, RequestDataListner, ResponseDataListner {
+public class FleetData extends Data<FleetData.ApiDeck> implements Identifiable {
 
     private boolean inSortie;
 
@@ -65,7 +65,6 @@ public class FleetData extends Data<FleetData.ApiDeck> implements Identifiable, 
         return data.api_id;
     }
 
-    @Override
     public void loadFromRequest(String apiName, RawData rawData) {
         switch (apiName) {
             case "api_req_nyukyo/start":
@@ -79,7 +78,6 @@ public class FleetData extends Data<FleetData.ApiDeck> implements Identifiable, 
         //TODO
     }
 
-    @Override
     public void loadFromResponse(String apiName, RawData rawData) {
         switch (apiName) {
             case "api_get_member/ndock":
