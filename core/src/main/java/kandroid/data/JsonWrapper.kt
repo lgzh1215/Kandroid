@@ -7,6 +7,6 @@ abstract class JsonWrapper : ResponseDataListener {
         private set
 
     override fun loadFromResponse(apiName: String, responseData: JsonElement) {
-        data = responseData
+        this.data = responseData
     }
 }

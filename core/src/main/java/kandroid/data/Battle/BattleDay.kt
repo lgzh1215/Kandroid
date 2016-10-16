@@ -1,3 +1,4 @@
-package kandroid.data.Battle
+package kandroid.data.battle
 
-class BattleDay
+open class BattleDay {
+}

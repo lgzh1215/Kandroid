@@ -4,6 +4,7 @@ import com.google.gson.JsonElement
 import kandroid.data.Start2Data.MasterShipData
 import kandroid.observer.kcsapi.api_get_member
 import kandroid.observer.kcsapi.api_port
+import kandroid.observer.kcsapi.api_req_kaisou
 import kandroid.utils.CatException
 import kandroid.utils.Identifiable
 import kandroid.utils.json.get
@@ -126,6 +127,12 @@ class ShipData : JsonWrapper(), RequestDataListener, Identifiable {
     }
 
     override fun loadFromRequest(apiName: String, requestData: Map<String, String>) {
+        when (apiName) {
+            api_req_kaisou.open_exslot.name -> {
+                data["api_slot_ex"] = -1
+            }
+            else -> throw CatException()
+        }
     }
 
     fun repair() {

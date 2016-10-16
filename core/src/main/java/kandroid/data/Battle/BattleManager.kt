@@ -1,13 +1,16 @@
-package kandroid.data.Battle
+package kandroid.data.battle
 
 import com.google.gson.JsonElement
+import kandroid.data.RequestDataListener
 import kandroid.data.ResponseDataListener
 import kandroid.observer.kcsapi.api_get_member
+import kandroid.observer.kcsapi.api_req_map
+import kandroid.utils.CatException
 import kandroid.utils.SparseIntArray
 
-class BattleManager : ResponseDataListener {
+class BattleManager : ResponseDataListener, RequestDataListener {
 
-    var Compass: CompassData = CompassData()
+    var Compass: CompassData? = null
 
     var BattleDay: BattleDay? = null
 
@@ -21,20 +24,16 @@ class BattleManager : ResponseDataListener {
 
     var DroppedEquipmentCount: Int = 0
 
-    var DroppedItemCount: SparseIntArray
+    var DroppedItemCount: SparseIntArray = SparseIntArray()
 
     var EnemyAdmiralName: String? = null
 
     var EnemyAdmiralRank: String? = null
 
-    init {
-        DroppedItemCount = SparseIntArray()
-    }
-
     enum class BattleModes constructor(val flags: Int) {
         Undefined(1), //未定義
         Normal(2), //昼夜戦(通常戦闘)
-        Night(4), //夜戦
+        NightOnly(4), //夜戦
         NightDay(8), //夜昼戦
         AirBattle(16), //航空戦
         AirRaid(32), //長距離空襲戦
@@ -47,17 +46,40 @@ class BattleManager : ResponseDataListener {
 
     override fun loadFromResponse(apiName: String, responseData: JsonElement) {
         when (apiName) {
-            "api_req_map/start", "api_req_map/next" -> {
+            api_req_map.start.name,
+            "api_req_map/next" -> {
                 BattleDay = null
                 BattleNight = null
                 Result = null
                 BattleMode = BattleModes.Undefined
-                Compass = CompassData()
-//                Compass.loadFromResponse(apiName, rawData)
+                val _Compass = CompassData()
+                _Compass.loadFromResponse(apiName, responseData)
+                Compass = _Compass
+            }
+            "api_port/port" -> {
+                Compass = null
+                BattleDay = null
+                BattleNight = null
+                Result = null
+                BattleMode = BattleModes.Undefined
+                DroppedShipCount = 0
+                DroppedEquipmentCount = 0
+                DroppedItemCount.clear()
+            }
+            "api_get_member/slot_item" -> {
+                DroppedEquipmentCount = 0
             }
             api_get_member.slot_item.name -> {
                 DroppedEquipmentCount = 0
             }
+            else -> throw CatException()
         }
     }
+
+    override fun loadFromRequest(apiName: String, requestData: Map<String, String>) {
+        when (apiName) {
+
+        }
+    }
+
 }

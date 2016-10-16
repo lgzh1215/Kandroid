@@ -4,6 +4,8 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import kandroid.observer.kcsapi.api_get_member
 import kandroid.observer.kcsapi.api_port
+import kandroid.observer.kcsapi.api_req_kaisou
+import kandroid.observer.kcsapi.api_req_nyukyo
 import kandroid.utils.CatException
 import kandroid.utils.IDDictionary
 import kandroid.utils.json.get
@@ -48,6 +50,14 @@ class FleetManager : RequestDataListener, ResponseDataListener {
     }
 
     override fun loadFromRequest(apiName: String, requestData: Map<String, String>) {
+        when (apiName) {
+            api_req_nyukyo.start.name,
+            api_req_nyukyo.speedchange.name,
+            api_req_kaisou.remodeling.name -> {
+                fleetDatas.forEach { it.loadFromRequest(apiName, requestData) }
+            }
+            else -> throw CatException()
+        }
     }
 
     fun startAnchorageRepairingTimer() {

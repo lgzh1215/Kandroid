@@ -1,11 +1,10 @@
 package kandroid.data
 
 import com.google.gson.JsonElement
-import kandroid.data.JsonWrapper
-import kandroid.data.KCDatabase
-import kandroid.data.RequestDataListener
 import kandroid.observer.kcsapi.api_get_member
 import kandroid.observer.kcsapi.api_port
+import kandroid.observer.kcsapi.api_req_kaisou
+import kandroid.observer.kcsapi.api_req_nyukyo
 import kandroid.utils.Identifiable
 import kandroid.utils.json.*
 import java.util.*
@@ -37,9 +36,19 @@ class FleetData : JsonWrapper(), RequestDataListener, Identifiable {
 
     override fun loadFromRequest(apiName: String, requestData: Map<String, String>) {
         when (apiName) {
-            "api_req_nyukyo/start",
-            "api_req_nyukyo/speedchange" -> ShortenConditionTimer()
+            api_req_kaisou.remodeling.name -> {
+                if (members.contains(requestData["api_id"]?.toInt()))
+                    SetConditionTimer()
+            }
+            api_req_nyukyo.start.name,
+            api_req_nyukyo.speedchange.name
+            -> {
+                ShortenConditionTimer()
+            }
         }
+    }
+
+    private fun SetConditionTimer() {
     }
 
     private fun ShortenConditionTimer() {
@@ -68,7 +77,5 @@ class FleetData : JsonWrapper(), RequestDataListener, Identifiable {
             "api_req_kaisou/powerup" -> ShortenConditionTimer()
         }
     }
-
-
     //TODO
 }

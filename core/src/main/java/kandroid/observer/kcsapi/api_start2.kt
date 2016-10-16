@@ -1,9 +1,10 @@
 package kandroid.observer.kcsapi
 
-import kandroid.data.Start2Data
 import kandroid.data.KCDatabase
+import kandroid.data.Start2Data
 import kandroid.observer.ApiBase
 import kandroid.observer.RawData
+import kandroid.utils.SparseIntArray
 import kandroid.utils.json.*
 
 object api_start2 : ApiBase() {
@@ -136,6 +137,33 @@ object api_start2 : ApiBase() {
             }
         }
 
-        //TODO api_mst_shipupgrade
+        // api_mst_shipupgrade
+        val api_mst_shipupgrade = data["api_mst_shipupgrade"].array
+        if (api_mst_shipupgrade != null) {
+            val upgradeLevels = SparseIntArray(70)
+            for (elem in api_mst_shipupgrade) {
+                val idbefore = elem["api_current_ship_id"].int()
+                val idafter = elem["api_id"].int()
+                val shipbefore = KCDatabase.master.masterShipData[idbefore]
+                val shipafter = KCDatabase.master.masterShipData[idafter]
+                val level = elem["api_upgrade_level"].int()
+
+                val l = upgradeLevels[idafter, -1]
+                if (l != -1) { //upgradeLevels.containsKey(idafter)
+                    if (level < l) {
+                        shipafter.remodelBeforeShipId = idbefore
+                        upgradeLevels.put(idafter, level)
+                    }
+                } else {
+                    shipafter.remodelBeforeShipId = idbefore
+                    upgradeLevels.put(idafter, level)
+                }
+
+                if (shipbefore != null) {
+                    shipbefore.needBlueprint = elem["api_drawing_count"].int()
+                    shipbefore.needCatapult = elem["api_catapult_count"].int()
+                }
+            }
+        }
     }
 }

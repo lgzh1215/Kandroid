@@ -1,8 +1,8 @@
 package kandroid.observer.kcsapi
 
 import kandroid.data.DockData
-import kandroid.data.ShipData
 import kandroid.data.KCDatabase
+import kandroid.data.ShipData
 import kandroid.observer.ApiBase
 import kandroid.observer.RawData
 import kandroid.utils.json.array
@@ -61,6 +61,8 @@ object api_port {
             }
 
             //TODO 基地航空隊 配置転換系の処理
+
+            KCDatabase.battle.loadFromResponse(name, data)
         }
     }
 }

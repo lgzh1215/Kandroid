@@ -1,4 +1,4 @@
-package kandroid.data.Battle
+package kandroid.data.battle
 
 
 class BattleResultData
