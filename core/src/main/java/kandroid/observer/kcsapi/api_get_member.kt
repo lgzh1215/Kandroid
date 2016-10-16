@@ -3,7 +3,6 @@ package kandroid.observer.kcsapi
 import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
 import kandroid.data.*
-import kandroid.data.KCDatabase
 import kandroid.observer.ApiBase
 import kandroid.observer.RawData
 import kandroid.utils.json.*
@@ -161,17 +160,20 @@ object api_get_member {
         override val name: String get() = "api_get_member/mapinfo"
 
         override fun onDataReceived(rawData: RawData) {
-            val data = rawData.api_data().array ?: return
+            val data = rawData.api_data().obj ?: return
 
-            for (elem in data) {
-                val id = elem["api_id"].int()
-                var mapInfoData: MapInfoData? = KCDatabase.mapInfo[id]
-                if (mapInfoData == null) {
-                    mapInfoData = MapInfoData()
-                    mapInfoData.loadFromResponse(name, elem)
-                    KCDatabase.mapInfo.put(mapInfoData)
-                } else {
-                    mapInfoData.loadFromResponse(name, elem)
+            val api_map_info = data["api_map_info"].array
+            if (api_map_info != null) {
+                for (elem in api_map_info) {
+                    val id = elem["api_id"].int()
+                    var mapInfoData: MapInfoData? = KCDatabase.mapInfo[id]
+                    if (mapInfoData == null) {
+                        mapInfoData = MapInfoData()
+                        mapInfoData.loadFromResponse(name, elem)
+                        KCDatabase.mapInfo.put(mapInfoData)
+                    } else {
+                        mapInfoData.loadFromResponse(name, elem)
+                    }
                 }
             }
         }
