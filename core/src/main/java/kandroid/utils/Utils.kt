@@ -5,9 +5,11 @@ import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.*
 
-private val DATE_FORMAT = SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.getDefault())
+private val format_yyyyMMdd_HHmmssSSS = SimpleDateFormat("yyyyMMdd_HHmmssSSS", Locale.getDefault())
+private val format_yyyyMMdd = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
 
-val Date.utilFormat: String get() = DATE_FORMAT.format(this)
+val Date.yyyyMMdd_HHmmssSSS: String get() = format_yyyyMMdd_HHmmssSSS.format(this)
+val Date.yyyyMMdd: String get() = format_yyyyMMdd.format(this)
 
 fun <T> T?.requireNonNull(): T = this ?: throw NullPointerException()
 

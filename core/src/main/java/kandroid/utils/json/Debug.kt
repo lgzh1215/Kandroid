@@ -7,7 +7,7 @@ import java.util.*
 
 class DebugJsonElement(val parent: JsonElement?, val name: String, val data: JsonElement) : JsonElement() {
 
-    private fun getStringChain() {
+    private fun getStringChain(): String {
         val names = ArrayList<String>()
         var len = 0
         var json: JsonElement? = this
@@ -19,8 +19,10 @@ class DebugJsonElement(val parent: JsonElement?, val name: String, val data: Jso
         names.reverse()
         val sb = StringBuilder(len + names.size)
         names.forEach { sb.append('/').append(it) }
+        return sb.toString()
     }
 
+    //region Proxy
     override fun isJsonNull(): Boolean {
         return data.isJsonNull
     }
@@ -104,4 +106,5 @@ class DebugJsonElement(val parent: JsonElement?, val name: String, val data: Jso
     override fun getAsJsonNull(): JsonNull {
         return data.asJsonNull
     }
+    //endregion
 }

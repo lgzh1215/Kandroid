@@ -1,8 +1,8 @@
 package kandroid.observer
 
+import kandroid.utils.log.Logger
 import org.apache.commons.io.IOUtils
 import java.io.ByteArrayInputStream
-import java.io.IOException
 import java.io.InputStream
 import java.net.URLDecoder
 import java.util.*
@@ -12,7 +12,7 @@ class RawData @JvmOverloads constructor(
         val uri: String,
         val request: ByteArray,
         val response: ByteArray,
-        val isReady: Boolean = false) : Runnable {
+        val isReady: Boolean = false) {
 
     constructor(uri: String,
                 request: String,
@@ -21,7 +21,7 @@ class RawData @JvmOverloads constructor(
 
     val date = Date()
 
-    private fun decode(): RawData {
+    fun decode(): RawData {
         if (isReady && response.size == 0) return this
         try {
             var uri = this.uri
@@ -45,8 +45,8 @@ class RawData @JvmOverloads constructor(
             val decodedData = IOUtils.toByteArray(stream)
 
             return RawData(uri, request, decodedData, true)
-        } catch (e: IOException) {
-            e.printStackTrace()
+        } catch (e: Exception) {
+            Logger.e("处理数据时出错 -> $e", e)
             return this
         }
     }
@@ -72,15 +72,6 @@ class RawData @JvmOverloads constructor(
 
     val responseString: String = String(response)
 
-    override fun run() {
-        try {
-            val rawData = decode()
-            ApiLoader.save(rawData)
-            ApiLoader[rawData.uri]?.onDataReceived(rawData)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
 
 //    override fun toString(): String {
 //        return String(response)

@@ -12,9 +12,11 @@ abstract class ApiBase {
     override fun toString(): String = name
 
     protected fun RawData.api_data(): JsonElement? = JsonParser.parse(this.responseString)["api_data"]
-    protected operator fun Map<String, String>.get(key: String, default: Int) = try {
-        this[key]?.toInt()!!
-    } catch(e: Exception) {
-        default
+    protected operator fun Map<String, String>.get(key: String, default: Int): Int {
+        return try {
+            this[key]?.toInt()!!
+        } catch(e: Exception) {
+            default
+        }
     }
 }

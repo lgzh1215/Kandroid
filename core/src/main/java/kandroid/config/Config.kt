@@ -12,8 +12,6 @@ open class Config : IConfig {
 
     override val proxyHost: String get() = "localhost"
 
-    override val isSaveKcsApi: Boolean get() = true
-
     override val isSaveKcsRequest: Boolean get() = true
 
     override val isSaveKcsResponse: Boolean get() = true
@@ -36,7 +34,6 @@ open class Config : IConfig {
         override val isUseProxy: Boolean get() = config.isUseProxy
         override val proxyPort: Int get() = config.proxyPort
         override val proxyHost: String get() = config.proxyHost
-        override val isSaveKcsApi: Boolean get() = config.isSaveKcsApi
         override val isSaveKcsRequest: Boolean get() = config.isSaveKcsRequest
         override val isSaveKcsResponse: Boolean get() = config.isSaveKcsResponse
         override val storageDir: File get() = config.storageDir
@@ -65,7 +62,6 @@ open class Config : IConfig {
 │        isUseProxy = $isUseProxy
 │         proxyPort = $proxyPort
 │         proxyHost = $proxyHost
-│      isSaveKcsApi = $isSaveKcsApi
 │  isSaveKcsRequest = $isSaveKcsRequest
 │ isSaveKcsResponse = $isSaveKcsResponse
 │        storageDir = ${storageDir.canonicalPath}

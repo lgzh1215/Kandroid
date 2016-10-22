@@ -3,6 +3,7 @@ package kandroid.proxy
 import kandroid.config.Config
 import kandroid.observer.ApiLoader
 import kandroid.observer.RawData
+import kandroid.thread.Threads
 import org.apache.commons.io.output.ByteArrayOutputStream
 import org.eclipse.jetty.client.HttpClient
 import org.eclipse.jetty.client.HttpProxy
@@ -10,8 +11,6 @@ import org.eclipse.jetty.client.api.Request
 import org.eclipse.jetty.client.api.Response
 import org.eclipse.jetty.proxy.AsyncProxyServlet
 import org.eclipse.jetty.util.Callback
-import java.io.UnsupportedEncodingException
-import java.net.URLDecoder
 import java.nio.ByteBuffer
 import java.util.*
 import javax.servlet.http.HttpServletRequest
@@ -40,19 +39,13 @@ class MyProxyServlet : AsyncProxyServlet() {
 
     override fun onProxyResponseSuccess(request: HttpServletRequest, response: HttpServletResponse,
                                         proxyResponse: Response) {
-        println(request.serverName + " | " + request.requestURI)
         if (MyFilter.isNeed(request.serverName, response.contentType)) {
             val stream = request.getAttribute(MyFilter.RESPONSE_BODY) as? ByteArrayOutputStream
             if (stream != null) {
                 val postField = request.getAttribute(MyFilter.REQUEST_BODY) as ByteArray
-                try {
-                    println(URLDecoder.decode(String(postField), "UTF-8"))
-                } catch (e: UnsupportedEncodingException) {
-                    e.printStackTrace()
-                }
 
                 val data = RawData(request.requestURI, postField, stream.toByteArray())
-                ApiLoader.load(data)
+                Threads.pool.execute { ApiLoader.load(data) }
             }
         }
         super.onProxyResponseSuccess(request, response, proxyResponse)
