@@ -1,80 +1,78 @@
 package kandroid.config
 
 import java.io.File
-import kotlin.jvm.javaClass
 
-open class Config {
+open class Config : IConfig {
 
-    companion object {
-        lateinit var config: Config
-    }
+    override val listenPort: Int get() = 8888
 
-    open val listenPort: Int
-        get() = 8888
+    override val isUseProxy: Boolean get() = false
 
-    open val isUseProxy: Boolean
-        get() = false
+    override val proxyPort: Int get() = 8823
 
-    open val proxyPort: Int
-        get() = 8823
+    override val proxyHost: String get() = "localhost"
 
-    open val proxyHost: String
-        get() = "localhost"
+    override val isSaveKcsApi: Boolean get() = true
 
-    open val isSaveKcsApi: Boolean
-        get() = true
+    override val isSaveKcsRequest: Boolean get() = true
 
-    open val isSaveKcsRequest: Boolean
-        get() = true
+    override val isSaveKcsResponse: Boolean get() = true
 
-    open val isSaveKcsResponse: Boolean
-        get() = true
+    override val storageDir: File get() = File("./")
 
-    protected open val storageDir: File
-        get() = File("./")
+    override val isMultipleUserMode: Boolean get() = true
 
-    fun getSaveKcsApiFile(fileName: String?): File {
-        val file = File(storageDir, "KCAPI")
-        if (fileName == null)
-            return file
-        else
-            return File(file, fileName)
-    }
+    override val isDebugOn: Boolean get() = true
 
-    fun getSaveDataFile(fileName: String?): File {
-        val file = File(storageDir, "data")
-        if (fileName == null)
-            return file
-        else
-            return File(file, fileName)
-    }
+    companion object : IConfig {
+        lateinit var config: IConfig
+        val Default = Config()
 
-    fun getSaveUserFile(fileName: String?): File {
-        val file = File(storageDir, "user")
-        if (fileName == null)
-            return file
-        else
-            return File(file, fileName)
-    }
-
-    open val isMultipleUserMode: Boolean
-        get() = true
-
-    override fun toString(): String {
-        val stringBuilder = StringBuilder().append(config.javaClass.toString()).append("\n监听端口:").append(listenPort).append('\n')
-        if (isUseProxy) {
-            stringBuilder.append("上游代理:").append(proxyHost).append(':').append(proxyPort).append('\n')
-        } else {
-            stringBuilder.append("不使用代理\n")
+        fun setDefault() {
+            config = Default
         }
-        if (isSaveKcsApi) {
-            if (isSaveKcsRequest) {
-                stringBuilder.append("保存Request\n")
-            }
-            if (isSaveKcsResponse) {
-                stringBuilder.append("保存Response\n")
-            }
+
+        override val listenPort: Int get() = config.listenPort
+        override val isUseProxy: Boolean get() = config.isUseProxy
+        override val proxyPort: Int get() = config.proxyPort
+        override val proxyHost: String get() = config.proxyHost
+        override val isSaveKcsApi: Boolean get() = config.isSaveKcsApi
+        override val isSaveKcsRequest: Boolean get() = config.isSaveKcsRequest
+        override val isSaveKcsResponse: Boolean get() = config.isSaveKcsResponse
+        override val storageDir: File get() = config.storageDir
+        override val isMultipleUserMode: Boolean get() = config.isMultipleUserMode
+        override val isDebugOn: Boolean get() = config.isDebugOn
+
+        fun getSaveKcsApiFile(fileName: String?): File {
+            val file = File(storageDir, "KCAPI")
+            if (fileName == null)
+                return file
+            else
+                return File(file, fileName)
         }
-        return stringBuilder.toString()
+
+        fun getSaveLogFile(fileName: String?): File {
+            val file = File(storageDir, "log")
+            if (fileName == null)
+                return file
+            else
+                return File(file, fileName)
+        }
+
+        override fun toString(): String {
+            return """IConfig -> ${config.javaClass.name}
+│        listenPort = $listenPort
+│        isUseProxy = $isUseProxy
+│         proxyPort = $proxyPort
+│         proxyHost = $proxyHost
+│      isSaveKcsApi = $isSaveKcsApi
+│  isSaveKcsRequest = $isSaveKcsRequest
+│ isSaveKcsResponse = $isSaveKcsResponse
+│        storageDir = ${storageDir.canonicalPath}
+│isMultipleUserMode = $isMultipleUserMode
+│         isDebugOn = $isDebugOn
+└──────────────────
+"""
+        }
     }
 }

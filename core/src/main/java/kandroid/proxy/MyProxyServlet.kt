@@ -16,20 +16,19 @@ import java.nio.ByteBuffer
 import java.util.*
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import kotlin.printStackTrace
 
-class MyProxyServlet : org.eclipse.jetty.proxy.AsyncProxyServlet() {
+class MyProxyServlet : AsyncProxyServlet() {
 
-    override fun sendProxyRequest(clientRequest: javax.servlet.http.HttpServletRequest, proxyResponse: javax.servlet.http.HttpServletResponse,
-                                  proxyRequest: org.eclipse.jetty.client.api.Request) {
+    override fun sendProxyRequest(clientRequest: HttpServletRequest, proxyResponse: HttpServletResponse,
+                                  proxyRequest: Request) {
         proxyRequest.onRequestContent(RequestContentListener(clientRequest))
         super.sendProxyRequest(clientRequest, proxyResponse, proxyRequest)
     }
 
-    override fun onResponseContent(request: javax.servlet.http.HttpServletRequest, response: javax.servlet.http.HttpServletResponse, proxyResponse: org.eclipse.jetty.client.api.Response?,
-                                   buffer: ByteArray, offset: Int, length: Int, callback: org.eclipse.jetty.util.Callback) {
+    override fun onResponseContent(request: HttpServletRequest, response: HttpServletResponse, proxyResponse: Response,
+                                   buffer: ByteArray, offset: Int, length: Int, callback: Callback) {
         if (MyFilter.isNeed(request.serverName, response.contentType)) {
-            var stream = request.getAttribute(MyFilter.RESPONSE_BODY) as org.apache.commons.io.output.ByteArrayOutputStream?
+            var stream = request.getAttribute(MyFilter.RESPONSE_BODY) as? ByteArrayOutputStream
             if (stream == null) {
                 stream = org.apache.commons.io.output.ByteArrayOutputStream()
                 request.setAttribute(MyFilter.RESPONSE_BODY, stream)
@@ -39,11 +38,11 @@ class MyProxyServlet : org.eclipse.jetty.proxy.AsyncProxyServlet() {
         super.onResponseContent(request, response, proxyResponse, buffer, offset, length, callback)
     }
 
-    override fun onProxyResponseSuccess(request: javax.servlet.http.HttpServletRequest, response: javax.servlet.http.HttpServletResponse,
-                                        proxyResponse: org.eclipse.jetty.client.api.Response?) {
+    override fun onProxyResponseSuccess(request: HttpServletRequest, response: HttpServletResponse,
+                                        proxyResponse: Response) {
         println(request.serverName + " | " + request.requestURI)
         if (MyFilter.isNeed(request.serverName, response.contentType)) {
-            val stream = request.getAttribute(MyFilter.RESPONSE_BODY) as org.apache.commons.io.output.ByteArrayOutputStream?
+            val stream = request.getAttribute(MyFilter.RESPONSE_BODY) as? ByteArrayOutputStream
             if (stream != null) {
                 val postField = request.getAttribute(MyFilter.REQUEST_BODY) as ByteArray
                 try {
@@ -59,20 +58,20 @@ class MyProxyServlet : org.eclipse.jetty.proxy.AsyncProxyServlet() {
         super.onProxyResponseSuccess(request, response, proxyResponse)
     }
 
-    override fun newHttpClient(): org.eclipse.jetty.client.HttpClient {
+    override fun newHttpClient(): HttpClient {
         val client = super.newHttpClient()
-        if (Config.config.isUseProxy) {
-            val host = Config.config.proxyHost
-            val port = Config.config.proxyPort
+        if (Config.isUseProxy) {
+            val host = Config.proxyHost
+            val port = Config.proxyPort
             val proxies = client.proxyConfiguration.proxies
-            proxies.add(org.eclipse.jetty.client.HttpProxy(host, port))
+            proxies.add(HttpProxy(host, port))
         }
         return client
     }
 
-    private inner class RequestContentListener(val httpRequest: javax.servlet.http.HttpServletRequest) : org.eclipse.jetty.client.api.Request.ContentListener {
+    private class RequestContentListener(val httpRequest: HttpServletRequest) : Request.ContentListener {
 
-        override fun onContent(request: org.eclipse.jetty.client.api.Request, buffer: ByteBuffer) {
+        override fun onContent(request: Request, buffer: ByteBuffer) {
             if (buffer.limit() in 1..MyFilter.MAX_POST_FIELD_SIZE && MyFilter.filterServerName(request.host)) {
                 httpRequest.setAttribute(MyFilter.REQUEST_BODY, Arrays.copyOf(buffer.array(), buffer.limit()))
             }

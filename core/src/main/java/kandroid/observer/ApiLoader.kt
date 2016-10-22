@@ -2,7 +2,7 @@ package kandroid.observer
 
 import kandroid.config.Config
 import kandroid.observer.kcsapi.api_start2
-import kandroid.utils.Utils
+import kandroid.utils.utilFormat
 import org.apache.commons.io.FileUtils
 import java.nio.charset.Charset
 import java.util.*
@@ -10,11 +10,15 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 object ApiLoader {
+
+    private val lock = Any()
     private var threadPool: ExecutorService? = null
 
     fun start() {
-        stop()
-        threadPool = Executors.newSingleThreadExecutor()
+        synchronized(lock) {
+            stop()
+            threadPool = Executors.newSingleThreadExecutor()
+        }
     }
 
     fun stop() {
@@ -31,14 +35,14 @@ object ApiLoader {
     }
 
     fun save(rawData: RawData) {
-        if (Config.config.isSaveKcsApi) {
+        if (Config.isSaveKcsApi) {
 
             var date: String? = null
             try {
-                if (Config.config.isSaveKcsRequest) {
-                    date = Utils.getDateString(rawData.date)
+                if (Config.isSaveKcsRequest) {
+                    date = rawData.date.utilFormat
                     val fileName = "${date}Q@${rawData.uri.replace('/', '@')}.txt"
-                    val file = Config.config.getSaveKcsApiFile(fileName)
+                    val file = Config.getSaveKcsApiFile(fileName)
                     FileUtils.writeStringToFile(file, rawData.requestString, Charset.defaultCharset())
                 }
             } catch (e: Exception) {
@@ -46,10 +50,10 @@ object ApiLoader {
             }
 
             try {
-                if (Config.config.isSaveKcsResponse) {
-                    if (date == null) date = Utils.getDateString(rawData.date)
+                if (Config.isSaveKcsResponse) {
+                    if (date == null) date = rawData.date.utilFormat
                     val fileName = "${date}S@${rawData.uri.replace('/', '@')}.json"
-                    val file = Config.config.getSaveKcsApiFile(fileName)
+                    val file = Config.getSaveKcsApiFile(fileName)
                     FileUtils.writeStringToFile(file, rawData.responseString, Charset.defaultCharset())
                 }
             } catch (e: Exception) {

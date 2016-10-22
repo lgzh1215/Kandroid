@@ -1,9 +1,7 @@
 package kandroid.utils.json
 
-import com.google.gson.JsonArray
-import com.google.gson.JsonElement
-import com.google.gson.JsonNull
-import com.google.gson.JsonObject
+import com.google.gson.*
+import kandroid.config.Config
 
 val jsonNull: JsonNull = JsonNull.INSTANCE
 
@@ -30,8 +28,19 @@ val JsonElement?.obj: JsonObject? get() = if (this is JsonObject) this else null
 
 val JsonElement?.array: JsonArray? get() = if (this is JsonArray) this else null
 
-operator fun JsonElement?.get(key: String): JsonElement? = obj?.get(key)
-operator fun JsonElement?.get(index: Int): JsonElement? = array?.get(index)
+operator fun JsonElement?.get(key: String): JsonElement {
+//    if (Config.isDebugOn) {
+//        return DebugJsonElement(this, key, obj?.get(key) ?: jsonNull)
+//    } else
+    return obj?.get(key) ?: jsonNull
+}
+
+operator fun JsonElement?.get(index: Int): JsonElement {
+//    if (Config.isDebugOn) {
+//        return DebugJsonElement(this, "[$index]", array?.get(index) ?: jsonNull)
+//    } else
+    return array?.get(index) ?: jsonNull
+}
 
 operator fun JsonElement?.set(key: String, value: Any) {
     obj?.add(key, value.toJsonElement())
@@ -65,5 +74,7 @@ fun JsonElement.search(key: String): JsonElement? {
 
 private fun Any.toJsonElement() = when (this) {
     is JsonElement -> this
+    is Number -> JsonPrimitive(this)
+    is String -> JsonPrimitive(this)
     else -> GSON.toJsonTree(this)
 }
