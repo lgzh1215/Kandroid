@@ -1,6 +1,7 @@
 package kandroid.proxy
 
 import kandroid.config.Config
+import kandroid.utils.log.Logger
 import org.apache.commons.lang3.StringUtils
 import org.eclipse.jetty.proxy.ConnectHandler
 import org.eclipse.jetty.server.Connector
@@ -11,7 +12,7 @@ import org.eclipse.jetty.servlet.ServletHolder
 import java.net.BindException
 import java.util.concurrent.TimeUnit
 
-object MyProxyServer {
+object ProxyServer {
 
     var server: Server? = null
 
@@ -22,40 +23,40 @@ object MyProxyServer {
 
     fun start() {
         try {
-            server = Server()
+            val server = Server()
             updateSetting()
-            setConnector()
+            setConnector(server)
 
             val connectHandler = ConnectHandler()
-            server!!.handler = connectHandler
+            server.handler = connectHandler
 
             val servletContextHandler = ServletContextHandler(
                     connectHandler, "/", ServletContextHandler.SESSIONS)
-            val holder = ServletHolder(MyProxyServlet())
+            val holder = ServletHolder(ProxyServlet())
             holder.setInitParameter("idleTimeout", TimeUnit.MINUTES.toMillis(2).toString())
             holder.setInitParameter("timeout", TimeUnit.MINUTES.toMillis(2).toString())
             servletContextHandler.addServlet(holder, "/*")
 
             try {
-                server!!.start()
+                server.start()
+                this.server = server
             } catch (e: Exception) {
                 if (e is BindException) {
                 }//端口被占用
-                e.printStackTrace()
+                Logger.e("Proxy启动失败 -> $e", e)
             }
 
         } catch (e: Exception) {
             throw RuntimeException(e)
         }
-
     }
 
-    private fun setConnector() {
+    private fun setConnector(server: Server) {
         //SSL Support
         val connector = ServerConnector(server)
         connector.port = port
         connector.host = host
-        server!!.connectors = arrayOf<Connector>(connector)
+        server.connectors = arrayOf<Connector>(connector)
     }
 
     private fun updateSetting(): Boolean {
@@ -83,27 +84,25 @@ object MyProxyServer {
 
     fun restart() {
         try {
-            if (server == null) return
+            val server = server ?: return
             if (updateSetting()) {
-                server!!.stop()
-                setConnector()
-                server!!.start()
+                server.stop()
+                setConnector(server)
+                server.start()
             }
         } catch (e: Exception) {
-            e.printStackTrace()
+            Logger.e("Proxy重启失败 -> $e", e)
         }
-
     }
 
-    fun end() {
+    fun stop() {
         try {
-            if (server != null) {
-                server!!.stop()
-                server!!.join()
-                server = null
-            }
+            val server = server ?: return
+            server.stop()
+            server.join()
+            this.server = null
         } catch (e: Exception) {
-            e.printStackTrace()
+            Logger.e("Proxy停止失败 -> $e", e)
         }
     }
 }

@@ -13,7 +13,7 @@ object ApiLoader {
     private val lock = Any()
 
     fun load(rawData: RawData) {
-        Logger.t("接收数据${rawData.uri}")
+        Logger.i("接收数据${rawData.uri}")
         synchronized(lock) {
             val data = rawData.decode()
             ApiLoader.save(data)

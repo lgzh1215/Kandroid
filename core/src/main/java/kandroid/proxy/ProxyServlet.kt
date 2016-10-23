@@ -16,7 +16,7 @@ import java.util.*
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class MyProxyServlet : AsyncProxyServlet() {
+class ProxyServlet : AsyncProxyServlet() {
 
     override fun sendProxyRequest(clientRequest: HttpServletRequest, proxyResponse: HttpServletResponse,
                                   proxyRequest: Request) {
@@ -26,11 +26,11 @@ class MyProxyServlet : AsyncProxyServlet() {
 
     override fun onResponseContent(request: HttpServletRequest, response: HttpServletResponse, proxyResponse: Response,
                                    buffer: ByteArray, offset: Int, length: Int, callback: Callback) {
-        if (MyFilter.isNeed(request.serverName, response.contentType)) {
-            var stream = request.getAttribute(MyFilter.RESPONSE_BODY) as? ByteArrayOutputStream
+        if (Filter.isNeed(request.serverName, response.contentType)) {
+            var stream = request.getAttribute(Filter.RESPONSE_BODY) as? ByteArrayOutputStream
             if (stream == null) {
-                stream = org.apache.commons.io.output.ByteArrayOutputStream()
-                request.setAttribute(MyFilter.RESPONSE_BODY, stream)
+                stream = ByteArrayOutputStream()
+                request.setAttribute(Filter.RESPONSE_BODY, stream)
             }
             stream.write(buffer, offset, length)
         }
@@ -39,10 +39,10 @@ class MyProxyServlet : AsyncProxyServlet() {
 
     override fun onProxyResponseSuccess(request: HttpServletRequest, response: HttpServletResponse,
                                         proxyResponse: Response) {
-        if (MyFilter.isNeed(request.serverName, response.contentType)) {
-            val stream = request.getAttribute(MyFilter.RESPONSE_BODY) as? ByteArrayOutputStream
+        if (Filter.isNeed(request.serverName, response.contentType)) {
+            val stream = request.getAttribute(Filter.RESPONSE_BODY) as? ByteArrayOutputStream
             if (stream != null) {
-                val postField = request.getAttribute(MyFilter.REQUEST_BODY) as ByteArray
+                val postField = request.getAttribute(Filter.REQUEST_BODY) as ByteArray
 
                 val data = RawData(request.requestURI, postField, stream.toByteArray())
                 Threads.pool.execute { ApiLoader.load(data) }
@@ -65,8 +65,8 @@ class MyProxyServlet : AsyncProxyServlet() {
     private class RequestContentListener(val httpRequest: HttpServletRequest) : Request.ContentListener {
 
         override fun onContent(request: Request, buffer: ByteBuffer) {
-            if (buffer.limit() in 1..MyFilter.MAX_POST_FIELD_SIZE && MyFilter.filterServerName(request.host)) {
-                httpRequest.setAttribute(MyFilter.REQUEST_BODY, Arrays.copyOf(buffer.array(), buffer.limit()))
+            if (buffer.limit() in 1..Filter.MAX_POST_FIELD_SIZE && Filter.filterServerName(request.host)) {
+                httpRequest.setAttribute(Filter.REQUEST_BODY, Arrays.copyOf(buffer.array(), buffer.limit()))
             }
         }
     }

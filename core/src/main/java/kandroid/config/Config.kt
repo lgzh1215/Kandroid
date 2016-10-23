@@ -6,11 +6,13 @@ open class Config : IConfig {
 
     override val listenPort: Int get() = 8888
 
-    override val isUseProxy: Boolean get() = false
+    override val isUseProxy: Boolean get() = true
 
     override val proxyPort: Int get() = 8823
 
     override val proxyHost: String get() = "localhost"
+
+    override val isSaveKcsApi: Boolean get() = true
 
     override val isSaveKcsRequest: Boolean get() = true
 
@@ -34,6 +36,7 @@ open class Config : IConfig {
         override val isUseProxy: Boolean get() = config.isUseProxy
         override val proxyPort: Int get() = config.proxyPort
         override val proxyHost: String get() = config.proxyHost
+        override val isSaveKcsApi: Boolean get() = config.isSaveKcsApi
         override val isSaveKcsRequest: Boolean get() = config.isSaveKcsRequest
         override val isSaveKcsResponse: Boolean get() = config.isSaveKcsResponse
         override val storageDir: File get() = config.storageDir
@@ -57,11 +60,12 @@ open class Config : IConfig {
         }
 
         override fun toString(): String {
-            return """IConfig -> ${config.javaClass.name}
+            return """${config.javaClass.name}
 │        listenPort = $listenPort
 │        isUseProxy = $isUseProxy
 │         proxyPort = $proxyPort
 │         proxyHost = $proxyHost
+│      isSaveKcsApi = $isSaveKcsApi
 │  isSaveKcsRequest = $isSaveKcsRequest
 │ isSaveKcsResponse = $isSaveKcsResponse
 │        storageDir = ${storageDir.canonicalPath}

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+                  xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="代理">
+
+        <EditTextPreference
+            android:defaultValue="8888"
+            android:key="listenPort"
+            android:selectAllOnFocus="true"
+            android:title="监听端口"
+            android:summary="21312"/>
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="isUseProxy"
+            android:title="使用上游代理"/>
+        <EditTextPreference
+            android:defaultValue="8123"
+            android:key="proxyPort"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="上游代理端口"
+            android:dependency="isUseProxy"/>
+        <EditTextPreference
+            android:defaultValue="localhost"
+            android:key="proxyHost"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="上游代理IP"
+            android:dependency="isUseProxy"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="调试">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="isDebugOn"
+            android:title="开启调试"/>
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="isSaveKcsApi"
+            android:title="保存通信内容"/>
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="isSaveKcsRequest"
+            android:title="保存Request内容"
+            android:dependency="isSaveKcsApi"/>
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="isSaveKcsResponse"
+            android:title="保存Response内容"
+            android:dependency="isSaveKcsApi"/>
+    </PreferenceCategory>
+</PreferenceScreen>

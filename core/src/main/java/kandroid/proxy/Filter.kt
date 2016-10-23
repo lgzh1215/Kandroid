@@ -3,7 +3,7 @@ package kandroid.proxy
 import java.util.*
 import kotlin.text.startsWith
 
-object MyFilter {
+object Filter {
 
     private val SERVERS: HashMap<String, String>
     val CONTENT_TYPE_FILTER = "text/plain"

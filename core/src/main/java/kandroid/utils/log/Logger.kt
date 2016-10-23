@@ -3,6 +3,7 @@ package kandroid.utils.log
 import kandroid.config.Config
 import kandroid.thread.Threads
 import kandroid.utils.yyyyMMdd
+import kandroid.utils.yyyyMMdd_HHmmssSSS
 import org.apache.commons.io.FileUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -18,7 +19,7 @@ object Logger {
     private val logs = ArrayList<LogData>()
 
     data class LogData(val date: Date, val level: String, val message: String, val exception: Exception? = null) {
-        override fun toString(): String = "[$date]:[$level] : $message\n"
+        override fun toString(): String = "[${date.yyyyMMdd_HHmmssSSS}][$level] : $message"
     }
 
     fun e(str: String, exception: Exception? = null) {
@@ -35,11 +36,6 @@ object Logger {
     fun i(str: String) {
         addLog("INFO", str)
         logger.info(str)
-    }
-
-    fun t(str: String) {
-        addLog("TRACE", str)
-        logger.trace(str)
     }
 
     private fun addLog(level: String, str: String, exception: Exception? = null) {

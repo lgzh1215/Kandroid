@@ -12,6 +12,8 @@ interface IConfig {
 
     val proxyHost: String
 
+    val isSaveKcsApi: Boolean
+
     val isSaveKcsRequest: Boolean
 
     val isSaveKcsResponse: Boolean

@@ -16,7 +16,6 @@ import moe.lpj.kandroid.ui.settings.SettingsActivity
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     var tabLayout: TabLayout? = null
-        internal set
 
     private fun setupTabLayout() {
         if (tabLayout != null) return
@@ -41,7 +40,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
 
         val fab: FloatingActionButton = findViewById(R.id.fab) as FloatingActionButton
-        fab.setOnClickListener { view -> Snackbar.make(view, "这只是个装饰~", Snackbar.LENGTH_LONG).setAction("嗯呢~") { }.show() }
+        fab.setOnClickListener { view ->
+            Snackbar.make(view, "这只是个装饰~", Snackbar.LENGTH_LONG).setAction("嗯呢~") { }.show()
+        }
 
         val drawer: DrawerLayout = findViewById(R.id.drawer_layout) as DrawerLayout
         val toggle = ActionBarDrawerToggle(
@@ -127,5 +128,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun showBookFragment() {
+    }
+
+    private fun showSettingFragment() {
+        if (findViewById(R.id.fragment_container) != null) {
+            removeTabLayout()
+            val settingsFragment = SettingsFragment()
+            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, settingsFragment).commit()
+        }
     }
 }
