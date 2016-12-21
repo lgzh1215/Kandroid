@@ -2,7 +2,7 @@ package moe.lpj.kandroid.ui.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.*
+import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
@@ -11,26 +11,9 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import moe.lpj.kandroid.R
-import moe.lpj.kandroid.ui.settings.SettingsActivity
+import moe.lpj.kandroid.ui.setting.SettingsActivity
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-
-    var tabLayout: TabLayout? = null
-
-    private fun setupTabLayout() {
-        if (tabLayout != null) return
-        val appBarLayout: AppBarLayout = findViewById(R.id.app_bar_layout) as AppBarLayout
-        tabLayout = TabLayout(appBarLayout.context)
-        tabLayout!!.tabMode = TabLayout.MODE_SCROLLABLE
-        tabLayout!!.tabGravity = TabLayout.GRAVITY_CENTER
-        appBarLayout.addView(tabLayout)
-    }
-
-    private fun removeTabLayout() {
-        val appBarLayout: AppBarLayout = findViewById(R.id.app_bar_layout) as AppBarLayout
-        appBarLayout.removeView(tabLayout)
-        tabLayout = null
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,11 +21,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val toolbar: Toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
-
-        val fab: FloatingActionButton = findViewById(R.id.fab) as FloatingActionButton
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "这只是个装饰~", Snackbar.LENGTH_LONG).setAction("嗯呢~") { }.show()
-        }
 
         val drawer: DrawerLayout = findViewById(R.id.drawer_layout) as DrawerLayout
         val toggle = ActionBarDrawerToggle(
@@ -55,12 +33,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         if (savedInstanceState != null) return
         navigationView.setCheckedItem(R.id.nav_home)
-
-        if (findViewById(R.id.fragment_container) != null) {
-            setupTabLayout()
-            val homeFragment = HomeFragment()
-            supportFragmentManager.beginTransaction().add(R.id.fragment_container, homeFragment).commit()
-        }
     }
 
     override fun onBackPressed() {
@@ -85,6 +57,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            val intent : Intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent)
             return true
         }
 
@@ -94,47 +68,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         when (id) {
-            R.id.nav_home -> showHomeFragment()
-            R.id.nav_girls -> showGirlsFragment()
-            R.id.nav_equipments -> showEquipmentsFragment()
-            R.id.nav_book -> showBookFragment()
-            R.id.nav_settings -> {
-                val intent = Intent(this, SettingsActivity::class.java)
-                startActivity(intent)
-            }
+            R.id.nav_home -> {}
+            R.id.nav_girls -> {}
+            R.id.nav_equipments -> {}
+            R.id.nav_book -> {}
+            R.id.nav_settings -> {}
         }
         val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
         drawer.closeDrawer(GravityCompat.START)
         return true
-    }
-
-    private fun showHomeFragment() {
-        if (findViewById(R.id.fragment_container) != null) {
-            setupTabLayout()
-            val homeFragment = HomeFragment()
-            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, homeFragment).commit()
-        }
-    }
-
-    private fun showGirlsFragment() {
-        if (findViewById(R.id.fragment_container) != null) {
-            removeTabLayout()
-            val homeOverviewFragment = HomeOverviewFragment()
-            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, homeOverviewFragment).commit()
-        }
-    }
-
-    private fun showEquipmentsFragment() {
-    }
-
-    private fun showBookFragment() {
-    }
-
-    private fun showSettingFragment() {
-        if (findViewById(R.id.fragment_container) != null) {
-            removeTabLayout()
-            val settingsFragment = SettingsFragment()
-            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, settingsFragment).commit()
-        }
     }
 }

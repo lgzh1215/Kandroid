@@ -2,6 +2,7 @@ package kandroid.utils.log
 
 import kandroid.config.Config
 import kandroid.thread.Threads
+import kandroid.utils.Listenable
 import kandroid.utils.yyyyMMdd
 import kandroid.utils.yyyyMMdd_HHmmssSSS
 import org.apache.commons.io.FileUtils
@@ -10,11 +11,10 @@ import org.slf4j.LoggerFactory
 import java.io.PrintStream
 import java.util.*
 
-object Logger {
+object Logger : Listenable<kandroid.utils.log.Logger.LogData> {
+    override val listeners = ArrayList<(LogData) -> Unit>()
 
     private val logger: Logger = LoggerFactory.getLogger("kandroid")
-
-    private val listeners = ArrayList<(LogData) -> Unit>()
 
     private val logs = ArrayList<LogData>()
 
@@ -39,14 +39,16 @@ object Logger {
     }
 
     private fun addLog(level: String, str: String, exception: Exception? = null) {
-        synchronized(Logger) {
-            val logData = LogData(Date(), level, str, exception)
+        Threads.pool.execute {
+            synchronized(Logger) {
+                val logData = LogData(Date(), level, str, exception)
 
-            listeners.forEach { it(logData) }
+                listeners.forEach { it(logData) }
 
-            logs.add(logData)
-            if (logs.size > 20) {
-                saveToFile()
+                logs.add(logData)
+                if (logs.size > 20) {
+                    saveToFile()
+                }
             }
         }
     }

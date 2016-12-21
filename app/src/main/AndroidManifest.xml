@@ -19,20 +19,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.settings.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName=".ui.main.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="moe.lpj.kandroid.ui.main.MainActivity"/>
+            android:name=".ui.setting.SettingsActivity"
+            android:label="@string/title_activity_settings">
         </activity>
-
-        <service
-            android:name=".service.KandroidService"
-            android:enabled="false"
-            android:exported="false">
-        </service>
     </application>
 
 </manifest>

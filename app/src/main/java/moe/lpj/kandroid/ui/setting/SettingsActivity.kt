@@ -11,6 +11,7 @@ import android.support.v4.app.NavUtils
 import android.text.TextUtils
 import android.view.MenuItem
 import moe.lpj.kandroid.R
+import moe.lpj.kandroid.ui.setting.AppCompatPreferenceActivity
 
 class SettingsActivity : AppCompatPreferenceActivity() {
 
@@ -188,7 +189,6 @@ class SettingsActivity : AppCompatPreferenceActivity() {
          * preference title) is updated to reflect the value. The summary is also
          * immediately updated upon calling this method. The exact display format is
          * dependent on the type of preference.
-
          * @see .sBindPreferenceSummaryToValueListener
          */
         private fun bindPreferenceSummaryToValue(preference: Preference) {

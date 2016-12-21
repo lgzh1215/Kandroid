@@ -1,10 +1,14 @@
 package kandroid.observer
 
 import com.google.gson.JsonElement
+import kandroid.utils.Listenable
 import kandroid.utils.json.JsonParser
 import kandroid.utils.json.get
+import java.util.*
 
-abstract class ApiBase {
+abstract class ApiBase : Listenable<Any?> {
+    override val listeners = ArrayList<(Any?) -> Unit>()
+
     abstract val name: String
 
     abstract fun onDataReceived(rawData: RawData)
