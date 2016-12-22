@@ -2,14 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="moe.lpj.kandroid">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+                     android:maxSdkVersion="18" />
+
     <application
+        android:name=".application.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name=".activity.main.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -19,9 +23,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.setting.SettingsActivity"
+            android:name=".activity.setting.SettingsActivity"
             android:label="@string/title_activity_settings">
         </activity>
+
+        <service
+            android:name=".service.ProxyService"
+            android:enabled="true"
+            android:exported="false"
+            android:label="什么鬼">
+        </service>
     </application>
 
 </manifest>

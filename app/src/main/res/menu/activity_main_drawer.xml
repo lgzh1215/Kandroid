@@ -4,19 +4,19 @@
     <group>
         <item
             android:id="@+id/nav_home"
-            android:title="@string/nav_home" />
+            android:title="@string/nav_home"/>
         <item
             android:id="@+id/nav_girls"
-            android:title="@string/nav_girls" />
+            android:title="@string/nav_girls"/>
         <item
             android:id="@+id/nav_equipments"
-            android:title="@string/nav_equipment" />
+            android:title="@string/nav_equipment"/>
         <item
             android:id="@+id/nav_book"
-            android:title="@string/nav_book" />
+            android:title="@string/nav_book"/>
         <item
-            android:title="@string/nav_settings"
-            android:id="@+id/nav_settings" />
+            android:id="@+id/nav_settings"
+            android:title="@string/nav_settings"/>
     </group>
 
 </menu>

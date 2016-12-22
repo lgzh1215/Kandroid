@@ -1,22 +1,36 @@
-package moe.lpj.kandroid.ui.main
+package moe.lpj.kandroid.activity.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import kandroid.KandroidMain
 import moe.lpj.kandroid.R
-import moe.lpj.kandroid.ui.setting.SettingsActivity
+import moe.lpj.kandroid.activity.setting.SettingsActivity
+import moe.lpj.kandroid.kandroid.ConfigA
+import moe.lpj.kandroid.service.ProxyService
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+    val log: Logger = LoggerFactory.getLogger(javaClass)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        log.debug("onCreate")
+
+        PreferenceManager.setDefaultValues(this, R.xml.pref_proxy, false)
+        PreferenceManager.setDefaultValues(this, R.xml.pref_debug, false)
+
         setContentView(R.layout.activity_main)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar) as Toolbar
@@ -33,6 +47,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         if (savedInstanceState != null) return
         navigationView.setCheckedItem(R.id.nav_home)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("osdfnoesnfoeinfoe","onPause")
+        log.info("onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        log.debug("onStop")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        log.debug("onResume")
     }
 
     override fun onBackPressed() {
@@ -56,9 +86,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val id = item.itemId
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            val intent : Intent = Intent(this, SettingsActivity::class.java)
-            startActivity(intent)
+        if (id == R.id.action_proxy) {
+            val intent: Intent = Intent(this, ProxyService::class.java)
+            if (ProxyService.isRunning) {
+                stopService(intent)
+                KandroidMain.stop()
+                item.title = "已停止"
+            } else {
+                startService(intent)
+                KandroidMain.updateConfig(ConfigA.get(this))
+                KandroidMain.start()
+                item.title = "正在运行"
+            }
             return true
         }
 
@@ -68,11 +107,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         when (id) {
-            R.id.nav_home -> {}
-            R.id.nav_girls -> {}
-            R.id.nav_equipments -> {}
-            R.id.nav_book -> {}
-            R.id.nav_settings -> {}
+            R.id.nav_home -> {
+            }
+            R.id.nav_girls -> {
+            }
+            R.id.nav_equipments -> {
+            }
+            R.id.nav_book -> {
+            }
+            R.id.nav_settings -> {
+                val intent: Intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
+            }
         }
         val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
         drawer.closeDrawer(GravityCompat.START)
