@@ -22,33 +22,35 @@ object ProxyServer {
     private var proxyPort: Int = 0
 
     fun start() {
-        try {
-            val server = Server()
-            updateSetting()
-            setConnector(server)
-
-            val connectHandler = ConnectHandler()
-            server.handler = connectHandler
-
-            val servletContextHandler = ServletContextHandler(
-                    connectHandler, "/", ServletContextHandler.SESSIONS)
-            val holder = ServletHolder(ProxyServlet())
-            holder.setInitParameter("idleTimeout", TimeUnit.MINUTES.toMillis(2).toString())
-            holder.setInitParameter("timeout", TimeUnit.MINUTES.toMillis(2).toString())
-            servletContextHandler.addServlet(holder, "/*")
-
+        Thread {
             try {
-                server.start()
-                this.server = server
-            } catch (e: Exception) {
-                if (e is BindException) {
-                }//端口被占用
-                Logger.e("Proxy启动失败 -> $e", e)
-            }
+                val server = Server()
+                updateSetting()
+                setConnector(server)
 
-        } catch (e: Exception) {
-            throw RuntimeException(e)
-        }
+                val connectHandler = ConnectHandler()
+                server.handler = connectHandler
+
+                val servletContextHandler = ServletContextHandler(
+                        connectHandler, "/", ServletContextHandler.SESSIONS)
+                val holder = ServletHolder(ProxyServlet())
+                holder.setInitParameter("idleTimeout", TimeUnit.MINUTES.toMillis(2).toString())
+                holder.setInitParameter("timeout", TimeUnit.MINUTES.toMillis(2).toString())
+                servletContextHandler.addServlet(holder, "/*")
+
+                try {
+                    server.start()
+                    this.server = server
+                } catch (e: Exception) {
+                    if (e is BindException) {
+                    }//端口被占用
+                    Logger.e("Proxy启动失败 -> $e", e)
+                }
+
+            } catch (e: Exception) {
+                throw RuntimeException(e)
+            }
+        }.start()
     }
 
     private fun setConnector(server: Server) {

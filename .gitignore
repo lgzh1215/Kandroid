@@ -44,5 +44,5 @@ captures/
 
 # Debug files
 /KCAPI/
-/core/src/main/java/kandroid/z/
+/app/src/main/java/kandroid/z/
 /log/
