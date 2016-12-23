@@ -2,14 +2,12 @@ package moe.lpj.kandroid.activity.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import kandroid.KandroidMain
@@ -27,9 +25,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         log.debug("onCreate")
-
-        PreferenceManager.setDefaultValues(this, R.xml.pref_proxy, false)
-        PreferenceManager.setDefaultValues(this, R.xml.pref_debug, false)
 
         setContentView(R.layout.activity_main)
 
@@ -51,18 +46,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onPause() {
         super.onPause()
-        Log.d("osdfnoesnfoeinfoe","onPause")
         log.info("onPause")
     }
 
     override fun onStop() {
         super.onStop()
-        log.debug("onStop")
+        log.info("onStop")
     }
 
     override fun onResume() {
         super.onResume()
-        log.debug("onResume")
+        log.info("onResume")
     }
 
     override fun onBackPressed() {
@@ -80,12 +74,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         val id = item.itemId
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_proxy) {
             val intent: Intent = Intent(this, ProxyService::class.java)
             if (ProxyService.isRunning) {
