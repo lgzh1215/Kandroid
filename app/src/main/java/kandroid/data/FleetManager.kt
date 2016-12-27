@@ -19,6 +19,9 @@ class FleetManager : RequestDataListener, ResponseDataListener {
     var combinedFlag: Int = 0
     var anchorageRepairingTimer: Date = Date(0L)
 
+    /**
+     * 舰队ID：1/2/3/4
+     */
     operator fun get(fleetID: Int): FleetData {
         return fleetDatas[fleetID]
     }

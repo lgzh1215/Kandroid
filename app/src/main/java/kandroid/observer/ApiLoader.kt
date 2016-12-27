@@ -1,10 +1,12 @@
 package kandroid.observer
 
 import kandroid.config.Config
+import kandroid.observer.kcsapi.api_port
 import kandroid.observer.kcsapi.api_start2
 import kandroid.utils.log.Logger
 import kandroid.utils.yyyyMMdd_HHmmssSSS
 import org.apache.commons.io.FileUtils
+import org.slf4j.LoggerFactory
 import java.nio.charset.Charset
 import java.util.*
 
@@ -17,7 +19,9 @@ object ApiLoader {
         synchronized(lock) {
             val data = rawData.decode()
             ApiLoader.save(data)
-            ApiLoader[data.uri]?.onDataReceived(data)
+            val apiBase = ApiLoader[data.uri]
+            apiBase?.onDataReceived(data)
+            apiBase?.notifyListeners()
         }
     }
 
@@ -57,5 +61,6 @@ object ApiLoader {
             this.put(apiBase.name, apiBase)
         }
         apiHolder.put(api_start2)
+        apiHolder.put(api_port.port)
     }
 }

@@ -12,6 +12,11 @@ import java.io.PrintStream
 import java.util.*
 
 object Logger : Listenable<kandroid.utils.log.Logger.LogData> {
+
+    override fun notifyListeners(something: LogData) {
+
+    }
+
     override val listeners = ArrayList<(LogData) -> Unit>()
 
     private val logger: Logger = LoggerFactory.getLogger("kandroid")

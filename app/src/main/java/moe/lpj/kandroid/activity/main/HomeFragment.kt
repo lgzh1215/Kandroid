@@ -20,8 +20,7 @@ class HomeFragment : Fragment() {
         super.onAttach(context)
         if (context is MainActivity) {
             mActivity = context
-//            addTabLayout()
-            showTab()
+            showTabLayout()
         } else {
             throw RuntimeException("???")
         }
@@ -34,25 +33,15 @@ class HomeFragment : Fragment() {
 
     override fun onDetach() {
         super.onDetach()
-        removeTabLayout()
+        hideTabLayout()
         mActivity = null
     }
 
-    private fun addTabLayout() {
-        if (tabLayout != null) return
-        val app_bar_layout = mActivity!!.app_bar_layout ?: return
-        val tabLayout: TabLayout = TabLayout(app_bar_layout.context)
-        tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
-        tabLayout.tabGravity = TabLayout.GRAVITY_CENTER
-        app_bar_layout.addView(tabLayout)
-    }
-
-    private fun removeTabLayout() {
-        mActivity!!.app_bar_layout.removeView(tabLayout)
-        tabLayout = null
-    }
-
-    private fun showTab() {
+    private fun showTabLayout() {
         mActivity!!.tab_layout.visibility = View.VISIBLE
+    }
+
+    private fun hideTabLayout() {
+        mActivity!!.tab_layout.visibility = View.GONE
     }
 }

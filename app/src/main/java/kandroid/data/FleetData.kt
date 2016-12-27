@@ -11,10 +11,26 @@ import java.util.*
 
 class FleetData : JsonWrapper(), RequestDataListener, Identifiable {
 
+    /**
+     * 舰队ID
+     */
     val fleetID: Int get() = data["api_id"].int()
+    /**
+     * 舰队名
+     */
     val name: String get() = data["api_name"].string()
+    /**
+     * 遠征状態
+     * 0=未出撃, 1=遠征中, 2=遠征帰投, 3=強制帰投中
+     */
     val expeditionState: Int get() = data["api_mission"][0].int()
+    /**
+     * 遠征ID
+     */
     val expeditionDestination: Int get() = data["api_mission"][1].int()
+    /**
+     * 遠征帰投時間
+     */
     val expeditionTime: Date get() = Date(data["api_mission"][2].long())
     val members: List<Int> get() = data["api_ship"].list()
 

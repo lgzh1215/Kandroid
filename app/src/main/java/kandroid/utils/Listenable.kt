@@ -7,4 +7,6 @@ interface Listenable<T> {
     fun addListener(t: (T) -> Unit) = listeners.add(t)
 
     fun removeListener(t: (T) -> Unit) = listeners.remove(t)
+
+    fun notifyListeners(something: T)
 }

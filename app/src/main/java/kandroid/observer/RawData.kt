@@ -22,7 +22,7 @@ class RawData @JvmOverloads constructor(
     val date = Date()
 
     fun decode(): RawData {
-        if (isReady && response.size == 0) return this
+        if (isReady && response.isEmpty()) return this
         try {
             var uri = this.uri
             if (uri.startsWith("/kcsapi/")) {
