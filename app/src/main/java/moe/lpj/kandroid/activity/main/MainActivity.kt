@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 import moe.lpj.kandroid.R
 import moe.lpj.kandroid.activity.setting.SettingsActivity
 import moe.lpj.kandroid.kandroid.ConfigA
+import moe.lpj.kandroid.service.DetectionService
 import moe.lpj.kandroid.service.ProxyService
 import moe.lpj.kandroid.viewmodel.viewUpdater
 import org.slf4j.Logger
@@ -23,6 +24,8 @@ import org.slf4j.LoggerFactory
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     val log: Logger = LoggerFactory.getLogger(javaClass)
+
+    var menuItem: MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +62,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onResume() {
         super.onResume()
+        updateMenu()
         log.info("onResume")
     }
 
@@ -76,30 +80,46 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
         } else {
+            moveTaskToBack(true)
             super.onBackPressed()
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main, menu)
+        val menuItem = menu.findItem(R.id.action_start)
+        this.menuItem = menuItem
+        updateMenu()
         return true
+    }
+
+    private fun updateMenu() {
+        menuItem?.title = if (ProxyService.isRunning) {
+            "正在运行"
+        } else {
+            "已停止"
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
-        if (id == R.id.action_proxy) {
-            val intent: Intent = Intent(this, ProxyService::class.java)
-            if (ProxyService.isRunning) {
-                stopService(intent)
-                KandroidMain.stop()
-                item.title = "已停止"
+        if (id == R.id.action_start) {
+            if (DetectionService.isAccessibilitySettingsOn(context = this)) {
+                val intent: Intent = Intent(this, ProxyService::class.java)
+                if (ProxyService.isRunning) {
+                    stopService(intent)
+                    KandroidMain.stop()
+                    menuItem?.title = "已停止"
+                } else {
+                    startService(intent)
+                    KandroidMain.updateConfig(ConfigA.get(this))
+                    KandroidMain.start()
+                    menuItem?.title = "正在运行"
+                }
+                return true
             } else {
-                startService(intent)
-                KandroidMain.updateConfig(ConfigA.get(this))
-                KandroidMain.start()
-                item.title = "正在运行"
+                DetectionService.startAccessibilitySettings(context = this)
             }
-            return true
         }
 
         return super.onOptionsItemSelected(item)

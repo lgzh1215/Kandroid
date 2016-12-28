@@ -23,10 +23,10 @@ val missionViewModelUpdater: () -> Unit = {
             missionViewModel.mission2Time = fleet2.expeditionTime
         }
         missionViewModel.isMission2Begin = isMission2Begin
+        log.info("更新第二舰队远征数据")
     } catch (e: Exception) {
         log.error("更新ViewModel失败：第二舰队远征数据 -> $e", e)
     }
-    log.info("更新第二舰队远征数据")
 
     //第三
     try {
@@ -37,10 +37,10 @@ val missionViewModelUpdater: () -> Unit = {
             missionViewModel.mission3Time = fleet3.expeditionTime
         }
         missionViewModel.isMission3Begin = isMission3Begin
+        log.info("更新第三舰队远征数据")
     } catch (e: Exception) {
         log.error("更新ViewModel失败：第三舰队远征数据 -> $e", e)
     }
-    log.info("更新第三舰队远征数据")
 
     //第四
     try {
@@ -51,10 +51,10 @@ val missionViewModelUpdater: () -> Unit = {
             missionViewModel.mission4Time = fleet4.expeditionTime
         }
         missionViewModel.isMission4Begin = isMission4Begin
+        log.info("更新第四舰队远征数据")
     } catch (e: Exception) {
         log.error("更新ViewModel失败：第四舰队远征数据 -> $e", e)
     }
-    log.info("更新第四舰队远征数据")
 
     //远征通知
     NotificationUtils.registerMissionNotifications()
