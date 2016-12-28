@@ -10,4 +10,8 @@
         android:fragment="moe.lpj.kandroid.activity.setting.SettingsActivity$DebugPreferenceFragment"
         android:title="Debug"/>
 
+    <header
+        android:fragment="moe.lpj.kandroid.activity.setting.SettingsActivity$NotificationPreferenceFragment"
+        android:title="Notification"/>
+
 </preference-headers>

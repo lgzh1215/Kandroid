@@ -39,19 +39,11 @@ class MyApplication : Application() {
         log.info("载入start2完成")
     }
 
-    fun getNotification(contentTitle: String, contentText: CharSequence, `when`: Long): Notification {
-        val builder = NotificationCompat.Builder(this)
-        builder.setSmallIcon(R.mipmap.ic_launcher)
-        builder.setContentTitle(contentTitle)
-        builder.setContentText(contentText)
-        builder.setWhen(`when`)
-        builder.setShowWhen(true)
-        builder.setAutoCancel(true)
-        return builder.build()
+    fun getNotificationBuilder(): NotificationCompat.Builder {
+        return NotificationCompat.Builder(this)
     }
 
-    fun testNotification(id: Int, notification: Notification) {
-        val mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        mNotificationManager.notify(id, notification)
+    fun getNotificationManager(): NotificationManager {
+        return getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     }
 }

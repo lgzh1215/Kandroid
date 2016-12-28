@@ -29,14 +29,12 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/deck3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:text="第二艦隊"/>
 
                     <TextView
-                        android:id="@+id/mission3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingLeft="30dp"
@@ -58,14 +56,12 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/textView7"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="10dp"
                             android:text="完成時間"/>
 
                         <TextView
-                            android:id="@+id/time3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@{mission.mission2Time}"
@@ -78,14 +74,12 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/textView9"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="10dp"
                             android:text="剩餘時間"/>
 
                         <TextView
-                            android:id="@+id/remaining3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@{mission.mission2LeftTime}"
@@ -113,14 +107,12 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/deck4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:text="第三艦隊"/>
 
                     <TextView
-                        android:id="@+id/mission4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingLeft="30dp"
@@ -142,14 +134,12 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/textView90"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="10dp"
                             android:text="完成時間"/>
 
                         <TextView
-                            android:id="@+id/time4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@{mission.mission3Time}"
@@ -162,14 +152,12 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/textView78"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="10dp"
                             android:text="剩餘時間"/>
 
                         <TextView
-                            android:id="@+id/remaining4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@{mission.mission3LeftTime}"
@@ -197,14 +185,12 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/deck2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:text="第四艦隊"/>
 
                     <TextView
-                        android:id="@+id/mission2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingLeft="30dp"
@@ -226,14 +212,12 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/textView6"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="10dp"
                             android:text="完成時間"/>
 
                         <TextView
-                            android:id="@+id/time2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@{mission.mission4Time}"
@@ -246,14 +230,12 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/textView8"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="10dp"
                             android:text="剩餘時間"/>
 
                         <TextView
-                            android:id="@+id/remaining2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@{mission.mission4LeftTime}"

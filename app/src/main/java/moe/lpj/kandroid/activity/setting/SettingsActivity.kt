@@ -1,5 +1,6 @@
 package moe.lpj.kandroid.activity.setting
 
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.media.RingtoneManager
 import android.net.Uri
@@ -8,8 +9,24 @@ import android.preference.*
 import android.text.TextUtils
 import android.view.MenuItem
 import moe.lpj.kandroid.R
+import moe.lpj.kandroid.utils.NotificationUtils
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
 
 class SettingsActivity : AppCompatPreferenceActivity() {
+
+    val log: Logger = LoggerFactory.getLogger(SettingsActivity::class.java)
+
+    private object onSharedPreferenceChangeListener : SharedPreferences.OnSharedPreferenceChangeListener {
+
+        override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+            if (key.endsWith("MissionNotification", ignoreCase = true)) {
+                NotificationUtils.log.info("通知设置发生变更")
+                NotificationUtils.registerMissionNotifications()
+            }
+        }
+    }
 
     /**
      * A preference value change listener that updates the preference'ses summary
@@ -89,6 +106,16 @@ class SettingsActivity : AppCompatPreferenceActivity() {
         supportActionBar.setDisplayHomeAsUpEnabled(true)
     }
 
+    override fun onResume() {
+        super.onResume()
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == android.R.id.home) {
@@ -121,6 +148,7 @@ class SettingsActivity : AppCompatPreferenceActivity() {
         return PreferenceFragment::class.java.name == fragmentName
                 || ProxyPreferenceFragment::class.java.name == fragmentName
                 || DebugPreferenceFragment::class.java.name == fragmentName
+                || NotificationPreferenceFragment::class.java.name == fragmentName
     }
 
     class ProxyPreferenceFragment : PreferenceFragment() {
@@ -139,6 +167,16 @@ class SettingsActivity : AppCompatPreferenceActivity() {
             super.onCreate(savedInstanceState)
             addPreferencesFromResource(R.xml.pref_debug)
             setHasOptionsMenu(true)
+        }
+    }
+
+    class NotificationPreferenceFragment : PreferenceFragment() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            addPreferencesFromResource(R.xml.pref_notification)
+            setHasOptionsMenu(true)
+
+            bindPreferenceSummaryToValue(findPreference("aheadMissionNotification"))
         }
     }
 }

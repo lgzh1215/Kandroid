@@ -18,21 +18,25 @@ public class MissionViewModel extends BaseObservable {
         api_get_member.deck.INSTANCE.addListener(UtilsKt.getMissionViewModelUpdater());
     }
 
-    public final static class Holder {
+    private final static class Holder {
         public final static MissionViewModel Instance = new MissionViewModel();
     }
 
-    boolean isMission2Begin;
-    String mission2Name;
-    Date mission2Time;
+    public static MissionViewModel getInstance() {
+        return Holder.Instance;
+    }
 
-    boolean isMission3Begin;
-    String mission3Name;
-    Date mission3Time;
+    public boolean isMission2Begin;
+    public String mission2Name;
+    public Date mission2Time;
 
-    boolean isMission4Begin;
-    String mission4Name;
-    Date mission4Time;
+    public boolean isMission3Begin;
+    public String mission3Name;
+    public Date mission3Time;
+
+    public boolean isMission4Begin;
+    public String mission4Name;
+    public Date mission4Time;
 
     @Bindable
     public String getMission2Name() {

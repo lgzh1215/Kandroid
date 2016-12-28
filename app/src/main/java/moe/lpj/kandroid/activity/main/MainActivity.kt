@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         if (fragment_container != null) {
             supportFragmentManager.beginTransaction()
-                    .add(R.id.fragment_container, HomeMissionFragment())
+                    .add(R.id.fragment_container, HomeFragment())
                     .commit()
             nav_view.setCheckedItem(R.id.nav_home)
         }

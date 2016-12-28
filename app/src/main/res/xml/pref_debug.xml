@@ -10,12 +10,12 @@
         android:defaultValue="true"
         android:key="isSaveKcsApi"
         android:title="保存通信内容"/>
-    <SwitchPreference
+    <CheckBoxPreference
         android:defaultValue="true"
         android:dependency="isSaveKcsApi"
         android:key="isSaveKcsRequest"
         android:title="保存Request内容"/>
-    <SwitchPreference
+    <CheckBoxPreference
         android:defaultValue="true"
         android:dependency="isSaveKcsApi"
         android:key="isSaveKcsResponse"

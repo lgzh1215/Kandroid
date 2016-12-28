@@ -22,7 +22,7 @@ public class HomeMissionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentHomeMissionBinding homeMissionBinding = FragmentHomeMissionBinding.inflate(inflater, container, false);
-        homeMissionBinding.setMission(MissionViewModel.Holder.Instance);
+        homeMissionBinding.setMission(MissionViewModel.getInstance());
         return homeMissionBinding.getRoot();
     }
 

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:title="远征通知"
+        android:key="missionNotification"
+        android:summary="远征结束时显示通知" />
+    <EditTextPreference
+        android:defaultValue="0"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="提前通知(秒)"
+        android:key="aheadNotification"
+        android:dependency="missionNotification"
+        android:inputType="number"
+        android:summary="未实现" />
+</PreferenceScreen>
