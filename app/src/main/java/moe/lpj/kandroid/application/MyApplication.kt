@@ -1,10 +1,12 @@
 package moe.lpj.kandroid.application
 
 import android.app.Application
-import android.content.res.AssetManager
+import android.app.Notification
+import android.app.NotificationManager
+import android.content.Context
 import android.preference.PreferenceManager
-import kandroid.observer.RawData
-import kandroid.observer.kcsapi.api_start2
+import android.support.v4.app.NotificationCompat
+import kandroid.KandroidMain
 import moe.lpj.kandroid.R
 import org.apache.commons.io.IOUtils
 import org.slf4j.Logger
@@ -16,8 +18,8 @@ class MyApplication : Application() {
     val log: Logger = LoggerFactory.getLogger(MyApplication::class.java)
 
     override fun onCreate() {
-        super.onCreate()
         instance = this
+        super.onCreate()
 
         PreferenceManager.setDefaultValues(this, R.xml.pref_proxy, false)
         PreferenceManager.setDefaultValues(this, R.xml.pref_debug, false)
@@ -33,8 +35,23 @@ class MyApplication : Application() {
     fun loadStart2Data() {
         val inputStream = assets.open("api_start2.json")
         val string = IOUtils.toString(inputStream, Charset.defaultCharset())
-        val rawData = RawData(api_start2.name, "", string, true)
-        api_start2.onDataReceived(rawData)
+        KandroidMain.loadStart2(string)
         log.info("载入start2完成")
+    }
+
+    fun getNotification(contentTitle: String, contentText: CharSequence, `when`: Long): Notification {
+        val builder = NotificationCompat.Builder(this)
+        builder.setSmallIcon(R.mipmap.ic_launcher)
+        builder.setContentTitle(contentTitle)
+        builder.setContentText(contentText)
+        builder.setWhen(`when`)
+        builder.setShowWhen(true)
+        builder.setAutoCancel(true)
+        return builder.build()
+    }
+
+    fun testNotification(id: Int, notification: Notification) {
+        val mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        mNotificationManager.notify(id, notification)
     }
 }

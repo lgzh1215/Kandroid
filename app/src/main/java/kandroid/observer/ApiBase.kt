@@ -7,7 +7,7 @@ import kandroid.utils.log.Logger
 
 import java.util.*
 
-abstract class ApiBase : Listenable{
+abstract class ApiBase : Listenable {
 
     override val listeners = ArrayList<() -> Unit>()
 

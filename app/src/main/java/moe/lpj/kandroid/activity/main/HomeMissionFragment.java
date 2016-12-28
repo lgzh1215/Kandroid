@@ -15,9 +15,12 @@ public class HomeMissionFragment extends Fragment {
 
     private MainActivity mActivity;
 
+    public static boolean isVisible = false;
+
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentHomeMissionBinding homeMissionBinding = FragmentHomeMissionBinding.inflate(inflater, container, false);
         homeMissionBinding.setMission(MissionViewModel.Holder.Instance);
         return homeMissionBinding.getRoot();
@@ -31,6 +34,18 @@ public class HomeMissionFragment extends Fragment {
         } else {
             throw new RuntimeException("???");
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        isVisible = true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        isVisible = false;
     }
 
     @Override

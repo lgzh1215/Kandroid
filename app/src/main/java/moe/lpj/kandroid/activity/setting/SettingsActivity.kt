@@ -31,7 +31,6 @@ class SettingsActivity : AppCompatPreferenceActivity() {
                                 preference.entries[index]
                             else
                                 null)
-
                 }
                 is RingtonePreference -> {
                     // For ringtone preferences, look up the correct display value
@@ -103,7 +102,8 @@ class SettingsActivity : AppCompatPreferenceActivity() {
      * {@inheritDoc}
      */
     override fun onIsMultiPane(): Boolean {
-        return resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK >= Configuration.SCREENLAYOUT_SIZE_LARGE
+        return resources.configuration.screenLayout and
+                Configuration.SCREENLAYOUT_SIZE_MASK >= Configuration.SCREENLAYOUT_SIZE_LARGE
     }
 
     /**
@@ -119,9 +119,6 @@ class SettingsActivity : AppCompatPreferenceActivity() {
      */
     override fun isValidFragment(fragmentName: String): Boolean {
         return PreferenceFragment::class.java.name == fragmentName
-                || GeneralPreferenceFragment::class.java.name == fragmentName
-                || DataSyncPreferenceFragment::class.java.name == fragmentName
-                || NotificationPreferenceFragment::class.java.name == fragmentName
                 || ProxyPreferenceFragment::class.java.name == fragmentName
                 || DebugPreferenceFragment::class.java.name == fragmentName
     }
@@ -142,34 +139,6 @@ class SettingsActivity : AppCompatPreferenceActivity() {
             super.onCreate(savedInstanceState)
             addPreferencesFromResource(R.xml.pref_debug)
             setHasOptionsMenu(true)
-        }
-    }
-
-    class GeneralPreferenceFragment : PreferenceFragment() {
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            addPreferencesFromResource(R.xml.pref_general)
-            setHasOptionsMenu(true)
-            bindPreferenceSummaryToValue(findPreference("example_text"))
-            bindPreferenceSummaryToValue(findPreference("example_list"))
-        }
-    }
-
-    class NotificationPreferenceFragment : PreferenceFragment() {
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            addPreferencesFromResource(R.xml.pref_notification)
-            setHasOptionsMenu(true)
-            bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"))
-        }
-    }
-
-    class DataSyncPreferenceFragment : PreferenceFragment() {
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            addPreferencesFromResource(R.xml.pref_data_sync)
-            setHasOptionsMenu(true)
-            bindPreferenceSummaryToValue(findPreference("sync_frequency"))
         }
     }
 }

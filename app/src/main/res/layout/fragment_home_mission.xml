@@ -4,13 +4,13 @@
 
         <variable
             name="mission"
-            type="moe.lpj.kandroid.viewmodel.MissionViewModel" />
+            type="moe.lpj.kandroid.viewmodel.MissionViewModel"/>
     </data>
 
     <FrameLayout xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="moe.lpj.kandroid.activity.main.HomeFragment">
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+                 tools:context="moe.lpj.kandroid.activity.main.HomeMissionFragment">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,7 +33,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
-                        android:text="第二艦隊" />
+                        android:text="第二艦隊"/>
 
                     <TextView
                         android:id="@+id/mission3"
@@ -41,7 +41,7 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="30dp"
                         android:text="@{mission.mission2Name}"
-                        android:textSize="24sp" />
+                        android:textSize="24sp"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -62,14 +62,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="10dp"
-                            android:text="完成時間" />
+                            android:text="完成時間"/>
 
                         <TextView
                             android:id="@+id/time3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@{mission.mission2Time}"
-                            android:textSize="18sp" />
+                            android:textSize="18sp"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -82,14 +82,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="10dp"
-                            android:text="剩餘時間" />
+                            android:text="剩餘時間"/>
 
                         <TextView
                             android:id="@+id/remaining3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@{mission.mission2LeftTime}"
-                            android:textSize="18sp" />
+                            android:textSize="18sp"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -99,7 +99,7 @@
                 android:layout_height="1dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="20dp"
-                android:background="@color/colorAccent" />
+                android:background="@color/colorAccent"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -117,15 +117,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
-                        android:text="第三艦隊" />
+                        android:text="第三艦隊"/>
 
                     <TextView
                         android:id="@+id/mission4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingLeft="30dp"
-                        android:text="@string/null_string"
-                        android:textSize="24sp" />
+                        android:text="@{mission.mission3Name}"
+                        android:textSize="24sp"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -146,14 +146,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="10dp"
-                            android:text="完成時間" />
+                            android:text="完成時間"/>
 
                         <TextView
                             android:id="@+id/time4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/null_string"
-                            android:textSize="18sp" />
+                            android:text="@{mission.mission3Time}"
+                            android:textSize="18sp"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -166,14 +166,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="10dp"
-                            android:text="剩餘時間" />
+                            android:text="剩餘時間"/>
 
                         <TextView
                             android:id="@+id/remaining4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/null_string"
-                            android:textSize="18sp" />
+                            android:text="@{mission.mission3LeftTime}"
+                            android:textSize="18sp"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -183,7 +183,7 @@
                 android:layout_height="1dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="20dp"
-                android:background="@color/colorAccent" />
+                android:background="@color/colorAccent"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -201,15 +201,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
-                        android:text="第四艦隊" />
+                        android:text="第四艦隊"/>
 
                     <TextView
                         android:id="@+id/mission2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingLeft="30dp"
-                        android:text="@string/null_string"
-                        android:textSize="24sp" />
+                        android:text="@{mission.mission4Name}"
+                        android:textSize="24sp"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -230,14 +230,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="10dp"
-                            android:text="完成時間" />
+                            android:text="完成時間"/>
 
                         <TextView
                             android:id="@+id/time2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/null_string"
-                            android:textSize="18sp" />
+                            android:text="@{mission.mission4Time}"
+                            android:textSize="18sp"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -250,14 +250,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="10dp"
-                            android:text="剩餘時間" />
+                            android:text="剩餘時間"/>
 
                         <TextView
                             android:id="@+id/remaining2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/null_string"
-                            android:textSize="18sp" />
+                            android:text="@{mission.mission4LeftTime}"
+                            android:textSize="18sp"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

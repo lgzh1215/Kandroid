@@ -4,21 +4,21 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
-import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import kandroid.KandroidMain
+import kandroid.thread.Threads
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.app_bar_main.*
 import moe.lpj.kandroid.R
 import moe.lpj.kandroid.activity.setting.SettingsActivity
 import moe.lpj.kandroid.kandroid.ConfigA
 import moe.lpj.kandroid.service.ProxyService
+import moe.lpj.kandroid.viewmodel.viewUpdater
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -48,6 +48,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             nav_view.setCheckedItem(R.id.nav_home)
         }
         log.info("dsafas fwsfwsefsfawe")
+
+        Threads.runTickTack(viewUpdater)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        log.info("onStart")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        log.info("onResume")
     }
 
     override fun onPause() {
@@ -58,11 +70,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onStop() {
         super.onStop()
         log.info("onStop")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        log.info("onResume")
     }
 
     override fun onBackPressed() {
