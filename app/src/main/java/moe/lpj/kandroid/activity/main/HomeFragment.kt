@@ -49,11 +49,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun showTabLayout() {
-        mActivity!!.tab_layout.visibility = View.VISIBLE
+        mActivity?.tab_layout?.visibility = View.VISIBLE
     }
 
     private fun hideTabLayout() {
-        mActivity!!.tab_layout.visibility = View.GONE
+        mActivity?.tab_layout?.visibility = View.GONE
     }
 
     private fun setupViewPager(view_pager: ViewPager) {

@@ -1,5 +1,6 @@
 package moe.lpj.kandroid.application
 
+import android.app.AlarmManager
 import android.app.Application
 import android.app.Notification
 import android.app.NotificationManager
@@ -45,5 +46,9 @@ class MyApplication : Application() {
 
     fun getNotificationManager(): NotificationManager {
         return getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    }
+
+    fun getAlarmManager(): AlarmManager {
+        return getSystemService(Context.ALARM_SERVICE) as AlarmManager
     }
 }

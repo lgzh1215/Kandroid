@@ -18,6 +18,14 @@ allprojects {
     repositories {
         jcenter()
     }
+
+    gradle.taskGraph.whenReady {
+        tasks.each { task ->
+            if (task.name.contains("Test")) {
+                task.enabled = false
+            }
+        }
+    }
 }
 
 task clean(type: Delete) {

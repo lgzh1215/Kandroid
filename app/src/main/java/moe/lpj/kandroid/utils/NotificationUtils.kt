@@ -1,88 +1,85 @@
 package moe.lpj.kandroid.utils
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Intent
+import kandroid.utils.SparseArray
 import moe.lpj.kandroid.R
 import moe.lpj.kandroid.application.MyApplication
+import moe.lpj.kandroid.service.MyReceiver
 import moe.lpj.kandroid.viewmodel.MissionViewModel
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.util.*
 
 object NotificationUtils {
 
+    val CONTENT_TITLE = "contentTitle"
+    val CONTENT_TEXT = "contentText"
+    val ID = "id"
+
     val log: Logger = LoggerFactory.getLogger(NotificationUtils::class.java)
 
-    val fleet2MissionNotificationId = 1
-    val fleet3MissionNotificationId = 2
-    val fleet4MissionNotificationId = 3
+    fun newTimedNotification(contentTitle: String, contentText: String, `when`: Long, id: Int) {
+        val intent = Intent(MyApplication.instance, MyReceiver::class.java)
+        intent.putExtra(CONTENT_TITLE, contentTitle)
+        intent.putExtra(CONTENT_TEXT, contentText)
+        intent.putExtra(ID, id)
+        val requestCode = 0
+        val pendingIntent = PendingIntent.getBroadcast(MyApplication.instance, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        MyApplication.instance.getAlarmManager().set(AlarmManager.RTC, `when`, pendingIntent)
+        map.put(id, pendingIntent)
+    }
+
+    fun cancelTimedNotification(pendingIntent: PendingIntent) {
+        MyApplication.instance.getAlarmManager().cancel(pendingIntent)
+    }
+
+    val missionNotificationId = listOf(1, 2, 3)
+
+    val map: SparseArray<PendingIntent> = SparseArray()
 
     fun cancelMissionNotifications() {
-        cancelFleet2MissionNotification()
-        cancelFleet3MissionNotification()
-        cancelFleet4MissionNotification()
+        for (i in 0..2) cancelMissionNotification(i)
     }
 
-    fun cancelFleet2MissionNotification() {
-        MyApplication.instance.getNotificationManager().cancel(fleet2MissionNotificationId)
-        log.info("取消第二舰队远征通知")
-    }
-
-    fun cancelFleet3MissionNotification() {
-        MyApplication.instance.getNotificationManager().cancel(fleet3MissionNotificationId)
-        log.info("取消第三舰队远征通知")
-    }
-
-    fun cancelFleet4MissionNotification() {
-        MyApplication.instance.getNotificationManager().cancel(fleet4MissionNotificationId)
-        log.info("取消第四舰队远征通知")
+    /**
+     * @param fleetId 第二舰队 -> fleetId = 0
+     */
+    fun cancelMissionNotification(fleetId: Int) {
+        val pendingIntent = map[missionNotificationId[fleetId]] ?: return
+        cancelTimedNotification(pendingIntent)
+        log.info("取消第 ${fleetId + 2} 舰队远征通知")
     }
 
     fun registerMissionNotifications() {
-        registerFleet2MissionNotification()
-        registerFleet3MissionNotification()
-        registerFleet4MissionNotification()
+        for (i in 0..2) registerMissionNotification(i)
     }
 
-    fun registerFleet2MissionNotification() {
-        if (MissionViewModel.getInstance().isMission2Begin) {
-            registerSimpleNotification("第二舰队远征结束",
-                    "远征 ${MissionViewModel.getInstance().mission2Name} 已结束",
-                    MissionViewModel.getInstance().mission2Time.time,
-                    fleet2MissionNotificationId)
-            log.info("注册第二舰队远征通知")
-        } else {
-            cancelFleet2MissionNotification()
+    /**
+     * @param fleetId 第二舰队 -> fleetId = 0
+     */
+    fun registerMissionNotification(fleetId: Int) {
+        if (MissionViewModel.getInstance().missionTime[fleetId] != null) {
+            newTimedNotification("第 ${fleetId + 2} 舰队远征结束",
+                    "远征 ${MissionViewModel.getInstance().missionName[fleetId]} 已结束",
+                    MissionViewModel.getInstance().missionTime[fleetId].time,
+                    missionNotificationId[fleetId])
+            log.info("注册第 ${fleetId + 2} 舰队远征通知")
         }
     }
 
-    fun registerFleet3MissionNotification() {
-        if (MissionViewModel.getInstance().isMission3Begin) {
-            registerSimpleNotification("第三舰队远征结束",
-                    "远征 ${MissionViewModel.getInstance().mission3Name} 已结束",
-                    MissionViewModel.getInstance().mission3Time.time,
-                    fleet3MissionNotificationId)
-            log.info("注册第三舰队远征通知")
-        } else {
-            cancelFleet3MissionNotification()
-        }
+    fun registerSimpleNotification(intent: Intent) {
+        registerSimpleNotification(intent.getStringExtra(CONTENT_TITLE),
+                intent.getStringExtra(CONTENT_TEXT),
+                intent.getIntExtra(ID, 0))
     }
 
-    fun registerFleet4MissionNotification() {
-        if (MissionViewModel.getInstance().isMission4Begin) {
-            registerSimpleNotification("第四舰队远征结束",
-                    "远征 ${MissionViewModel.getInstance().mission4Name} 已结束",
-                    MissionViewModel.getInstance().mission4Time.time,
-                    fleet4MissionNotificationId)
-            log.info("注册第四舰队远征通知")
-        } else {
-            cancelFleet4MissionNotification()
-        }
-    }
-
-    private fun registerSimpleNotification(contentTitle: String, contentText: CharSequence, `when`: Long, id: Int) {
+    fun registerSimpleNotification(contentTitle: String, contentText: CharSequence, id: Int) {
         val builder = MyApplication.instance.getNotificationBuilder()
         builder.setSmallIcon(R.mipmap.ic_launcher)
         builder.setContentTitle(contentTitle)
         builder.setContentText(contentText)
-        builder.setWhen(`when`)
         builder.setShowWhen(true)
         builder.setAutoCancel(true)
         val notification = builder.build()

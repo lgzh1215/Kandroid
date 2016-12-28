@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import kandroid.KandroidMain
 import kandroid.thread.Threads
+import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import moe.lpj.kandroid.R
@@ -42,7 +43,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         nav_view.setNavigationItemSelectedListener(this)
 
-        if (savedInstanceState != null) return
+        if (savedInstanceState != null) {
+            clearFindViewByIdCache()
+            return
+        }
 
         if (fragment_container != null) {
             supportFragmentManager.beginTransaction()

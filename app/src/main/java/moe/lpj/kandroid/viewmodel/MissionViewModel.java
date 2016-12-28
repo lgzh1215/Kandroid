@@ -19,93 +19,84 @@ public class MissionViewModel extends BaseObservable {
     }
 
     private final static class Holder {
-        public final static MissionViewModel Instance = new MissionViewModel();
+        final static MissionViewModel Instance = new MissionViewModel();
     }
 
     public static MissionViewModel getInstance() {
         return Holder.Instance;
     }
 
-    public boolean isMission2Begin;
-    public String mission2Name;
-    public Date mission2Time;
-
-    public boolean isMission3Begin;
-    public String mission3Name;
-    public Date mission3Time;
-
-    public boolean isMission4Begin;
-    public String mission4Name;
-    public Date mission4Time;
+    public Date[] missionTime = new Date[3];
+    public String[] missionName = new String[3];
 
     @Bindable
     public String getMission2Name() {
-        if (isMission2Begin) {
-            return mission2Name;
+        if (missionTime[0] != null) {
+            return missionName[0];
         }
         return "null";
     }
 
     @Bindable
     public String getMission2Time() {
-        if (isMission2Begin) {
-            return DateFormatUtils.format(mission2Time, "HH:mm:ss");
+        if (missionTime[0] != null) {
+            return DateFormatUtils.format(missionTime[0], "HH:mm:ss");
         }
         return "null";
     }
 
     @Bindable
     public String getMission2LeftTime() {
-        if (isMission2Begin) {
-            return DurationFormatUtils.formatPeriod(new Date().getTime(), mission2Time.getTime(), "HH:mm:ss");
+        if (missionTime[0] != null) {
+            return DurationFormatUtils.formatPeriod(new Date().getTime(), missionTime[0].getTime(), "HH:mm:ss");
         }
         return "null";
     }
 
     @Bindable
     public String getMission3Name() {
-        if (isMission3Begin) {
-            return mission3Name;
+        if (missionTime[1] != null) {
+            return missionName[1];
         }
         return "null";
     }
 
     @Bindable
     public String getMission3Time() {
-        if (isMission3Begin) {
-            return DateFormatUtils.format(mission3Time, "HH:mm:ss");
+        if (missionTime[1] != null) {
+            return DateFormatUtils.format(missionTime[1], "HH:mm:ss");
         }
         return "null";
     }
 
     @Bindable
     public String getMission3LeftTime() {
-        if (isMission3Begin) {
-            return DurationFormatUtils.formatPeriod(new Date().getTime(), mission2Time.getTime(), "HH:mm:ss");
+        if (missionTime[1] != null) {
+            return DurationFormatUtils.formatPeriod(new Date().getTime(), missionTime[1].getTime(), "HH:mm:ss");
         }
         return "null";
     }
 
     @Bindable
     public String getMission4Name() {
-        if (isMission4Begin) {
-            return mission2Name;
+        if (missionTime[2] != null) {
+            return missionName[2];
         }
         return "null";
     }
 
     @Bindable
     public String getMission4Time() {
-        if (isMission4Begin) {
-            return DateFormatUtils.format(mission2Time, "HH:mm:ss");
+        if (missionTime[2] != null) {
+            return DateFormatUtils.format(missionTime[2], "HH:mm:ss");
         }
         return "null";
     }
 
     @Bindable
     public String getMission4LeftTime() {
-        if (isMission4Begin) {
-            return DurationFormatUtils.formatPeriod(new Date().getTime(), mission2Time.getTime(), "HH:mm:ss");
+        if (missionTime[2] != null) {
+            return DurationFormatUtils.formatPeriod(new Date().getTime(), missionTime[2].getTime(), "HH:mm:ss");
         }
         return "null";
     }
