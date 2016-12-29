@@ -2,7 +2,6 @@ package moe.lpj.kandroid.activity.main
 
 import android.content.Context
 import android.os.Bundle
-import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
@@ -10,18 +9,19 @@ import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import moe.lpj.kandroid.R
+import moe.lpj.kandroid.databinding.FragmentHomeBinding
 import java.util.*
 
 class HomeFragment : Fragment() {
 
-    private var mActivity: MainActivity? = null
+    var mActivity: MainActivity? = null
+
+    lateinit var binding: FragmentHomeBinding private set
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is MainActivity) {
             mActivity = context
-            showTabLayout()
         } else {
             throw RuntimeException("???")
         }
@@ -33,11 +33,15 @@ class HomeFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_home, container, false)
-        val view_pager = view.findViewById(R.id.view_pager) as ViewPager
-//        setupViewPager(view_pager)
-        return view
+                              savedInstanceState: Bundle?): View {
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        mActivity!!.showTabLayout()
+//        mActivity!!.binding.activityMainContent.toolbar.
     }
 
     override fun onDestroyView() {
@@ -46,20 +50,12 @@ class HomeFragment : Fragment() {
 
     override fun onDetach() {
         super.onDetach()
-        hideTabLayout()
+        mActivity!!.hideTabLayout()
         mActivity = null
     }
 
-    private fun showTabLayout() {
-        mActivity!!.findViewById(R.id.tab_layout).visibility = View.VISIBLE
-    }
-
-    private fun hideTabLayout() {
-        mActivity!!.findViewById(R.id.tab_layout).visibility = View.GONE
-    }
-
     private fun setupViewPager(view_pager: ViewPager) {
-        val tab_layout = mActivity!!.findViewById(R.id.tab_layout) as TabLayout
+        val tab_layout = mActivity!!.binding.activityMainContent.tabLayout
 
         val titles = ArrayList<String>()
         titles.add("综合")
@@ -72,14 +68,14 @@ class HomeFragment : Fragment() {
         fragments.add(HomeOverviewFragment())
         fragments.add(HomeMissionFragment())
 
-        val fragmentAdepter = MyFragmentAdepter(mActivity!!.supportFragmentManager, fragments, titles)
+        val fragmentAdepter = MyFragmentAdepter(fragments, titles, activity.supportFragmentManager)
         view_pager.adapter = fragmentAdepter
         tab_layout.setupWithViewPager(view_pager)
     }
 
-    private inner class MyFragmentAdepter(fm: FragmentManager,
-                                          private val mFragments: List<Fragment>,
-                                          private val mTitles: List<String>) : FragmentStatePagerAdapter(fm) {
+    private inner class MyFragmentAdepter(private val mFragments: List<Fragment>,
+                                          private val mTitles: List<String>,
+                                          fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
 
         override fun getItem(position: Int): Fragment {
             return mFragments[position]

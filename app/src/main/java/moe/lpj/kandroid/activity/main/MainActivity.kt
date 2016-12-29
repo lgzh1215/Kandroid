@@ -7,75 +7,52 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
-import android.view.Menu
 import android.view.MenuItem
-import kandroid.KandroidMain
-import kandroid.thread.Threads
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_main.*
+import android.view.View
 import moe.lpj.kandroid.R
 import moe.lpj.kandroid.activity.setting.SettingsActivity
-import moe.lpj.kandroid.databinding.ActivityMainBinding
-import moe.lpj.kandroid.kandroid.ConfigA
-import moe.lpj.kandroid.service.DetectionService
-import moe.lpj.kandroid.service.ProxyService
-import moe.lpj.kandroid.viewmodel.viewUpdater
+import moe.lpj.kandroid.databinding.ActivityMainDrawerBinding
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import android.databinding.DataBindingUtil.getBinding
-
-
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     val log: Logger = LoggerFactory.getLogger(MainActivity::class.java)
 
-    var toggle: ActionBarDrawerToggle? = null
+    lateinit var mDrawerToggle: ActionBarDrawerToggle private set
 
-    var menuItem: MenuItem? = null
-
-    lateinit var binding: ActivityMainBinding private set
+    lateinit var binding: ActivityMainDrawerBinding private set
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        log.debug("onCreate")
+        log.info("onCreate")
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main_drawer)
 
-        setContentView(R.layout.activity_main)
-
-        setSupportActionBar(toolbar)
-
-        toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer_layout.addDrawerListener(toggle!!)
-
-        nav_view.setNavigationItemSelectedListener(this)
+        initActionBar()
 
         if (savedInstanceState != null)
             return
 
-        if (fragment_container != null) {
+        if (binding.activityMainContent.fragmentContainer != null) {
             supportFragmentManager.beginTransaction()
                     .add(R.id.fragment_container, HomeFragment())
                     .commit()
-            nav_view.setCheckedItem(R.id.nav_home)
+            binding.navigationView.setCheckedItem(R.id.nav_home)
         }
-        log.info("dsafas fwsfwsefsfawe")
-
-        Threads.runTickTack(viewUpdater)
     }
 
-//    private fun initActionBar() {
-//        setSupportActionBar(getBinding().toolbar)
-//
-//        val drawer = getBinding().drawLayout
-//        val toggle = ActionBarDrawerToggle(this, drawer, getBinding().toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-//        drawer.setDrawerListener(toggle)
-//        toggle.syncState()
-//
-//        getBinding().navigationView.setNavigationItemSelectedListener(this)
-//    }
+    private fun initActionBar() {
+        setSupportActionBar(binding.activityMainContent.toolbar)
+
+        val toggle = ActionBarDrawerToggle(this,
+                binding.drawerLayout, binding.activityMainContent.toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        binding.drawerLayout.addDrawerListener(toggle)
+        mDrawerToggle = toggle
+
+        binding.navigationView.setNavigationItemSelectedListener(this)
+    }
 
     override fun onStart() {
         super.onStart()
@@ -84,12 +61,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-        toggle!!.syncState()
+        mDrawerToggle.syncState()
     }
 
     override fun onResume() {
         super.onResume()
-        updateMenu()
         log.info("onResume")
     }
 
@@ -104,52 +80,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
         } else {
             moveTaskToBack(true)
             super.onBackPressed()
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main, menu)
-        val menuItem = menu.findItem(R.id.action_start)
-        this.menuItem = menuItem
-        updateMenu()
-        return true
-    }
-
-    private fun updateMenu() {
-        menuItem?.title = if (ProxyService.isRunning) {
-            "正在运行"
-        } else {
-            "已停止"
-        }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-        if (id == R.id.action_start) {
-            if (DetectionService.isAccessibilitySettingsOn(context = this)) {
-                val intent: Intent = Intent(this, ProxyService::class.java)
-                if (ProxyService.isRunning) {
-                    stopService(intent)
-                    KandroidMain.stop()
-                    menuItem?.title = "已停止"
-                } else {
-                    startService(intent)
-                    KandroidMain.updateConfig(ConfigA.get(this))
-                    KandroidMain.start()
-                    menuItem?.title = "正在运行"
-                }
-                return true
-            } else {
-                DetectionService.startAccessibilitySettings(context = this)
-            }
-        }
-
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -168,7 +104,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(intent)
             }
         }
-        drawer_layout.closeDrawer(GravityCompat.START)
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    fun showTabLayout() {
+        binding.activityMainContent.tabLayout.visibility = View.VISIBLE
+    }
+
+    fun hideTabLayout() {
+        binding.activityMainContent.tabLayout.visibility = View.GONE
     }
 }
