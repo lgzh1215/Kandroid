@@ -1,7 +1,6 @@
 package moe.lpj.kandroid.viewmodel
 
 import kandroid.data.KCDatabase
-import moe.lpj.kandroid.BR
 import moe.lpj.kandroid.activity.main.HomeMissionFragment
 import moe.lpj.kandroid.utils.NotificationUtils
 import org.slf4j.Logger
@@ -40,9 +39,7 @@ val missionViewModelUpdater: () -> Unit = {
 
 val viewUpdater: Runnable = Runnable {
     if (HomeMissionFragment.isVisible) {
-        MissionViewModel.getInstance().notifyPropertyChanged(BR.mission2LeftTime)
-        MissionViewModel.getInstance().notifyPropertyChanged(BR.mission3LeftTime)
-        MissionViewModel.getInstance().notifyPropertyChanged(BR.mission4LeftTime)
+        MissionViewModel.getInstance().notifyChange()
 //        log.info("MissionView Updated!")
     }
 }

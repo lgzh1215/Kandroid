@@ -10,7 +10,6 @@ import android.view.Menu
 import android.view.MenuItem
 import kandroid.KandroidMain
 import kandroid.thread.Threads
-import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import moe.lpj.kandroid.R
@@ -25,6 +24,7 @@ import org.slf4j.LoggerFactory
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     val log: Logger = LoggerFactory.getLogger(javaClass)
+    var toggle : ActionBarDrawerToggle? = null
 
     var menuItem: MenuItem? = null
 
@@ -36,17 +36,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         setSupportActionBar(toolbar)
 
-        val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar,
+        toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer_layout.addDrawerListener(toggle)
-        toggle.syncState()
+        drawer_layout.addDrawerListener(toggle!!)
 
         nav_view.setNavigationItemSelectedListener(this)
 
-        if (savedInstanceState != null) {
-            clearFindViewByIdCache()
+        if (savedInstanceState != null)
             return
-        }
 
         if (fragment_container != null) {
             supportFragmentManager.beginTransaction()
@@ -62,6 +59,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onStart() {
         super.onStart()
         log.info("onStart")
+    }
+
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+        toggle!!.syncState()
     }
 
     override fun onResume() {

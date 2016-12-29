@@ -37,7 +37,12 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support:support-v4:25.1.0'
     compile 'com.google.code.gson:gson:2.7'
+    kapt 'com.android.databinding:compiler:2.2.3'
 }
 repositories {
     mavenCentral()
+}
+
+kapt {
+    generateStubs = true
 }
