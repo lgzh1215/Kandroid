@@ -1,6 +1,7 @@
 package moe.lpj.kandroid.activity.main
 
 import android.content.Intent
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -14,23 +15,32 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import moe.lpj.kandroid.R
 import moe.lpj.kandroid.activity.setting.SettingsActivity
+import moe.lpj.kandroid.databinding.ActivityMainBinding
 import moe.lpj.kandroid.kandroid.ConfigA
 import moe.lpj.kandroid.service.DetectionService
 import moe.lpj.kandroid.service.ProxyService
 import moe.lpj.kandroid.viewmodel.viewUpdater
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import android.databinding.DataBindingUtil.getBinding
+
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    val log: Logger = LoggerFactory.getLogger(javaClass)
-    var toggle : ActionBarDrawerToggle? = null
+    val log: Logger = LoggerFactory.getLogger(MainActivity::class.java)
+
+    var toggle: ActionBarDrawerToggle? = null
 
     var menuItem: MenuItem? = null
+
+    lateinit var binding: ActivityMainBinding private set
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         log.debug("onCreate")
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         setContentView(R.layout.activity_main)
 
@@ -55,6 +65,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         Threads.runTickTack(viewUpdater)
     }
+
+//    private fun initActionBar() {
+//        setSupportActionBar(getBinding().toolbar)
+//
+//        val drawer = getBinding().drawLayout
+//        val toggle = ActionBarDrawerToggle(this, drawer, getBinding().toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+//        drawer.setDrawerListener(toggle)
+//        toggle.syncState()
+//
+//        getBinding().navigationView.setNavigationItemSelectedListener(this)
+//    }
 
     override fun onStart() {
         super.onStart()
