@@ -10,7 +10,6 @@ import moe.lpj.kandroid.service.NotificationReceiver
 import moe.lpj.kandroid.viewmodel.MissionViewModel
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.util.*
 
 object NotificationUtils {
 
@@ -27,12 +26,17 @@ object NotificationUtils {
         intent.putExtra(ID, id)
         val requestCode = 0
         val pendingIntent = PendingIntent.getBroadcast(MyApplication.instance, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-        MyApplication.instance.getAlarmManager().set(AlarmManager.RTC, `when`, pendingIntent)
+        MyApplication.instance.getAlarmManager().set(AlarmManager.RTC_WAKEUP, `when`, pendingIntent)
         map.put(id, pendingIntent)
     }
 
     fun cancelTimedNotification(pendingIntent: PendingIntent) {
         MyApplication.instance.getAlarmManager().cancel(pendingIntent)
+    }
+
+    fun cancelTimedNotification(id: Int) {
+        val pendingIntent = map[id] ?: return
+        cancelTimedNotification(pendingIntent)
     }
 
     val missionNotificationId = listOf(1, 2, 3)

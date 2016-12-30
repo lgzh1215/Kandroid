@@ -2,7 +2,7 @@ package kandroid.proxy
 
 import kandroid.config.Config
 import kandroid.observer.ApiLoader
-import kandroid.observer.RawData
+import kandroid.observer.ByteArrayRawData
 import kandroid.thread.Threads
 import org.apache.commons.io.output.ByteArrayOutputStream
 import org.eclipse.jetty.client.HttpClient
@@ -44,7 +44,7 @@ class ProxyServlet : AsyncProxyServlet() {
             if (stream != null) {
                 val postField = request.getAttribute(Filter.REQUEST_BODY) as ByteArray
 
-                val data = RawData(request.requestURI, postField, stream.toByteArray())
+                val data = ByteArrayRawData(request.requestURI, postField, stream.toByteArray())
                 Threads.pool.execute { ApiLoader.load(data) }
             }
         }

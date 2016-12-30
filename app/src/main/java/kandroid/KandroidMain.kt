@@ -2,10 +2,13 @@ package kandroid
 
 import kandroid.config.Config
 import kandroid.config.IConfig
-import kandroid.observer.RawData
+import kandroid.observer.StringRawData
+import kandroid.observer.kcsapi.api_port
 import kandroid.observer.kcsapi.api_start2
 import kandroid.proxy.ProxyServer
 import kandroid.utils.log.Logger
+import org.apache.commons.io.FileUtils
+import java.nio.charset.Charset
 
 object KandroidMain {
 
@@ -24,8 +27,37 @@ object KandroidMain {
      * @param json must no "svdata="
      */
     fun loadStart2(json: String) {
-        val rawData = RawData(api_start2.name, "", json, true)
+        val rawData = StringRawData(api_start2.name, "", json, true)
         api_start2.onDataReceived(rawData)
+    }
+
+    fun loadStart2(): Boolean {
+        val file = Config.getSaveUserDataFile("api_start2")
+        if (file.exists() && file.canRead()) {
+            val string = FileUtils.readFileToString(file, Charset.defaultCharset())
+            loadStart2(string)
+            return true
+        }
+        return false
+    }
+
+    /**
+     * 恢复用户数据
+     * @param json must no "svdata="
+     */
+    fun loadPort(json: String) {
+        val rawData = StringRawData(api_port.port.name, "", json, true)
+        api_port.port.onDataReceived(rawData)
+    }
+
+    fun loadPort(): Boolean {
+        val file = Config.getSaveUserDataFile("api_port")
+        if (file.exists() && file.canRead()) {
+            val string = FileUtils.readFileToString(file, Charset.defaultCharset())
+            loadPort(string)
+            return true
+        }
+        return false
     }
 
     fun stop() {

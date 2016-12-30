@@ -43,16 +43,14 @@ open class Config : IConfig {
         override val isMultipleUserMode: Boolean get() = config.isMultipleUserMode
         override val isDebugOn: Boolean get() = config.isDebugOn
 
-        fun getSaveKcsApiFile(fileName: String?): File {
-            val file = File(storageDir, "KCAPI")
-            if (fileName == null)
-                return file
-            else
-                return File(file, fileName)
-        }
+        fun getSaveKcsApiFile(fileName: String?): File = getFile("KCAPI", fileName)
 
-        fun getSaveLogFile(fileName: String?): File {
-            val file = File(storageDir, "log")
+        fun getSaveLogFile(fileName: String?): File = getFile("log", fileName)
+
+        fun getSaveUserDataFile(fileName: String?): File = getFile("data", fileName)
+
+        private fun getFile(folderName: String, fileName: String?): File {
+            val file = File(storageDir, folderName)
             if (fileName == null)
                 return file
             else

@@ -8,20 +8,22 @@ import java.net.URLDecoder
 import java.util.*
 import java.util.zip.GZIPInputStream
 
-class RawData @JvmOverloads constructor(
-        val uri: String,
-        val request: ByteArray,
-        val response: ByteArray,
-        val isReady: Boolean = false) {
+abstract class RawData(val uri: String,
+                       val isReady: Boolean) {
+    val date: Date = Date()
 
-    constructor(uri: String,
-                request: String,
-                response: String,
-                isReady: Boolean) : this(uri, request.toByteArray(), response.toByteArray(), isReady)
+    abstract val requestString: String
+    abstract val requestMap: Map<String, String>
+    abstract val responseString: String
+    open fun decode(): RawData = this
+}
 
-    val date = Date()
+class ByteArrayRawData(uri: String,
+                       val request: ByteArray,
+                       val response: ByteArray,
+                       isReady: Boolean = false) : RawData(uri, isReady) {
 
-    fun decode(): RawData {
+    override fun decode(): RawData {
         if (isReady && response.isEmpty()) return this
         try {
             var uri = this.uri
@@ -44,16 +46,16 @@ class RawData @JvmOverloads constructor(
 
             val decodedData = IOUtils.toByteArray(stream)
 
-            return RawData(uri, request, decodedData, true)
+            return ByteArrayRawData(uri, request, decodedData, true)
         } catch (e: Exception) {
             Logger.e("处理数据时出错 -> $e", e)
             return this
         }
     }
 
-    val requestString: String = String(request)
+    override val requestString: String = String(request)
 
-    val requestMap: Map<String, String> get() {
+    override val requestMap: Map<String, String> get() {
         val map = HashMap<String, String>()
         val params = URLDecoder.decode(requestString, "UTF-8").split("&")
         var name: String
@@ -70,10 +72,32 @@ class RawData @JvmOverloads constructor(
         return map
     }
 
-    val responseString: String = String(response)
+    override val responseString: String = String(response)
+}
 
+class StringRawData(uri: String,
+                    request: String,
+                    response: String,
+                    noSvdata: Boolean) : RawData(uri, noSvdata) {
 
-//    override fun toString(): String {
-//        return String(response)
-//    }
+    override val requestString: String = request
+
+    override val requestMap: Map<String, String> get() {
+        val map = HashMap<String, String>()
+        val params = URLDecoder.decode(requestString, "UTF-8").split("&")
+        var name: String
+        var value: String
+        var split: List<String>
+        for (param in params) {
+            split = param.split("=")
+            if (split.size == 2) {
+                name = split[0]
+                value = split[1]
+                map.put(name, value)
+            }
+        }
+        return map
+    }
+
+    override val responseString: String = response
 }

@@ -30,6 +30,8 @@ abstract class ApiBase : Listenable {
 
     abstract fun onDataReceived(rawData: RawData)
 
+    open fun directLoad(stringRawData: StringRawData) {}
+
     override fun toString(): String = name
 
     protected fun RawData.api_data(): JsonElement? = JsonParser.parse(this.responseString)["api_data"]

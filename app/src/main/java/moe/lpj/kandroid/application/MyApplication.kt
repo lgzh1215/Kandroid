@@ -7,8 +7,10 @@ import android.content.Context
 import android.preference.PreferenceManager
 import android.support.v4.app.NotificationCompat
 import kandroid.KandroidMain
+import kandroid.thread.Threads
 import moe.lpj.kandroid.R
 import moe.lpj.kandroid.kandroid.ConfigA
+import moe.lpj.kandroid.viewmodel.viewUpdater
 import org.apache.commons.io.IOUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -26,11 +28,12 @@ class MyApplication : Application() {
         PreferenceManager.setDefaultValues(this, R.xml.pref_debug, false)
         PreferenceManager.setDefaultValues(this, R.xml.pref_notification, false)
 
-        Thread {
-            loadStart2Data()
-            KandroidMain.updateConfig(ConfigA.get(this))
-            KandroidMain.start()
-        }.start()
+        KandroidMain.updateConfig(ConfigA.get(this))
+        loadStart2Data()
+        loadPortData()
+        KandroidMain.start()
+
+        Threads.runTickTack(viewUpdater)
     }
 
     companion object {
@@ -39,10 +42,19 @@ class MyApplication : Application() {
     }
 
     fun loadStart2Data() {
-        val inputStream = assets.open("api_start2.json")
-        val string = IOUtils.toString(inputStream, Charset.defaultCharset())
-        KandroidMain.loadStart2(string)
+        val ok = KandroidMain.loadStart2()
+        if (!ok) {
+            val inputStream = assets.open("api_start2.json")
+            val string = IOUtils.toString(inputStream, Charset.defaultCharset())
+            KandroidMain.loadStart2(string)
+        }
         log.info("载入start2完成")
+    }
+
+    fun loadPortData() {
+        val ok = KandroidMain.loadPort()
+        if (ok)
+            log.info("载入port完成")
     }
 
     fun getNotificationBuilder(): NotificationCompat.Builder {

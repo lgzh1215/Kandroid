@@ -1,12 +1,12 @@
 package kandroid.observer
 
 import kandroid.config.Config
+import kandroid.observer.kcsapi.api_get_member
 import kandroid.observer.kcsapi.api_port
 import kandroid.observer.kcsapi.api_start2
 import kandroid.utils.log.Logger
 import kandroid.utils.yyyyMMdd_HHmmssSSS
 import org.apache.commons.io.FileUtils
-import org.slf4j.LoggerFactory
 import java.nio.charset.Charset
 import java.util.*
 
@@ -50,6 +50,11 @@ object ApiLoader {
         }
     }
 
+    fun some(rawData: RawData) {
+        val file = Config.getSaveUserDataFile(rawData.uri)
+        FileUtils.writeStringToFile(file, rawData.responseString, Charset.defaultCharset())
+    }
+
     private val apiHolder = HashMap<String, ApiBase>()
 
     operator fun get(apiName: String): ApiBase? {
@@ -62,5 +67,6 @@ object ApiLoader {
         }
         apiHolder.put(api_start2)
         apiHolder.put(api_port.port)
+        apiHolder.put(api_get_member.deck)
     }
 }

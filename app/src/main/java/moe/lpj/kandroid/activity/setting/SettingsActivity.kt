@@ -22,7 +22,7 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 
         override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
             if (key.endsWith("MissionNotification", ignoreCase = true)) {
-                NotificationUtils.log.info("通知设置发生变更")
+//                NotificationUtils.log.info("通知设置发生变更")
                 NotificationUtils.registerMissionNotifications()
             }
         }

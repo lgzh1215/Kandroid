@@ -1,14 +1,15 @@
 package kandroid.observer.kcsapi
 
+import kandroid.config.Config
 import kandroid.data.DockData
 import kandroid.data.KCDatabase
 import kandroid.data.ShipData
 import kandroid.observer.ApiBase
+import kandroid.observer.ByteArrayRawData
 import kandroid.observer.RawData
-import kandroid.utils.json.array
-import kandroid.utils.json.get
-import kandroid.utils.json.int
-import kandroid.utils.json.obj
+import kandroid.utils.json.*
+import org.apache.commons.io.FileUtils
+import java.nio.charset.Charset
 
 object api_port {
 
@@ -16,7 +17,12 @@ object api_port {
         override val name: String get() = "api_port/port"
 
         override fun onDataReceived(rawData: RawData) {
-            val data = rawData.api_data().obj ?: return
+            val responseString = rawData.responseString
+            if (rawData is ByteArrayRawData) {
+                val file = Config.getSaveUserDataFile("api_port")
+                FileUtils.writeStringToFile(file, responseString, Charset.defaultCharset())
+            }
+            val data = JsonParser.parse(responseString)["api_data"].obj ?: return
 
             // api_material
             val api_material = data["api_material"].array

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
-import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,14 +59,14 @@ class HomeFragment : Fragment() {
 
         val titles = ArrayList<String>()
         titles.add("综合")
-//        titles.add("远征")
+        titles.add("远征")
 
         tab_layout.addTab(tab_layout.newTab().setText(titles[0]))
-//        tab_layout.addTab(tab_layout.newTab().setText(titles[1]))
+        tab_layout.addTab(tab_layout.newTab().setText(titles[1]))
 
         val fragments = ArrayList<Fragment>()
         fragments.add(HomeOverviewFragment())
-//        fragments.add(HomeMissionFragment())
+        fragments.add(HomeMissionFragment())
 
         val fragmentAdepter = MyFragmentAdepter(fragments, titles, activity.supportFragmentManager)
         binding.viewPager.adapter = fragmentAdepter
