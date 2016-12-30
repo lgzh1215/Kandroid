@@ -48,7 +48,7 @@
                 android:resource="@xml/detection_service_config"/>
         </service>
 
-        <receiver android:name=".service.MyReceiver"/>
+        <receiver android:name=".service.NotificationReceiver"/>
     </application>
 
 </manifest>

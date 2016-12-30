@@ -7,7 +7,7 @@ import android.content.Intent
 import android.support.v4.app.NotificationCompat
 import moe.lpj.kandroid.utils.NotificationUtils
 
-class MyReceiver : BroadcastReceiver() {
+class NotificationReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         NotificationUtils.registerSimpleNotification(intent)

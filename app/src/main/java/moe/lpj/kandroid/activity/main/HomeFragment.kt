@@ -35,6 +35,7 @@ class HomeFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+        setupViewPager()
         return binding.root
     }
 
@@ -54,23 +55,23 @@ class HomeFragment : Fragment() {
         mActivity = null
     }
 
-    private fun setupViewPager(view_pager: ViewPager) {
+    private fun setupViewPager() {
         val tab_layout = mActivity!!.binding.activityMainContent.tabLayout
 
         val titles = ArrayList<String>()
         titles.add("综合")
-        titles.add("远征")
+//        titles.add("远征")
 
         tab_layout.addTab(tab_layout.newTab().setText(titles[0]))
-        tab_layout.addTab(tab_layout.newTab().setText(titles[1]))
+//        tab_layout.addTab(tab_layout.newTab().setText(titles[1]))
 
         val fragments = ArrayList<Fragment>()
         fragments.add(HomeOverviewFragment())
-        fragments.add(HomeMissionFragment())
+//        fragments.add(HomeMissionFragment())
 
         val fragmentAdepter = MyFragmentAdepter(fragments, titles, activity.supportFragmentManager)
-        view_pager.adapter = fragmentAdepter
-        tab_layout.setupWithViewPager(view_pager)
+        binding.viewPager.adapter = fragmentAdepter
+        tab_layout.setupWithViewPager(binding.viewPager)
     }
 
     private inner class MyFragmentAdepter(private val mFragments: List<Fragment>,

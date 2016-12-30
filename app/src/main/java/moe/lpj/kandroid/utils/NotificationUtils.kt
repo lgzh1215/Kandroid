@@ -6,7 +6,7 @@ import android.content.Intent
 import kandroid.utils.SparseArray
 import moe.lpj.kandroid.R
 import moe.lpj.kandroid.application.MyApplication
-import moe.lpj.kandroid.service.MyReceiver
+import moe.lpj.kandroid.service.NotificationReceiver
 import moe.lpj.kandroid.viewmodel.MissionViewModel
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -18,10 +18,10 @@ object NotificationUtils {
     val CONTENT_TEXT = "contentText"
     val ID = "id"
 
-    val log: Logger = LoggerFactory.getLogger(NotificationUtils::class.java)
+    private val log: Logger = LoggerFactory.getLogger(NotificationUtils::class.java)
 
     fun newTimedNotification(contentTitle: String, contentText: String, `when`: Long, id: Int) {
-        val intent = Intent(MyApplication.instance, MyReceiver::class.java)
+        val intent = Intent(MyApplication.instance, NotificationReceiver::class.java)
         intent.putExtra(CONTENT_TITLE, contentTitle)
         intent.putExtra(CONTENT_TEXT, contentText)
         intent.putExtra(ID, id)
