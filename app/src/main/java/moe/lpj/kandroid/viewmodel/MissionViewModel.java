@@ -48,7 +48,7 @@ public class MissionViewModel extends BaseObservable {
     @Bindable
     public String getMission2LeftTime() {
         if (missionTime[0] != null) {
-            return DurationFormatUtils.formatPeriod(new Date().getTime(), missionTime[0].getTime(), "HH:mm:ss");
+            return DurationFormatUtils.formatPeriod(new Date().getTime(), this.missionTime[0].getTime(), "HH:mm:ss");
         }
         return "null";
     }

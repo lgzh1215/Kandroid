@@ -18,7 +18,7 @@ val missionViewModelUpdater: () -> Unit = {
     for (i in 0..2) {
         try {
             val fleet = fleets[i + 2]
-            val isMissionBegin = fleet.expeditionState == 1
+            val isMissionBegin = fleet.expeditionState != 0
             if (isMissionBegin) {
                 missionViewModel.missionName[i] = masterMissionData[fleet.expeditionDestination]?.name
                 missionViewModel.missionTime[i] = fleet.expeditionTime

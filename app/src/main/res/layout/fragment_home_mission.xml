@@ -1,10 +1,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
+        <import type="android.databinding.ObservableList"/>
+        <import type="android.databinding.ObservableMap"/>
+        <variable name="user" type="ObservableMap"/>
+        <!--<variable name="user" type="ObservableMap"/>-->
         <variable
-            name="mission"
-            type="moe.lpj.kandroid.viewmodel.MissionViewModel"/>
+            name="newMission"
+            type="moe.lpj.kandroid.viewmodel.NewMissionViewModel"/>
     </data>
 
     <FrameLayout xmlns:tools="http://schemas.android.com/tools"

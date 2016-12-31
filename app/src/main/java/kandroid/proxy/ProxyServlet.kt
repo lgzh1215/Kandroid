@@ -4,6 +4,7 @@ import kandroid.config.Config
 import kandroid.observer.ApiLoader
 import kandroid.observer.ByteArrayRawData
 import kandroid.thread.Threads
+import kandroid.utils.log.Logger
 import org.apache.commons.io.output.ByteArrayOutputStream
 import org.eclipse.jetty.client.HttpClient
 import org.eclipse.jetty.client.HttpProxy
@@ -45,6 +46,7 @@ class ProxyServlet : AsyncProxyServlet() {
                 val postField = request.getAttribute(Filter.REQUEST_BODY) as ByteArray
 
                 val data = ByteArrayRawData(request.requestURI, postField, stream.toByteArray())
+                Logger.i(request.requestURI)
                 Threads.pool.execute { ApiLoader.load(data) }
             }
         }
