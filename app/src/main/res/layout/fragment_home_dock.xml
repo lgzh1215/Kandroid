@@ -1,66 +1,299 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent">
-    <ScrollView android:id="@+id/scrollView4" android:layout_width="match_parent" android:layout_height="match_parent">
-        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
-            <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="30dp" android:layout_marginTop="20dp">
-                <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
-                    <TextView android:textSize="24dp" android:id="@+id/textView17" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1." />
-                    <TextView android:textSize="24dp" android:id="@+id/name1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:text="New Text" android:textIsSelectable="false" />
-                </LinearLayout>
-                <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
-                    <TextView android:textSize="15dp" android:id="@+id/textView19" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="完了時刻:" />
-                    <TextView android:textSize="18dp" android:id="@+id/time1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="New Text" />
-                </LinearLayout>
-                <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="match_parent">
-                    <TextView android:textSize="15dp" android:id="@+id/textView21" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="残り時間:" />
-                    <TextView android:textSize="18dp" android:id="@+id/until1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="New Text" />
-                </LinearLayout>
-            </LinearLayout>
-            <View android:background="@color/colorAccent" android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginTop="20dp" android:layout_marginBottom="5dp" />
-            <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="30dp">
-                <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
-                    <TextView android:textSize="24dp" android:id="@+id/textView23" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="2." />
-                    <TextView android:textSize="24dp" android:id="@+id/name2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:text="New Text" />
-                </LinearLayout>
-                <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
-                    <TextView android:textSize="15dp" android:id="@+id/textView25" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="完了時刻:" android:textIsSelectable="false" />
-                    <TextView android:textSize="18dp" android:id="@+id/time2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="New Text" />
-                </LinearLayout>
-                <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="match_parent">
-                    <TextView android:textSize="15dp" android:id="@+id/textView27" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="残り時間:" />
-                    <TextView android:textSize="18dp" android:id="@+id/until2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="New Text" />
-                </LinearLayout>
-            </LinearLayout>
-            <View android:background="@color/colorAccent" android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginTop="20dp" android:layout_marginBottom="5dp" />
-            <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="30dp">
-                <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
-                    <TextView android:textSize="24dp" android:id="@+id/textView29" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="3." />
-                    <TextView android:textSize="24dp" android:id="@+id/name3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:text="New Text" />
-                </LinearLayout>
-                <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
-                    <TextView android:textSize="15dp" android:id="@+id/textView31" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="完了時刻:" />
-                    <TextView android:textSize="18dp" android:id="@+id/time3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="New Text" />
-                </LinearLayout>
-                <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="match_parent">
-                    <TextView android:textSize="15dp" android:id="@+id/textView33" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="残り時間:" />
-                    <TextView android:textSize="18dp" android:id="@+id/until3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="New Text" />
-                </LinearLayout>
-            </LinearLayout>
-            <View android:background="@color/colorAccent" android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginTop="20dp" android:layout_marginBottom="5dp" />
-            <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="30dp">
-                <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
-                    <TextView android:textSize="24dp" android:id="@+id/textView35" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="4." />
-                    <TextView android:textSize="24dp" android:id="@+id/name4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:text="New Text" />
-                </LinearLayout>
-                <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
-                    <TextView android:textSize="15dp" android:id="@+id/textView37" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="完了時刻:" />
-                    <TextView android:textSize="18dp" android:id="@+id/time4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="New Text" />
-                </LinearLayout>
-                <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="match_parent">
-                    <TextView android:textSize="15dp" android:id="@+id/textView39" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="残り時間:" />
-                    <TextView android:textSize="18dp" android:id="@+id/until4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="New Text" />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
-</FrameLayout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="dock"
+            type="moe.lpj.kandroid.viewmodel.DockViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="入渠"
+                android:textSize="18sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                <TextView
+                    android:id="@+id/textView24"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="1#"
+                    android:textSize="18sp"
+                    app:layout_constraintLeft_toLeftOf="@+id/textView28"
+                    app:layout_constraintTop_toBottomOf="@+id/textView28" />
+
+                <TextView
+                    android:id="@+id/textView25"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="2#"
+                    android:textSize="18sp"
+                    app:layout_constraintLeft_toLeftOf="@+id/textView24"
+                    app:layout_constraintTop_toBottomOf="@+id/textView24" />
+
+                <TextView
+                    android:id="@+id/textView26"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="3#"
+                    android:textSize="18sp"
+                    android:visibility="@{dock.enable[2] ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintLeft_toLeftOf="@+id/textView25"
+                    app:layout_constraintTop_toBottomOf="@+id/textView25" />
+
+                <TextView
+                    android:id="@+id/textView27"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="4#"
+                    android:textSize="18sp"
+                    android:visibility="@{dock.enable[3] ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintLeft_toLeftOf="@+id/textView26"
+                    app:layout_constraintTop_toBottomOf="@+id/textView26" />
+
+                <TextView
+                    android:id="@+id/textView28"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/c2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                app:layout_constraintLeft_toRightOf="@+id/constraintLayout"
+                app:layout_constraintTop_toTopOf="@+id/constraintLayout">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="舰娘"
+                    android:textSize="18sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{dock.name(dock.docks[0])}"
+                    android:textSize="18sp"
+                    app:layout_constraintLeft_toLeftOf="@+id/textView2"
+                    app:layout_constraintTop_toBottomOf="@+id/textView2"
+                    app:layout_constraintRight_toRightOf="@+id/textView2"/>
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{dock.name(dock.docks[1])}"
+                    android:textSize="18sp"
+                    app:layout_constraintLeft_toLeftOf="@+id/textView3"
+                    app:layout_constraintTop_toBottomOf="@+id/textView3"
+                    app:layout_constraintRight_toRightOf="@+id/textView3" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{dock.name(dock.docks[2])}"
+                    android:textSize="18sp"
+                    android:visibility="@{dock.enable[2] ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintLeft_toLeftOf="@+id/textView4"
+                    app:layout_constraintTop_toBottomOf="@+id/textView4"
+                    app:layout_constraintRight_toRightOf="@+id/textView4"/>
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{dock.name(dock.docks[3])}"
+                    android:textSize="18sp"
+                    android:visibility="@{dock.enable[3] ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintLeft_toLeftOf="@+id/textView5"
+                    app:layout_constraintTop_toBottomOf="@+id/textView5"
+                    app:layout_constraintRight_toRightOf="@+id/textView5"/>
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/c3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                app:layout_constraintLeft_toRightOf="@+id/c2"
+                app:layout_constraintTop_toTopOf="@+id/c2">
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="完成时间"
+                    android:textSize="18sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{dock.time(dock.docks[0])}"
+                    android:textSize="18sp"
+                    app:layout_constraintLeft_toLeftOf="@+id/textView7"
+                    app:layout_constraintRight_toRightOf="@+id/textView7"
+                    app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{dock.time(dock.docks[1])}"
+                    android:textSize="18sp"
+                    app:layout_constraintLeft_toLeftOf="@+id/textView8"
+                    app:layout_constraintRight_toRightOf="@+id/textView8"
+                    app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{dock.time(dock.docks[2])}"
+                    android:textSize="18sp"
+                    android:visibility="@{dock.enable[2] ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintLeft_toLeftOf="@+id/textView9"
+                    app:layout_constraintRight_toRightOf="@+id/textView9"
+                    app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{dock.time(dock.docks[3])}"
+                    android:textSize="18sp"
+                    android:visibility="@{dock.enable[3] ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintLeft_toLeftOf="@+id/textView10"
+                    app:layout_constraintRight_toRightOf="@+id/textView10"
+                    app:layout_constraintTop_toBottomOf="@+id/textView10" />
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/c4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                app:layout_constraintLeft_toRightOf="@+id/c3"
+                app:layout_constraintTop_toTopOf="@+id/c3">
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="剩余时间"
+                    android:textSize="18sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{dock.leftTime[0]}"
+                    android:textSize="18sp"
+                    app:layout_constraintLeft_toLeftOf="@+id/textView12"
+                    app:layout_constraintTop_toBottomOf="@+id/textView12"
+                    app:layout_constraintRight_toRightOf="@+id/textView12"/>
+
+                <TextView
+                    android:id="@+id/textView14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{dock.leftTime[1]}"
+                    android:textSize="18sp"
+                    app:layout_constraintLeft_toLeftOf="@+id/textView13"
+                    app:layout_constraintTop_toBottomOf="@+id/textView13"
+                    app:layout_constraintRight_toRightOf="@+id/textView13"/>
+
+                <TextView
+                    android:id="@+id/textView15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{dock.leftTime[2]}"
+                    android:textSize="18sp"
+                    android:visibility="@{dock.enable[2] ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintLeft_toLeftOf="@+id/textView14"
+                    app:layout_constraintTop_toBottomOf="@+id/textView14"
+                    app:layout_constraintRight_toRightOf="@+id/textView14"/>
+
+                <TextView
+                    android:id="@+id/textView16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{dock.leftTime[3]}"
+                    android:textSize="18sp"
+                    android:visibility="@{dock.enable[3] ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintLeft_toLeftOf="@+id/textView15"
+                    app:layout_constraintTop_toBottomOf="@+id/textView15"
+                    app:layout_constraintRight_toRightOf="@+id/textView15"/>
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.constraint.ConstraintLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/colorAccent" />
+
+
+    </LinearLayout>
+</layout>

@@ -18,7 +18,7 @@ class HomeOverviewFragment : Fragment() {
         val button = view.findViewById(R.id.button) as Button
         button.setOnClickListener {
             NotificationUtils.newTimedNotification("woiefwoe", "csioanason",
-                    System.currentTimeMillis() + 5000L, 213)
+                    System.currentTimeMillis() + 1000L * 60, 213)
         }
         return view
     }

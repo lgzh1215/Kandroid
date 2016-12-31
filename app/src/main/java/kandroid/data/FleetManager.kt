@@ -22,7 +22,7 @@ class FleetManager : RequestDataListener, ResponseDataListener {
     /**
      * 舰队ID：1/2/3/4
      */
-    operator fun get(fleetID: Int): FleetData {
+    operator fun get(fleetID: Int): FleetData? {
         return fleetDatas[fleetID]
     }
 

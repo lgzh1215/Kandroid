@@ -10,6 +10,7 @@ import moe.lpj.kandroid.utils.NotificationUtils
 class NotificationReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
+        System.err.println("NotificationReceiver:onReceive")
         NotificationUtils.registerSimpleNotification(intent)
     }
 }

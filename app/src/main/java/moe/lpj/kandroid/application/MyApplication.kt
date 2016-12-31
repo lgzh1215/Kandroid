@@ -4,12 +4,16 @@ import android.app.AlarmManager
 import android.app.Application
 import android.app.NotificationManager
 import android.content.Context
+import android.content.Intent
 import android.preference.PreferenceManager
 import android.support.v4.app.NotificationCompat
 import kandroid.KandroidMain
 import kandroid.thread.Threads
 import moe.lpj.kandroid.R
 import moe.lpj.kandroid.kandroid.ConfigA
+import moe.lpj.kandroid.service.ProxyService
+import moe.lpj.kandroid.viewmodel.DockViewModel
+import moe.lpj.kandroid.viewmodel.MissionViewModel
 import moe.lpj.kandroid.viewmodel.viewUpdater
 import org.apache.commons.io.IOUtils
 import org.slf4j.Logger
@@ -28,12 +32,17 @@ class MyApplication : Application() {
         PreferenceManager.setDefaultValues(this, R.xml.pref_debug, false)
         PreferenceManager.setDefaultValues(this, R.xml.pref_notification, false)
 
+        MissionViewModel
+        DockViewModel
+
         KandroidMain.updateConfig(ConfigA.get(this))
         loadStart2Data()
         loadPortData()
         KandroidMain.start()
 
         Threads.runTickTack(viewUpdater)
+
+        startService(Intent(this, ProxyService::class.java))
     }
 
     companion object {

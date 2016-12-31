@@ -4,7 +4,7 @@
     <EditTextPreference
         android:defaultValue="8888"
         android:inputType="number"
-        android:key="listenPort"
+        android:key="proxy_listenPort"
         android:maxLines="1"
         android:selectAllOnFocus="true"
         android:singleLine="true"
@@ -12,14 +12,14 @@
 
     <SwitchPreference
         android:defaultValue="false"
-        android:key="isUseProxy"
+        android:key="proxy_isUseProxy"
         android:title="使用上游代理"/>
 
     <EditTextPreference
         android:defaultValue="8123"
         android:dependency="isUseProxy"
         android:inputType="number"
-        android:key="proxyPort"
+        android:key="proxy_proxyPort"
         android:maxLines="1"
         android:selectAllOnFocus="true"
         android:singleLine="true"
@@ -28,7 +28,7 @@
     <EditTextPreference
         android:defaultValue="127.0.0.1"
         android:dependency="isUseProxy"
-        android:key="proxyHost"
+        android:key="proxy_proxyHost"
         android:maxLines="1"
         android:selectAllOnFocus="true"
         android:singleLine="true"

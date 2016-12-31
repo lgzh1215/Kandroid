@@ -2,6 +2,7 @@ package kandroid
 
 import kandroid.config.Config
 import kandroid.config.IConfig
+import kandroid.observer.ApiLoader
 import kandroid.observer.StringRawData
 import kandroid.observer.kcsapi.api_port
 import kandroid.observer.kcsapi.api_start2
@@ -28,7 +29,7 @@ object KandroidMain {
      */
     fun loadStart2(json: String) {
         val rawData = StringRawData(api_start2.name, "", json, true)
-        api_start2.onDataReceived(rawData)
+        ApiLoader.load(rawData)
     }
 
     fun loadStart2(): Boolean {
@@ -47,7 +48,7 @@ object KandroidMain {
      */
     fun loadPort(json: String) {
         val rawData = StringRawData(api_port.port.name, "", json, true)
-        api_port.port.onDataReceived(rawData)
+        ApiLoader.load(rawData)
     }
 
     fun loadPort(): Boolean {
@@ -62,5 +63,9 @@ object KandroidMain {
 
     fun stop() {
         ProxyServer.stop()
+    }
+
+    fun restart() {
+        ProxyServer.restart()
     }
 }

@@ -3,16 +3,31 @@
 
     <SwitchPreference
         android:defaultValue="true"
-        android:title="远征通知"
-        android:key="missionNotification"
-        android:summary="远征结束时显示通知" />
-    <EditTextPreference
-        android:defaultValue="0"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:title="提前通知(秒)"
-        android:key="aheadNotification"
-        android:dependency="missionNotification"
-        android:inputType="number"
-        android:summary="未实现" />
+        android:key="notification_enable"
+        android:summary="ge zhong dao ji shi"
+        android:title="Enable Notification" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:dependency="notification_enable"
+        android:key="notification_exact"
+        android:title="Exact Notification" />
+
+    <PreferenceCategory android:title="Mission Notification">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="notification_mission_enable"
+            android:summary="远征结束时显示通知"
+            android:title="远征通知" />
+        <EditTextPreference
+            android:defaultValue="0"
+            android:dependency="notification_exact"
+            android:inputType="number"
+            android:key="notification_mission_ahead"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="未实现"
+            android:title="提前通知(秒)" />
+    </PreferenceCategory>
 </PreferenceScreen>

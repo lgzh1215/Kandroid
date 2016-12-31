@@ -14,6 +14,10 @@ object KCDatabase {
     val material: MaterialData = MaterialData()
     val admiral: AdmiralData = AdmiralData()
     val ships: IDDictionary<ShipData> = IDDictionary()
+
+    /**
+     * 入渠数据：id=1、2、3、4
+     */
     val docks: IDDictionary<DockData> = IDDictionary()
     val fleets: FleetManager = FleetManager()
 

@@ -1,252 +1,245 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-        <import type="android.databinding.ObservableList"/>
-        <import type="android.databinding.ObservableMap"/>
-        <variable name="user" type="ObservableMap"/>
-        <!--<variable name="user" type="ObservableMap"/>-->
+
         <variable
-            name="newMission"
-            type="moe.lpj.kandroid.viewmodel.NewMissionViewModel"/>
+            name="m"
+            type="moe.lpj.kandroid.viewmodel.MissionViewModel" />
     </data>
 
-    <FrameLayout xmlns:tools="http://schemas.android.com/tools"
-                 android:layout_width="match_parent"
-                 android:layout_height="match_parent"
-                 tools:context="moe.lpj.kandroid.activity.main.HomeMissionFragment">
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="moe.lpj.kandroid.activity.main.HomeMissionFragment">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="第二艦隊" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:text="第二艦隊"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="30dp"
-                        android:text="@{mission.mission2Name}"
-                        android:textSize="24sp"/>
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="5dp"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="10dp"
-                            android:text="完成時間"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@{mission.mission2Time}"
-                            android:textSize="18sp"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="10dp"
-                            android:text="剩餘時間"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@{mission.mission2LeftTime}"
-                            android:textSize="18sp"/>
-                    </LinearLayout>
-                </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="30dp"
+                    android:text="@{m.name(m.missions[0])}"
+                    android:textSize="24sp" />
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/colorAccent"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="5dp"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="完成時間" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:text="第三艦隊"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="30dp"
-                        android:text="@{mission.mission3Name}"
-                        android:textSize="24sp"/>
+                        android:text="@{m.time(m.missions[0])}"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="5dp"
-                    android:orientation="vertical">
+                    android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="10dp"
-                            android:text="完成時間"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@{mission.mission3Time}"
-                            android:textSize="18sp"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="10dp"
-                            android:text="剩餘時間"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@{mission.mission3LeftTime}"
-                            android:textSize="18sp"/>
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/colorAccent"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                        android:layout_marginEnd="10dp"
+                        android:text="剩餘時間" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:text="第四艦隊"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="30dp"
-                        android:text="@{mission.mission4Name}"
-                        android:textSize="24sp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="5dp"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="10dp"
-                            android:text="完成時間"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@{mission.mission4Time}"
-                            android:textSize="18sp"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="10dp"
-                            android:text="剩餘時間"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@{mission.mission4LeftTime}"
-                            android:textSize="18sp"/>
-                    </LinearLayout>
+                        android:text="@{m.leftTime[0]}"
+                        android:textSize="18sp" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
-    </FrameLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/colorAccent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="第三艦隊" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="30dp"
+                    android:text="@{m.name(m.missions[1])}"
+                    android:textSize="24sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="完成時間" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{m.time(m.missions[1])}"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="剩餘時間" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{m.leftTime[1]}"
+                        android:textSize="18sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/colorAccent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="第四艦隊" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="30dp"
+                    android:text="@{m.name(m.missions[2])}"
+                    android:textSize="24sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="完成時間" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{m.time(m.missions[2])}"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="剩餘時間" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{m.leftTime[2]}"
+                        android:textSize="18sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
 </layout>

@@ -1,5 +1,6 @@
 package moe.lpj.kandroid.activity.main
 
+
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -7,18 +8,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-import moe.lpj.kandroid.databinding.FragmentHomeMissionBinding
-import moe.lpj.kandroid.viewmodel.MissionViewModel
+import moe.lpj.kandroid.R
+import moe.lpj.kandroid.databinding.FragmentHomeDockBinding
+import moe.lpj.kandroid.viewmodel.DockViewModel
 
-class HomeMissionFragment : Fragment() {
+
+class HomeDockFragment : Fragment() {
 
     private var mActivity: MainActivity? = null
 
-    override fun onCreateView(inflater: LayoutInflater?,
-                              container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val homeMissionBinding = FragmentHomeMissionBinding.inflate(inflater, container, false)
-        homeMissionBinding.m = MissionViewModel
-        return homeMissionBinding.root
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        val homeDockBinding = FragmentHomeDockBinding.inflate(inflater, container, false)
+        homeDockBinding.dock = DockViewModel
+        return homeDockBinding.root
     }
 
     override fun onAttach(context: Context?) {
@@ -48,4 +51,5 @@ class HomeMissionFragment : Fragment() {
     companion object co {
         var isVisible = false
     }
+
 }

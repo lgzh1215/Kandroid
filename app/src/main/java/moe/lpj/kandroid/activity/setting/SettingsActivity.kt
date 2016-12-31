@@ -8,7 +8,10 @@ import android.os.Bundle
 import android.preference.*
 import android.text.TextUtils
 import android.view.MenuItem
+import kandroid.KandroidMain
 import moe.lpj.kandroid.R
+import moe.lpj.kandroid.application.MyApplication
+import moe.lpj.kandroid.kandroid.ConfigA
 import moe.lpj.kandroid.utils.NotificationUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -21,9 +24,11 @@ class SettingsActivity : AppCompatPreferenceActivity() {
     private object onSharedPreferenceChangeListener : SharedPreferences.OnSharedPreferenceChangeListener {
 
         override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-            if (key.endsWith("MissionNotification", ignoreCase = true)) {
-//                NotificationUtils.log.info("通知设置发生变更")
+            if (key.startsWith("notification")) {
                 NotificationUtils.registerMissionNotifications()
+            } else if (key.startsWith("proxy")) {
+                KandroidMain.updateConfig(ConfigA.get(MyApplication.instance))
+                KandroidMain.restart()
             }
         }
     }
@@ -156,9 +161,9 @@ class SettingsActivity : AppCompatPreferenceActivity() {
             super.onCreate(savedInstanceState)
             addPreferencesFromResource(R.xml.pref_proxy)
             setHasOptionsMenu(true)
-            bindPreferenceSummaryToValue(findPreference("listenPort"))
-            bindPreferenceSummaryToValue(findPreference("proxyPort"))
-            bindPreferenceSummaryToValue(findPreference("proxyHost"))
+            bindPreferenceSummaryToValue(findPreference("proxy_listenPort"))
+            bindPreferenceSummaryToValue(findPreference("proxy_proxyPort"))
+            bindPreferenceSummaryToValue(findPreference("proxy_proxyHost"))
         }
     }
 
@@ -176,7 +181,7 @@ class SettingsActivity : AppCompatPreferenceActivity() {
             addPreferencesFromResource(R.xml.pref_notification)
             setHasOptionsMenu(true)
 
-            bindPreferenceSummaryToValue(findPreference("aheadMissionNotification"))
+            bindPreferenceSummaryToValue(findPreference("notification_mission_ahead"))
         }
     }
 }

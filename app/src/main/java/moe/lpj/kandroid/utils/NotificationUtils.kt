@@ -15,6 +15,7 @@ object NotificationUtils {
 
     val CONTENT_TITLE = "contentTitle"
     val CONTENT_TEXT = "contentText"
+    val WHEN = "when"
     val ID = "id"
 
     private val log: Logger = LoggerFactory.getLogger(NotificationUtils::class.java)
@@ -23,10 +24,13 @@ object NotificationUtils {
         val intent = Intent(MyApplication.instance, NotificationReceiver::class.java)
         intent.putExtra(CONTENT_TITLE, contentTitle)
         intent.putExtra(CONTENT_TEXT, contentText)
+        intent.putExtra(WHEN, `when`)
         intent.putExtra(ID, id)
-        val requestCode = 0
+        val requestCode = id
         val pendingIntent = PendingIntent.getBroadcast(MyApplication.instance, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-        MyApplication.instance.getAlarmManager().set(AlarmManager.RTC_WAKEUP, `when`, pendingIntent)
+//        MyApplication.instance.getAlarmManager().set(AlarmManager.RTC_WAKEUP, `when`, pendingIntent)
+        MyApplication.instance.getAlarmManager().setExact(AlarmManager.RTC_WAKEUP, `when`, pendingIntent)
+        System.err.println(`when`)
         map.put(id, pendingIntent)
     }
 
@@ -64,10 +68,10 @@ object NotificationUtils {
      * @param fleetId 第二舰队 -> fleetId = 0
      */
     fun registerMissionNotification(fleetId: Int) {
-        if (MissionViewModel.getInstance().missionTime[fleetId] != null) {
+        if (MissionViewModel.missions[fleetId] !== MissionViewModel.NULL) {
             newTimedNotification("第 ${fleetId + 2} 舰队远征结束",
-                    "远征 ${MissionViewModel.getInstance().missionName[fleetId]} 已结束",
-                    MissionViewModel.getInstance().missionTime[fleetId].time,
+                    "远征 ${MissionViewModel.missions[fleetId].second} 已结束",
+                    MissionViewModel.missions[fleetId].first.time,
                     missionNotificationId[fleetId])
             log.info("注册第 ${fleetId + 2} 舰队远征通知")
         }
@@ -76,17 +80,19 @@ object NotificationUtils {
     fun registerSimpleNotification(intent: Intent) {
         registerSimpleNotification(intent.getStringExtra(CONTENT_TITLE),
                 intent.getStringExtra(CONTENT_TEXT),
+                intent.getLongExtra(WHEN, System.currentTimeMillis()),
                 intent.getIntExtra(ID, 0))
     }
 
-    fun registerSimpleNotification(contentTitle: String, contentText: CharSequence, id: Int) {
-        val builder = MyApplication.instance.getNotificationBuilder()
-        builder.setSmallIcon(R.mipmap.ic_launcher)
-        builder.setContentTitle(contentTitle)
-        builder.setContentText(contentText)
-        builder.setShowWhen(true)
-        builder.setAutoCancel(true)
-        val notification = builder.build()
+    fun registerSimpleNotification(contentTitle: String, contentText: CharSequence, `when`: Long, id: Int) {
+        val notification = MyApplication.instance.getNotificationBuilder()
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(contentTitle)
+                .setContentText(contentText)
+                .setWhen(`when`)
+                .setShowWhen(true)
+                .setAutoCancel(true)
+                .build()
         MyApplication.instance.getNotificationManager().notify(id, notification)
     }
 }

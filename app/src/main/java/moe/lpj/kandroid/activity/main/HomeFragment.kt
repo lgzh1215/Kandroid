@@ -60,13 +60,16 @@ class HomeFragment : Fragment() {
         val titles = ArrayList<String>()
         titles.add("综合")
         titles.add("远征")
+        titles.add("ドック")
 
         tab_layout.addTab(tab_layout.newTab().setText(titles[0]))
         tab_layout.addTab(tab_layout.newTab().setText(titles[1]))
+        tab_layout.addTab(tab_layout.newTab().setText(titles[2]))
 
         val fragments = ArrayList<Fragment>()
         fragments.add(HomeOverviewFragment())
         fragments.add(HomeMissionFragment())
+        fragments.add(HomeDockFragment())
 
         val fragmentAdepter = MyFragmentAdepter(fragments, titles, activity.supportFragmentManager)
         binding.viewPager.adapter = fragmentAdepter

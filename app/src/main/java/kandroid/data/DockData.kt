@@ -9,10 +9,17 @@ import kandroid.utils.json.long
 import kandroid.utils.json.set
 import java.util.*
 
+/**
+ * 入渠
+ */
 class DockData : JsonWrapper(), RequestDataListener, Identifiable {
 
     val dockId: Int get() = data["api_id"].int()
 
+    /**
+     * 入渠状态
+     * -1=未解锁，0=空，1=入渠中
+     */
     val state: Int get() = data["api_state"].int()
 
     val shipId: Int get() = data["api_ship_id"].int()
