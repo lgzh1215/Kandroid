@@ -1,36 +1,87 @@
 package kandroid.data
 
+import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import kandroid.data.Start2Data.MasterShipData
 import kandroid.observer.kcsapi.api_get_member
 import kandroid.observer.kcsapi.api_port
 import kandroid.observer.kcsapi.api_req_kaisou
+import kandroid.observer.kcsapi.api_req_kousyou
 import kandroid.utils.CatException
 import kandroid.utils.Identifiable
-import kandroid.utils.json.get
-import kandroid.utils.json.int
-import kandroid.utils.json.list
-import kandroid.utils.json.set
+import kandroid.utils.json.*
 
 class ShipData : JsonWrapper(), RequestDataListener, Identifiable {
 
+    /**
+     * 舰娘固有id
+     */
     val masterID: Int get() = data["api_id"].int()
+    /**
+     * 排序用id
+     */
     val sortID: Int get() = data["api_sortno"].int()
+    /**
+     * master数据id
+     */
     val shipID: Int get() = data["api_ship_id"].int()
+    /**
+     * 等级
+     */
     val level: Int get() = data["api_lv"].int()
+    /**
+     * 累積経験値
+     */
     val expTotal: Int get() = data["api_exp"][0].int()
+    /**
+     * 距离下一级还剩多少经验
+     */
     val expNext: Int get() = data["api_exp"][1].int()
+    /**
+     * 耐久現在値
+     */
     val hpCurrent: Int get() = data["api_nowhp"].int()
+    /**
+     * 耐久最大値
+     */
     val hpMax: Int get() = data["api_maxhp"].int()
+    /**
+     * 射程
+     */
     val range: Int get() = data["api_leng"].int()
+    /**
+     * 各装备固有id
+     */
     val slot: List<Int> get() = data["api_slot"].list()
-    val slotMaster: IntArray get() = throw UnsupportedOperationException()
-    val slotInstance: Array<EquipmentData> get() = throw UnsupportedOperationException()
-    val slotInstanceMaster: Array<Start2Data.MasterEquipmentData> get() = throw UnsupportedOperationException()
+    /**
+     * 各装备master数据id
+     */
+    val slotMaster: List<Int> get() = if (slot.isEmpty()) emptyList() else slot.map { KCDatabase.equipments[it]?.equipmentID ?: 0 }
+    /**
+     * 各装备数据
+     */
+    val slotInstance: List<EquipmentData?> get() = if (slot.isEmpty()) emptyList() else slot.mapNotNull { KCDatabase.equipments[it] }
+    /**
+     * 各装备master数据
+     */
+    val slotInstanceMaster: List<Start2Data.MasterEquipmentData?> get() = if (slot.isEmpty()) emptyList() else slot.mapNotNull { KCDatabase.equipments[it]?.masterEquipment }
+    /**
+     * 打孔洞塞的装备的固有id
+     * 0=没孔, -1=空的
+     */
     val expansionSlot: Int get() = data["api_slot_ex"].int()
-    val expansionSlotMaster: Int get() = throw UnsupportedOperationException()
-    val expansionSlotInstance: EquipmentData get() = throw UnsupportedOperationException()
-    val expansionSlotInstanceMaster: Start2Data.MasterEquipmentData get() = throw UnsupportedOperationException()
+    /**
+     * 打孔装备的master数据id
+     */
+    val expansionSlotMaster: Int get() = KCDatabase.equipments[expansionSlot]?.equipmentID ?: 0
+    /**
+     * 打孔装备的数据
+     */
+    val expansionSlotInstance: EquipmentData? get() = KCDatabase.equipments[expansionSlot]
+    /**
+     * 打孔装备的master数据
+     */
+    val expansionSlotInstanceMaster: Start2Data.MasterEquipmentData? get() = expansionSlotInstance?.masterEquipment
     val allSlot: IntArray get() = throw UnsupportedOperationException()
     val allSlotMaster: IntArray get() = throw UnsupportedOperationException()
     val allSlotInstance: Array<EquipmentData> get() = throw UnsupportedOperationException()
@@ -95,7 +146,7 @@ class ShipData : JsonWrapper(), RequestDataListener, Identifiable {
     val isLocked: Boolean get() = data["api_locked"].int() != 0
     val isLockedByEquipment: Boolean get() = data["api_locked_equip"].int() != 0
     val sallyArea: Int get() = data["api_sally_area"].int(-1)
-    val masterShip: MasterShipData get() = KCDatabase.master.masterShipData.get(shipID)
+    val masterShip: MasterShipData get() = KCDatabase.master.masterShipData.get(shipID)!!
     val repairingDockID: Int get() = throw UnsupportedOperationException()
     val fleet: Int get() = throw UnsupportedOperationException()
     val fleetWithIndex: String get() = throw UnsupportedOperationException()
@@ -119,14 +170,19 @@ class ShipData : JsonWrapper(), RequestDataListener, Identifiable {
             api_port.port.name,
             api_get_member.ship2.name,
             api_get_member.ship3.name,
-            api_get_member.ship_deck.name -> {
+            api_get_member.ship_deck.name,
+            api_req_kaisou.slot_deprive.name,
+            api_req_kousyou.getship.name -> {
                 super.loadFromResponse(apiName, responseData)
+            }
+            api_req_kaisou.slot_exchange_index.name -> {
+                data["api_slot"] = responseData["api_slot"] as JsonArray
             }
             else -> throw CatException()
         }
     }
 
-    override fun loadFromRequest(apiName: String, requestData: Map<String, String>) {
+    override fun loadFromRequest(apiName: String, requestData: MutableMap<String, String>) {
         when (apiName) {
             api_req_kaisou.open_exslot.name -> {
                 data["api_slot_ex"] = -1

@@ -10,7 +10,7 @@ class MapInfoData : JsonWrapper(), Identifiable {
 
     val mapID: Int get() = data["api_id"].int()
 
-    val masterMapInfo: MasterMapInfoData get() = KCDatabase.master.masterMapInfoData[mapID]
+    val masterMapInfo: MasterMapInfoData get() = KCDatabase.master.masterMapInfoData[mapID]!!
 
     val mapAreaID: Int get() = masterMapInfo.mapAreaId
 

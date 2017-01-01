@@ -18,7 +18,9 @@ interface IConfig {
 
     val isSaveKcsResponse: Boolean
 
-    val storageDir: File
+    val publicStorageDir: File
+
+    val privateStorageDir: File
 
     val isMultipleUserMode: Boolean
 

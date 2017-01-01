@@ -13,8 +13,26 @@ abstract class RawData(val uri: String,
     val date: Date = Date()
 
     abstract val requestString: String
-    abstract val requestMap: Map<String, String>
+
+    open val requestMap: MutableMap<String, String> get() {
+        val map = HashMap<String, String>()
+        val params = URLDecoder.decode(requestString, "UTF-8").split("&")
+        var name: String
+        var value: String
+        var split: List<String>
+        for (param in params) {
+            split = param.split("=")
+            if (split.size == 2) {
+                name = split[0]
+                value = split[1]
+                map.put(name, value)
+            }
+        }
+        return map
+    }
+
     abstract val responseString: String
+
     open fun decode(): RawData = this
 }
 
@@ -55,23 +73,6 @@ class ByteArrayRawData(uri: String,
 
     override val requestString: String = String(request)
 
-    override val requestMap: Map<String, String> get() {
-        val map = HashMap<String, String>()
-        val params = URLDecoder.decode(requestString, "UTF-8").split("&")
-        var name: String
-        var value: String
-        var split: List<String>
-        for (param in params) {
-            split = param.split("=")
-            if (split.size == 2) {
-                name = split[0]
-                value = split[1]
-                map.put(name, value)
-            }
-        }
-        return map
-    }
-
     override val responseString: String = String(response)
 }
 
@@ -81,23 +82,6 @@ class StringRawData(uri: String,
                     noSvdata: Boolean) : RawData(uri, noSvdata) {
 
     override val requestString: String = request
-
-    override val requestMap: Map<String, String> get() {
-        val map = HashMap<String, String>()
-        val params = URLDecoder.decode(requestString, "UTF-8").split("&")
-        var name: String
-        var value: String
-        var split: List<String>
-        for (param in params) {
-            split = param.split("=")
-            if (split.size == 2) {
-                name = split[0]
-                value = split[1]
-                map.put(name, value)
-            }
-        }
-        return map
-    }
 
     override val responseString: String = response
 }

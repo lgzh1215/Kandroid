@@ -1,13 +1,18 @@
 package kandroid.data.battle
 
 import com.google.gson.JsonElement
+import kandroid.data.GetAdmiralRank
 import kandroid.data.RequestDataListener
 import kandroid.data.ResponseDataListener
 import kandroid.data.battle.BattleModes.Undefined
 import kandroid.observer.kcsapi.api_get_member
 import kandroid.observer.kcsapi.api_req_map
+import kandroid.observer.kcsapi.api_req_member
 import kandroid.utils.CatException
 import kandroid.utils.SparseIntArray
+import kandroid.utils.json.get
+import kandroid.utils.json.int
+import kandroid.utils.json.string
 
 class BattleManager : ResponseDataListener, RequestDataListener {
 
@@ -104,10 +109,10 @@ class BattleManager : ResponseDataListener, RequestDataListener {
 //                BattleDay.loadFromResponse(apiName, responseData)
 //            }
 //
-//            "api_req_member/get_practice_enemyinfo" -> {
-//                EnemyAdmiralName = responseData["api_nickname"].string()
-//                EnemyAdmiralRank = GetAdmiralRank(responseData["api_rank"].int())
-//            }
+            api_req_member.get_practice_enemyinfo.name -> {
+                EnemyAdmiralName = responseData["api_nickname"].string()
+                EnemyAdmiralRank = GetAdmiralRank(responseData["api_rank"].int())
+            }
 //
 //            "api_req_practice/battle" -> {
 //                BattleMode = BattleModes.Practice
@@ -148,7 +153,7 @@ class BattleManager : ResponseDataListener, RequestDataListener {
         }
     }
 
-    override fun loadFromRequest(apiName: String, requestData: Map<String, String>) {
+    override fun loadFromRequest(apiName: String, requestData: MutableMap<String, String>) {
         when (apiName) {
 
         }

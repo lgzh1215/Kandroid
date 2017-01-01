@@ -66,8 +66,6 @@ object api_port {
                 KCDatabase.fleets.combinedFlag = data["api_combined_flag"].int()
             }
 
-            //TODO 基地航空隊 配置転換系の処理
-
             KCDatabase.battle.loadFromResponse(name, data)
         }
     }

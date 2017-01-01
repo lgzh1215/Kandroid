@@ -15,6 +15,7 @@ object api_start2 : ApiBase() {
     override val name: String get() = "api_start2"
 
     override fun onDataReceived(rawData: RawData) {
+        // 保存Start2以便下次载入
         val responseString = rawData.responseString
         if (rawData is ByteArrayRawData) {
             val file = Config.getSaveUserDataFile("api_start2")
@@ -38,7 +39,6 @@ object api_start2 : ApiBase() {
                 } else {
                     ship.loadFromResponse(name, elem)
                 }
-
             }
         }
 
@@ -49,6 +49,8 @@ object api_start2 : ApiBase() {
                 KCDatabase.master.masterShipData[remodelID]?.remodelBeforeShipId = ship.shipId
             }
         }
+
+        // TODO api_mst_shipgraph
 
         // api_mst_slotitem_equiptype
         val api_mst_slotitem_equiptype = data["api_mst_slotitem_equiptype"].array
@@ -114,6 +116,22 @@ object api_start2 : ApiBase() {
             }
         }
 
+        // api_mst_maparea
+        val api_mst_maparea = data["api_mst_maparea"].array
+        if (api_mst_maparea != null) {
+            for (elem in api_mst_maparea) {
+                val id = elem["api_id"].int()
+                var mapArea = KCDatabase.master.masterMapAreaData[id]
+                if (mapArea == null) {
+                    mapArea = Start2Data.MasterMapAreaData()
+                    mapArea.loadFromResponse(name, elem)
+                    KCDatabase.master.masterMapAreaData.put(mapArea)
+                } else {
+                    mapArea.loadFromResponse(name, elem)
+                }
+            }
+        }
+
         // api_mst_mapinfo
         val api_mst_mapinfo = data["api_mst_mapinfo"].array
         if (api_mst_mapinfo != null) {
@@ -149,32 +167,32 @@ object api_start2 : ApiBase() {
         // api_mst_shipupgrade
         val api_mst_shipupgrade = data["api_mst_shipupgrade"].array
         if (api_mst_shipupgrade != null) {
-            val upgradeLevels = SparseIntArray(70)
+            val upgradeTimes = SparseIntArray(70) // 记录本船id和第几次改造
             for (elem in api_mst_shipupgrade) {
-                val idbefore = elem["api_current_ship_id"].int()
-                val idafter = elem["api_id"].int()
-                val shipbefore = KCDatabase.master.masterShipData[idbefore]
-                val shipafter = KCDatabase.master.masterShipData[idafter]
-                val level = elem["api_upgrade_level"].int()
+                val idAfter = elem["api_id"].int() // 本船的id
+                val idBefore = elem["api_current_ship_id"].int() // 本船改造前的id
+                val level = elem["api_upgrade_level"].int() // 这是本船第几次改造
+                val shipAfter = KCDatabase.master.masterShipData[idAfter]
 
-                val l = upgradeLevels[idafter, -1]
-                if (l != -1) { //upgradeLevels.containsKey(idafter)
-                    if (level < l) {
-                        shipafter.remodelBeforeShipId = idbefore
-                        upgradeLevels.put(idafter, level)
+                // 例：太太改二咸(api_id=461)可以由太太改(id=288)和太太改二甲(id=466)改造而来
+                val valueIfKeyNotFound = -1
+                val l = upgradeTimes[idAfter, valueIfKeyNotFound]
+                if (l != valueIfKeyNotFound) { // 即upgradeLevels.containsKey(idAfter)
+                    if (level < l) { //
+                        shipAfter?.remodelBeforeShipId = idBefore
+                        upgradeTimes.put(idAfter, level)
                     }
-                } else {
-                    shipafter.remodelBeforeShipId = idbefore
-                    upgradeLevels.put(idafter, level)
+                } else { //
+                    shipAfter?.remodelBeforeShipId = idBefore
+                    upgradeTimes.put(idAfter, level)
                 }
 
-                if (shipbefore != null) {
-                    shipbefore.needBlueprint = elem["api_drawing_count"].int()
-                    shipbefore.needCatapult = elem["api_catapult_count"].int()
+                val shipBefore = KCDatabase.master.masterShipData[idBefore]
+                if (shipBefore != null) {
+                    shipBefore.needBlueprint = elem["api_drawing_count"].int()
+                    shipBefore.needCatapult = elem["api_catapult_count"].int()
                 }
             }
         }
-
-
     }
 }

@@ -39,7 +39,7 @@ object api_req_nyukyo {
 
             val ndockId = requestMap["api_ndock_id", 0]
             KCDatabase.docks[ndockId]?.loadFromRequest(name, requestMap)
-            KCDatabase.material.instantRepair--
+            KCDatabase.material.loadFromRequest(name, requestMap)
 
             KCDatabase.fleets.loadFromRequest(name, requestMap)
         }

@@ -15,6 +15,7 @@ class Start2Data {
     val shipType = IDDictionary<ShipType>()
     val equipmentType = IDDictionary<EquipmentType>()
     val masterUseItemData = IDDictionary<MasterUseItemData>()
+    val masterMapAreaData = IDDictionary<MasterMapAreaData>()
     val masterMapInfoData = IDDictionary<MasterMapInfoData>()
     val masterMissionData = IDDictionary<MasterMissionData>()
 
@@ -113,7 +114,7 @@ class Start2Data {
         val isListedInAlbum: Boolean get() = albumNo > 0
         val cardType: Int get() = data["api_type"][1].int()
         val categoryType: Int get() = data["api_type"][2].int()
-        val categoryTypeInstance: EquipmentType get() = KCDatabase.master.equipmentType[categoryType]
+        val categoryTypeInstance: EquipmentType get() = KCDatabase.master.equipmentType[categoryType]!!
         val iconType: Int get() = data["api_type"][3].int()
 
         override val id: Int get() = equipmentId
@@ -169,6 +170,23 @@ class Start2Data {
         val description: String get() = data["api_description"][0].string()
 
         override val id: Int get() = itemId
+    }
+
+    class MasterMapAreaData : JsonWrapper(), Identifiable {
+        /**
+         * Start from 1
+         */
+        val mapAreaId: Int get() = data["api_id"].int()
+        /**
+         * 鎮守府海域/南西諸島海域/北方海域/etc.
+         */
+        val name: String get() = data["api_name"].string()
+        /**
+         * 0=通常, 1=Event活动
+         */
+        val mapType: Int get() = data["api_type"].int()
+
+        override val id: Int get() = mapAreaId
     }
 
     class MasterMapInfoData : JsonWrapper(), Identifiable {

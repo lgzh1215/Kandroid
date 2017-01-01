@@ -1,5 +1,8 @@
 package kandroid.utils;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.AbstractSet;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
@@ -134,6 +137,7 @@ public class IDDictionary<T extends Identifiable> extends AbstractSet<T> {
         return size == 0;
     }
 
+    @Nullable
     public T get(int id) {
         Node<T> e;
         return (e = getNode(id)) == null ? null : e.value;
@@ -145,6 +149,7 @@ public class IDDictionary<T extends Identifiable> extends AbstractSet<T> {
         return !t.equals(put(t));
     }
 
+    @Nullable
     public T put(T value) {
         return putVal(value.getId(), value, false);
     }
@@ -153,6 +158,7 @@ public class IDDictionary<T extends Identifiable> extends AbstractSet<T> {
         putMapEntries(m);
     }
 
+    @Nullable
     public T remove(int id) {
         Node<T> e;
         return (e = removeNode(id, null, false, true)) == null ?
@@ -195,6 +201,7 @@ public class IDDictionary<T extends Identifiable> extends AbstractSet<T> {
         return false;
     }
 
+    @NotNull
     public Set<Integer> keySet() {
         Set<Integer> ks = keySet;
         if (ks == null) {
@@ -204,15 +211,18 @@ public class IDDictionary<T extends Identifiable> extends AbstractSet<T> {
         return ks;
     }
 
+    @NotNull
     public Set<T> valueSet() {
         return this;
     }
 
+    @NotNull
     public Set<Node<T>> entrySet() {
         Set<Node<T>> es;
         return (es = entrySet) == null ? (entrySet = new EntrySet()) : es;
     }
 
+    @NotNull
     @Override
     public Iterator<T> iterator() {
         return new ValueIterator();

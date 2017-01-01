@@ -5,6 +5,7 @@ import com.google.gson.JsonPrimitive
 import kandroid.data.*
 import kandroid.observer.ApiBase
 import kandroid.observer.RawData
+import kandroid.utils.CatException
 import kandroid.utils.json.*
 
 object api_get_member {
@@ -162,6 +163,7 @@ object api_get_member {
         override fun onDataReceived(rawData: RawData) {
             val data = rawData.api_data().obj ?: return
 
+            // api_map_info 地图信息
             val api_map_info = data["api_map_info"].array
             if (api_map_info != null) {
                 for (elem in api_map_info) {
@@ -174,6 +176,25 @@ object api_get_member {
                     } else {
                         mapInfoData.loadFromResponse(name, elem)
                     }
+                }
+            }
+
+            // api_air_base 基地航空队 TODO 复查
+            val api_air_base = data["api_air_base"].array
+            if (api_air_base != null) {
+                KCDatabase.baseAirCorps.clear()
+                for (elem in api_air_base) {
+                    val baseAirCorp = BaseAirCorpsData()
+                    baseAirCorp.loadFromResponse(name, elem)
+                    val array = elem["api_plane_info"].array
+                    if (array != null) {
+                        for (planeElem in array) {
+                            val id = planeElem["api_squadron_id"].int()
+                            val planeData = baseAirCorp.PlaneData(id)
+                            baseAirCorp.planeInfo.put(planeData)
+                        }
+                    }
+                    KCDatabase.baseAirCorps.put(baseAirCorp)
                 }
             }
         }
@@ -215,16 +236,18 @@ object api_get_member {
                     val id = elem["api_id"].int()
 
                     val ship = KCDatabase.ships[id]
-                    ship.loadFromResponse(name, elem)
+                    if (ship != null) {
+                        ship.loadFromResponse(name, elem)
 
-                    for (equipmentId in ship.slot) {
-                        if (equipmentId == -1) continue
-                        if (!KCDatabase.equipments.containsKey(equipmentId)) {
-                            val newEquipment = EquipmentData()
-                            val jsonObject = JsonObject()
-                            jsonObject.add("api_id", JsonPrimitive(equipmentId))
-                            newEquipment.loadFromResponse(name, jsonObject)
-                            KCDatabase.equipments.put(newEquipment)
+                        for (equipmentId in ship.slot) {
+                            if (equipmentId == -1) continue
+                            if (!KCDatabase.equipments.containsKey(equipmentId)) {
+                                val newEquipment = EquipmentData()
+                                val jsonObject = JsonObject()
+                                jsonObject.add("api_id", JsonPrimitive(equipmentId))
+                                newEquipment.loadFromResponse(name, jsonObject)
+                                KCDatabase.equipments.put(newEquipment)
+                            }
                         }
                     }
                 }
@@ -261,6 +284,24 @@ object api_get_member {
             //api_deck_data
             val fleetData = data["api_deck_data"].array
             if (fleetData != null) KCDatabase.fleets.loadFromResponse(name, fleetData)
+        }
+    }
+
+    @Deprecated("自从6图(中部海域)陆航开放后就不用了")
+    object base_air_corps : ApiBase() {
+        override val name: String get() = "api_get_member/base_air_corps"
+
+        override fun onDataReceived(rawData: RawData) {
+            throw CatException("Deprecated")
+        }
+    }
+
+    object questlist : ApiBase() {
+        override val name: String get() = "api_get_member/questlist"
+
+        override fun onDataReceived(rawData: RawData) {
+            val data = rawData.api_data().obj ?: return
+            KCDatabase.quests.loadFromResponse(name, data)
         }
     }
 }

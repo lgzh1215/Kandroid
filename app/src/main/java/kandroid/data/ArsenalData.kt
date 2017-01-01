@@ -30,7 +30,7 @@ class ArsenalData : JsonWrapper(), RequestDataListener, Identifiable {
 
     override val id: Int get() = arsenalId
 
-    override fun loadFromRequest(apiName: String, requestData: Map<String, String>) {
+    override fun loadFromRequest(apiName: String, requestData: MutableMap<String, String>) {
         when (apiName) {
             api_req_kousyou.createship_speedchange.name -> {
                 data["api_state"] = 3

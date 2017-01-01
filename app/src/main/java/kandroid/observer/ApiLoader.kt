@@ -1,9 +1,7 @@
 package kandroid.observer
 
 import kandroid.config.Config
-import kandroid.observer.kcsapi.api_get_member
-import kandroid.observer.kcsapi.api_port
-import kandroid.observer.kcsapi.api_start2
+import kandroid.observer.kcsapi.*
 import kandroid.utils.log.Logger
 import kandroid.utils.yyyyMMdd_HHmmssSSS
 import org.apache.commons.io.FileUtils
@@ -15,13 +13,15 @@ object ApiLoader {
     private val lock = Any()
 
     fun load(rawData: RawData) {
-        Logger.i("接收数据${rawData.uri}")
         synchronized(lock) {
             val data = rawData.decode()
             ApiLoader.save(data)
             val apiBase = ApiLoader[data.uri]
-            apiBase?.onDataReceived(data)
-            apiBase?.notifyListeners()
+            if (apiBase != null) {
+                apiBase.onDataReceived(data)
+                apiBase.notifyListeners()
+            }
+            Logger.i("接收数据${apiBase?.name ?: "${rawData.uri}，但未处理"}")
         }
     }
 
@@ -66,7 +66,55 @@ object ApiLoader {
             this.put(apiBase.name, apiBase)
         }
         apiHolder.put(api_start2)
+        apiHolder.put(api_get_member.require_info)
         apiHolder.put(api_port.port)
+
+        apiHolder.put(api_get_member.kdock)
+        apiHolder.put(api_get_member.ndock)
+        apiHolder.put(api_get_member.basic)
+        apiHolder.put(api_get_member.questlist)
         apiHolder.put(api_get_member.deck)
+        apiHolder.put(api_get_member.ship_deck)
+        apiHolder.put(api_get_member.ship2)
+        apiHolder.put(api_get_member.ship3)
+        apiHolder.put(api_get_member.slot_item)
+        apiHolder.put(api_get_member.useitem)
+        apiHolder.put(api_get_member.material)
+        apiHolder.put(api_get_member.mapinfo)
+
+        apiHolder.put(api_req_air_corps.change_name)
+        apiHolder.put(api_req_air_corps.set_plane)
+        apiHolder.put(api_req_air_corps.set_action)
+        apiHolder.put(api_req_air_corps.supply)
+        apiHolder.put(api_req_air_corps.expand_base)
+
+        apiHolder.put(api_req_hensei.change)
+        apiHolder.put(api_req_hensei.combined)
+        apiHolder.put(api_req_hensei.preset_select)
+
+        apiHolder.put(api_req_hokyu.charge)
+
+        apiHolder.put(api_req_kaisou.open_exslot)
+        apiHolder.put(api_req_kaisou.powerup)
+        apiHolder.put(api_req_kaisou.remodeling)
+        apiHolder.put(api_req_kaisou.slot_deprive)
+        apiHolder.put(api_req_kaisou.slot_exchange_index)
+
+        apiHolder.put(api_req_kousyou.createitem)
+        apiHolder.put(api_req_kousyou.createship_speedchange)
+        apiHolder.put(api_req_kousyou.destroyitem2)
+        apiHolder.put(api_req_kousyou.destroyship)
+        apiHolder.put(api_req_kousyou.getship)
+        apiHolder.put(api_req_kousyou.remodel_slot)
+
+        apiHolder.put(api_req_member.get_practice_enemyinfo)
+        apiHolder.put(api_req_member.updatecomment)
+        apiHolder.put(api_req_member.updatedeckname)
+
+        apiHolder.put(api_req_nyukyo.speedchange)
+        apiHolder.put(api_req_nyukyo.start)
+
+        apiHolder.put(api_req_quest.stop)
+        apiHolder.put(api_req_quest.clearitemget)
     }
 }

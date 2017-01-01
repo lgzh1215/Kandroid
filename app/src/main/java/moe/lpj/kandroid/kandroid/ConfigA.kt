@@ -14,6 +14,8 @@ object ConfigA {
         val pref: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
         return object : IConfig {
+            override val privateStorageDir: File
+                get() = throw UnsupportedOperationException() //TODO
             val _listenPort: Int = pref.getString("listenPort", "-1").toInt()
             val _isUseProxy: Boolean = pref.getBoolean("isUseProxy", false)
             val _proxyPort: Int = pref.getString("proxyPort", "-1").toInt()
@@ -31,7 +33,7 @@ object ConfigA {
             override val isSaveKcsApi: Boolean get() = _isSaveKcsApi
             override val isSaveKcsRequest: Boolean get() = _isSaveKcsRequest
             override val isSaveKcsResponse: Boolean get() = _isSaveKcsResponse
-            override val storageDir: File get() = _storageDir
+            override val publicStorageDir: File get() = _storageDir
             override val isMultipleUserMode: Boolean get() = false
             override val isDebugOn: Boolean get() = _isDebugOn
         }

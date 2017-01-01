@@ -1,9 +1,10 @@
 package kandroid.data
 
+import com.google.gson.JsonArray
 import com.google.gson.JsonElement
-import kandroid.observer.kcsapi.api_get_member
-import kandroid.observer.kcsapi.api_port
-import kandroid.observer.kcsapi.api_req_kousyou
+import kandroid.observer.kcsapi.*
+import kandroid.utils.CatException
+import kandroid.utils.json.array
 import kandroid.utils.json.get
 import kandroid.utils.json.int
 
@@ -18,7 +19,7 @@ class MaterialData : RequestDataListener, ResponseDataListener {
     var developmentMaterial: Int = 0
     var moddingMaterial: Int = 0
 
-    override fun loadFromRequest(apiName: String, requestData: Map<String, String>) {
+    override fun loadFromRequest(apiName: String, requestData: MutableMap<String, String>) {
         when (apiName) {
             api_req_kousyou.createship.name -> {
                 fuel -= requestData["api_item1", 0]
@@ -27,6 +28,10 @@ class MaterialData : RequestDataListener, ResponseDataListener {
                 bauxite -= requestData["api_item4", 0]
                 developmentMaterial -= requestData["api_item5", 0]
             }
+            api_req_nyukyo.speedchange.name -> {
+                instantRepair--
+            }
+            else -> CatException()
         }
     }
 
@@ -43,15 +48,40 @@ class MaterialData : RequestDataListener, ResponseDataListener {
                 developmentMaterial = responseData[6]["api_value"].int(developmentMaterial)
                 moddingMaterial = responseData[7]["api_value"].int(moddingMaterial)
             }
-            "api_req_hokyu/charge",
-            "api_req_kousyou/destroyship" -> {
+            api_req_kousyou.destroyship.name,
+            api_req_hokyu.charge.name -> {
+                if (responseData is JsonArray) {
+                    fuel = responseData[0].int(fuel)
+                    ammo = responseData[1].int(ammo)
+                    steel = responseData[2].int(steel)
+                    bauxite = responseData[3].int(bauxite)
+                } else throw CatException()
             }
-
-            "api_req_kousyou/destroyitem2" -> {
+            api_req_kousyou.destroyitem2.name -> {
+                if (responseData is JsonArray) {
+                    fuel += responseData[0].int()
+                    ammo += responseData[1].int()
+                    steel += responseData[2].int()
+                    bauxite += responseData[3].int()
+                } else throw CatException()
             }
-
-            "api_req_kousyou/createitem",
-            "api_req_kousyou/remodel_slot" -> {
+            api_req_kousyou.createitem.name,
+            api_req_kousyou.remodel_slot.name -> {
+                if (responseData is JsonArray) {
+                    fuel = responseData[0].int(fuel)
+                    ammo = responseData[1].int(ammo)
+                    steel = responseData[2].int(steel)
+                    bauxite = responseData[3].int(bauxite)
+                    instantConstruction = responseData[4].int(instantConstruction)
+                    instantRepair = responseData[5].int(instantRepair)
+                    developmentMaterial = responseData[6].int(developmentMaterial)
+                    moddingMaterial = responseData[7].int(moddingMaterial)
+                } else throw CatException()
+            }
+            api_req_air_corps.supply.name,
+            api_req_air_corps.set_plane.name -> {
+                fuel = responseData["api_after_fuel"].int(fuel)
+                bauxite = responseData["api_after_bauxite"].int(bauxite)
             }
         }
     }

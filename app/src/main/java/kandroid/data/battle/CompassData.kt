@@ -69,5 +69,5 @@ class CompassData : JsonWrapper() {
 
     val airRaidDamageKind: Int get() = data["api_destruction_battle"]["api_lost_kind"].int()
 
-    val mapInfo: MapInfoData get() = KCDatabase.mapInfo.get(mapAreaID * 10 + mapInfoID)
+    val mapInfo: MapInfoData get() = KCDatabase.mapInfo.get(mapAreaID * 10 + mapInfoID)!!
 }

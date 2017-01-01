@@ -2,6 +2,8 @@ package kandroid.data
 
 import kandroid.data.JsonWrapper
 import kandroid.data.RequestDataListener
+import kandroid.observer.kcsapi.api_req_member
+import kandroid.utils.CatException
 import kandroid.utils.Identifiable
 import kandroid.utils.json.*
 import java.util.*
@@ -31,10 +33,13 @@ class AdmiralData : JsonWrapper(), RequestDataListener, Identifiable {
 
     override val id: Int get() = admiralId
 
-    override fun loadFromRequest(apiName: String, requestData: Map<String, String>) {
-        if (apiName == "api_req_member/updatecomment") {
-            val comment = requestData["api_cmt"]
-            if (comment != null) data["api_comment"] = comment
+    override fun loadFromRequest(apiName: String, requestData: MutableMap<String, String>) {
+        when (apiName) {
+            api_req_member.updatecomment.name -> {
+                val comment = requestData["api_cmt"]
+                if (comment != null) data["api_comment"] = comment
+            }
+            else -> throw CatException()
         }
     }
 }

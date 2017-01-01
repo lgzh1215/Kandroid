@@ -18,7 +18,9 @@ open class Config : IConfig {
 
     override val isSaveKcsResponse: Boolean get() = true
 
-    override val storageDir: File get() = File("./")
+    override val publicStorageDir: File get() = File("./")
+
+    override val privateStorageDir: File get() = publicStorageDir
 
     override val isMultipleUserMode: Boolean get() = true
 
@@ -26,10 +28,9 @@ open class Config : IConfig {
 
     companion object : IConfig {
         lateinit var config: IConfig
-        val Default = Config()
 
         fun setDefault() {
-            config = Default
+            config = Config()
         }
 
         override val listenPort: Int get() = config.listenPort
@@ -39,18 +40,19 @@ open class Config : IConfig {
         override val isSaveKcsApi: Boolean get() = config.isSaveKcsApi
         override val isSaveKcsRequest: Boolean get() = config.isSaveKcsRequest
         override val isSaveKcsResponse: Boolean get() = config.isSaveKcsResponse
-        override val storageDir: File get() = config.storageDir
+        override val publicStorageDir: File get() = config.publicStorageDir
+        override val privateStorageDir: File get() = config.privateStorageDir
         override val isMultipleUserMode: Boolean get() = config.isMultipleUserMode
         override val isDebugOn: Boolean get() = config.isDebugOn
 
-        fun getSaveKcsApiFile(fileName: String?): File = getFile("KCAPI", fileName)
+        fun getSaveKcsApiFile(fileName: String?): File = getFile("KCAPI", fileName, private = false)
 
-        fun getSaveLogFile(fileName: String?): File = getFile("log", fileName)
+        fun getSaveLogFile(fileName: String?): File = getFile("log", fileName, private = false)
 
-        fun getSaveUserDataFile(fileName: String?): File = getFile("data", fileName)
+        fun getSaveUserDataFile(fileName: String?): File = getFile("data", fileName, private = !isDebugOn)
 
-        private fun getFile(folderName: String, fileName: String?): File {
-            val file = File(storageDir, folderName)
+        private fun getFile(folderName: String, fileName: String?, private: Boolean): File {
+            val file = File(if (private) privateStorageDir else publicStorageDir, folderName)
             if (fileName == null)
                 return file
             else
@@ -66,7 +68,8 @@ open class Config : IConfig {
 │      isSaveKcsApi = $isSaveKcsApi
 │  isSaveKcsRequest = $isSaveKcsRequest
 │ isSaveKcsResponse = $isSaveKcsResponse
-│        storageDir = ${storageDir.canonicalPath}
+│  publicStorageDir = ${publicStorageDir.canonicalPath}
+│ privateStorageDir = ${privateStorageDir.canonicalPath}
 │isMultipleUserMode = $isMultipleUserMode
 │         isDebugOn = $isDebugOn
 └──────────────────
