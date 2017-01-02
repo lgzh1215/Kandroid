@@ -300,6 +300,9 @@ object api_get_member {
         override val name: String get() = "api_get_member/questlist"
 
         override fun onDataReceived(rawData: RawData) {
+            val requestMap = rawData.requestMap
+            KCDatabase.quests.loadFromRequest(name, requestMap)
+
             val data = rawData.api_data().obj ?: return
             KCDatabase.quests.loadFromResponse(name, data)
         }
