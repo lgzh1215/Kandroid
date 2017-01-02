@@ -1,3 +1,7 @@
 package kandroid.data.battle
 
-class BattleNight
+import kandroid.data.battle.phase.PhaseNightBattle
+
+class BattleNight(battleMode: BattleModes) : BattleBase(battleMode) {
+    var nightBattle: PhaseNightBattle? = null
+}

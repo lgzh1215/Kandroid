@@ -6,7 +6,7 @@ import kandroid.utils.Identifiable
 import kandroid.utils.json.get
 import kandroid.utils.json.int
 
-class MapInfoData : JsonWrapper(), Identifiable {
+class MapInfoData : ApiWrapper(), Identifiable {
 
     val mapID: Int get() = data["api_id"].int()
 
