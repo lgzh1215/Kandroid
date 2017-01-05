@@ -9,7 +9,7 @@ import kandroid.utils.json.obj
 class BattleDay(battleMode: BattleModes) : BattleBase(battleMode) {
 
     var jetBaseAirAttack: PhaseJetBaseAirAttack? = null
-    var jetAirBattle: PhaseJetAirBattle? = null
+    var jetAirBattle: PhaseAirBattle? = null
     var baseAirAttack: PhaseBaseAirAttack? = null
     var airBattle: PhaseAirBattle? = null
     var support: PhaseSupport? = null
@@ -29,14 +29,16 @@ class BattleDay(battleMode: BattleModes) : BattleBase(battleMode) {
         }
 
         if (data.has("api_injection_kouku")) {
-            jetAirBattle = PhaseJetAirBattle(this)
+            jetAirBattle = PhaseAirBattle(this, PhaseAirBattle.Type.Jet)
         }
 
         if (data.has("api_air_base_attack")) {
             baseAirAttack = PhaseBaseAirAttack(this)
         }
 
-        airBattle = PhaseAirBattle(this)
+        if (data.has("api_stage_flag")) {
+            airBattle = PhaseAirBattle(this, PhaseAirBattle.Type.Normal)
+        }
 
         if (data["api_support_flag"].int() != 0) {
             support = PhaseSupport(this)

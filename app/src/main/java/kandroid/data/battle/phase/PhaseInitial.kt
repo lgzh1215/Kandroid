@@ -101,6 +101,7 @@ class PhaseInitial(battle: BattleBase) : BasePhase(battle) {
         private set
 
     init {
+        // TODO 懒加载
         val data = data.obj!!
 
         val deckId: Int
