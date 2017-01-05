@@ -43,7 +43,7 @@ class BattleDay(battleMode: BattleModes) : BattleBase(battleMode) {
         }
 
         if (data["api_opening_taisen_flag"].int() != 0) {
-            openingASW = PhaseShelling(this)
+            openingASW = PhaseShelling(this, PhaseShelling.Type.OpeningASW)
         }
 
         if (data["api_opening_flag"].int() != 0) {
@@ -54,15 +54,15 @@ class BattleDay(battleMode: BattleModes) : BattleBase(battleMode) {
         if (api_hourai_flag != null) {
 
             if (api_hourai_flag[0].int() != 0) {
-                shelling1 = PhaseShelling(this)
+                shelling1 = PhaseShelling(this, PhaseShelling.Type.FirstFire)
             }
 
             if (api_hourai_flag[1].int() != 0) {
-                shelling2 = PhaseShelling(this)
+                shelling2 = PhaseShelling(this, PhaseShelling.Type.SecondFire)
             }
 
             if (api_hourai_flag[2].int() != 0) {
-                shelling3 = PhaseShelling(this)
+                shelling3 = PhaseShelling(this, PhaseShelling.Type.ThirdFire)
             }
 
             if (api_hourai_flag[3].int() != 0) {
