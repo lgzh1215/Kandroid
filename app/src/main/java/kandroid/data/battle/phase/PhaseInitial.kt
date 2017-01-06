@@ -3,15 +3,14 @@ package kandroid.data.battle.phase
 import kandroid.data.FleetData
 import kandroid.data.KCDatabase
 import kandroid.data.Start2Data
-import kandroid.data.battle.BattleBase
+import kandroid.data.battle.BattleData
 import kandroid.utils.json.array
 import kandroid.utils.json.int
 import kandroid.utils.json.list
 import kandroid.utils.json.obj
 import java.util.*
 
-//@Suppress("JoinDeclarationAndAssignment")
-class PhaseInitial(battle: BattleBase) : BasePhase(battle) {
+class PhaseInitial(battle: BattleData) : BasePhase(battle.data) {
 
     /**
      * 自军舰队
@@ -101,7 +100,7 @@ class PhaseInitial(battle: BattleBase) : BasePhase(battle) {
         private set
 
     init {
-        // TODO 懒加载
+        // TODO 懒加载, 检查-1值
         val data = data.obj!!
 
         val deckId: Int
@@ -135,7 +134,7 @@ class PhaseInitial(battle: BattleBase) : BasePhase(battle) {
         var nowHpsCombined: List<Int>? = null
         var maxHpsCombined: List<Int>? = null
 
-        if (isCombined) {
+        if (data.has("api_fParam_combined")) {
             nowHpsCombined = data["api_nowhps_combined"].list<Int>()
             maxHpsCombined = data["api_maxhps_combined"].list<Int>()
 
@@ -147,7 +146,7 @@ class PhaseInitial(battle: BattleBase) : BasePhase(battle) {
             friend2Param = data["api_fParam_combined"].array!!.map { it.list<Int>() }
         }
 
-        if (isEnemyCombined) {
+        if (data.has("api_eParam_combined")) {
             enemy2 = data["api_ship_ke_combined"].list<Int>().filter { it > -1 }
                     .map { KCDatabase.master.masterShipData[it] }
             enemy2Lvs = data["api_ship_lv"].list<Int>().filter { it > -1 }

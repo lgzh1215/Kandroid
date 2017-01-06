@@ -1,16 +1,19 @@
 package kandroid.data.battle
 
 import com.google.gson.JsonElement
-import kandroid.data.battle.phase.*
+import kandroid.data.battle.phase.PhaseAirBattle
+import kandroid.data.battle.phase.PhaseShelling
+import kandroid.data.battle.phase.PhaseSupport
+import kandroid.data.battle.phase.PhaseTorpedo
 import kandroid.utils.json.array
 import kandroid.utils.json.int
 import kandroid.utils.json.obj
 
-class BattleDay(battleMode: BattleModes) : BattleBase(battleMode) {
+class BattleDay : BattleData() {
 
-    var jetBaseAirAttack: PhaseJetBaseAirAttack? = null
+    var jetBaseAirAttack: PhaseAirBattle? = null
     var jetAirBattle: PhaseAirBattle? = null
-    var baseAirAttack: PhaseBaseAirAttack? = null
+    var baseAirAttack: PhaseAirBattle? = null
     var airBattle: PhaseAirBattle? = null
     var support: PhaseSupport? = null
     var openingASW: PhaseShelling? = null
@@ -22,10 +25,10 @@ class BattleDay(battleMode: BattleModes) : BattleBase(battleMode) {
 
     override fun loadFromResponse(apiName: String, responseData: JsonElement) {
         super.loadFromResponse(apiName, responseData)
-        val data = responseData.obj!!
+        val data = responseData.obj ?: return
 
         if (data.has("api_air_base_injection")) {
-            jetBaseAirAttack = PhaseJetBaseAirAttack(this)
+            jetBaseAirAttack = PhaseAirBattle(this, PhaseAirBattle.Type.JetBase)
         }
 
         if (data.has("api_injection_kouku")) {
@@ -33,7 +36,7 @@ class BattleDay(battleMode: BattleModes) : BattleBase(battleMode) {
         }
 
         if (data.has("api_air_base_attack")) {
-            baseAirAttack = PhaseBaseAirAttack(this)
+            baseAirAttack = PhaseAirBattle(this, PhaseAirBattle.Type.NormalBase)
         }
 
         if (data.has("api_stage_flag")) {
@@ -49,7 +52,7 @@ class BattleDay(battleMode: BattleModes) : BattleBase(battleMode) {
         }
 
         if (data["api_opening_flag"].int() != 0) {
-            openingTorpedo = PhaseTorpedo(this)
+            openingTorpedo = PhaseTorpedo(this, PhaseTorpedo.Type.Opening)
         }
 
         val api_hourai_flag = data["api_hourai_flag"].array
@@ -68,7 +71,7 @@ class BattleDay(battleMode: BattleModes) : BattleBase(battleMode) {
             }
 
             if (api_hourai_flag[3].int() != 0) {
-                torpedo = PhaseTorpedo(this)
+                torpedo = PhaseTorpedo(this, PhaseTorpedo.Type.Ending)
             }
         }
     }

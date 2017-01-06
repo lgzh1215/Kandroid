@@ -1,11 +1,10 @@
 package kandroid.data.battle.phase
 
-import kandroid.data.battle.BattleBase
+import kandroid.data.battle.BattleData
 import kandroid.utils.json.get
 import kandroid.utils.json.int
-import kandroid.utils.json.jsonNull
 
-class PhaseSearching(battle: BattleBase) : BasePhase(battle) {
+class PhaseSearching(battle: BattleData) : BasePhase(battle.data) {
 
     /**
      * 自军索敌结果
@@ -28,6 +27,4 @@ class PhaseSearching(battle: BattleBase) : BasePhase(battle) {
      */
     val engagementForm: Int get() = data["api_formation"][2].int()
 
-    override val isAvailable: Boolean
-        get() = data["api_search"] === jsonNull && data["api_formation"] === jsonNull
 }

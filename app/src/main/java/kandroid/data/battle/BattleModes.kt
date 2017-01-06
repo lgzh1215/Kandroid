@@ -1,29 +1,25 @@
 package kandroid.data.battle
 
-sealed class BattleModes(number: Int, flag: Int = 0) {
+sealed class BattleModes(val flag: Int) {
     //region @formatter:off
-    object Undefined :          BattleModes(0)   // 未定義
-    object Day :                BattleModes(1)   // 昼战
-    object Night :              BattleModes(2)   // 夜戦
-    object NightOnly :          BattleModes(3)   // 开幕夜戦
-    object NightToDay :         BattleModes(4)   // 夜转昼
-    object AirBattle :          BattleModes(5)   // 航空戦
-    object LongAirRaid :        BattleModes(6)   // 長距離空襲戦
+    object Undefined :          BattleModes(0b0)            // 未定義
+    object Day :                BattleModes(0b1)            // 昼战
+    object Night :              BattleModes(0b10)           // 夜戦
+    object NightOnly :          BattleModes(0b100)          // 开幕夜戦
+    object NightToDay :         BattleModes(0b1000)         // 夜转昼
+    object AirBattle :          BattleModes(0b10000)        // 航空戦
+    object LongAirRaid :        BattleModes(0b100000)       // 長距離空襲戦
 
-    object Practice :           BattleModes(7)   // 演習
+    object Practice :           BattleModes(0b1000000)      // 演習
 
-    object CombinedUndefined :  BattleModes(8)   // 連合艦隊
-    object CombinedTaskForce :  BattleModes(9)   // 機動部隊
-    object CombinedSurface :    BattleModes(10)  // 水上部隊
+    object CombinedUndefined :  BattleModes(0b10000000)     // 連合艦隊
+    object CombinedTaskForce :  BattleModes(0b100000000)    // 機動部隊
+    object CombinedSurface :    BattleModes(0b1000000000)   // 水上部隊
 
-    object EnemyCombinedFleet : BattleModes(11)  // 敵連合艦隊
+    object EnemyCombinedFleet : BattleModes(0b10000000000)  // 敵連合艦隊
     //endregion @formatter:on
 
-    private class Mixed(flag: Int) : BattleModes(0, flag)
-
-    val flag: Int = getFlag(number, flag)
-
-    fun getFlag(number: Int, flag: Int): Int = if (flag != 0) flag else 1 shl number
+    private class Mixed(flag: Int) : BattleModes(flag)
 
     infix fun and(other: BattleModes): BattleModes {
         return Mixed(this.flag or other.flag)

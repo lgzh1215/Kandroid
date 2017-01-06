@@ -5,7 +5,7 @@ import kandroid.data.JsonWrapper
 import kandroid.data.battle.phase.PhaseInitial
 import kandroid.data.battle.phase.PhaseSearching
 
-abstract class BattleBase(val battleMode: BattleModes) : JsonWrapper() {
+abstract class BattleData : JsonWrapper() {
     var initial: PhaseInitial? = null
     var searching: PhaseSearching? = null
 

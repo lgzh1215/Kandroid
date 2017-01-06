@@ -3,7 +3,7 @@ package moe.lpj.kandroid.utils
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Intent
-import kandroid.utils.SparseArray
+import android.util.SparseArray
 import moe.lpj.kandroid.R
 import moe.lpj.kandroid.application.MyApplication
 import moe.lpj.kandroid.service.NotificationReceiver

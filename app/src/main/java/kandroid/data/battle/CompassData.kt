@@ -104,20 +104,22 @@ class CompassData : JsonWrapper() {
     /**
      * 次奥,被泡芙抄家了
      */
-    val isHasAirRaid: Boolean get() = airRaidData != null
+    val isHasAirRaid: Boolean get() = data["api_destruction_battle"] != jsonNull
     /**
      * 抄家情报数据
      */
-    val airRaidData: JsonElement? get() = data["api_destruction_battle"].obj
-    /**
-     * 抄家空襲被害的类别
-     * 1=資源に被害, 2=資源・航空隊に被害, 3=航空隊に被害, 4=損害なし
-     */
-    val airRaidDamageKind: Int get() = data["api_destruction_battle"]["api_lost_kind"].int()
+    var airRaidData: BattleBaseAirRaid? = null
     /**
      * 海域情报
      */
     val mapInfo: MapInfoData? get() = KCDatabase.mapInfo.get(mapAreaID * 10 + mapInfoID)
 
     data class GetItemData(var ItemID: Int, var Metadata: Int, var Amount: Int)
+
+    override fun loadFromResponse(apiName: String, responseData: JsonElement) {
+        super.loadFromResponse(apiName, responseData)
+        val battleBaseAirRaid = BattleBaseAirRaid()
+        battleBaseAirRaid.loadFromResponse(apiName, responseData["api_destruction_battle"])
+        airRaidData = battleBaseAirRaid
+    }
 }
