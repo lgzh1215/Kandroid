@@ -1,6 +1,7 @@
 package kandroid.data
 
 import kandroid.data.battle.BattleManager
+import kandroid.data.quest.QuestManager
 import kandroid.utils.IDDictionary
 
 object KCDatabase {

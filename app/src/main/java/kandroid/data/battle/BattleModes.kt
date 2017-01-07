@@ -1,59 +1,38 @@
 package kandroid.data.battle
 
 sealed class BattleModes(val flag: Int) {
-    private interface Battle
-    private interface Fleet
-
     //region @formatter:off
-    object Undefined :         BattleModes(1),       Battle //未定義
-    object Normal :            BattleModes(2),       Battle //昼夜戦(通常戦闘)
-    object NightOnly :         BattleModes(4),       Battle //夜戦
-    object NightDay :          BattleModes(8),       Battle //夜昼戦
-    object AirBattle :         BattleModes(16),      Battle //航空戦
-    object AirRaid :           BattleModes(32),      Battle //長距離空襲戦
-    object Practice :          BattleModes(64),      Battle //演習
+    object Undefined :          BattleModes(0b0)            // 未定義
+    object Day :                BattleModes(0b1)            // 昼战
+    object Night :              BattleModes(0b10)           // 夜戦
+    object NightOnly :          BattleModes(0b100)          // 开幕夜戦
+    object NightToDay :         BattleModes(0b1000)         // 夜转昼
+    object AirBattle :          BattleModes(0b10000)        // 航空戦
+    object LongAirRaid :        BattleModes(0b100000)       // 長距離空襲戦
 
-    object CombinedUndefined : BattleModes(0x10000), Fleet  //連合艦隊
-    object CombinedTaskForce : BattleModes(0x20000), Fleet  //機動部隊
-    object CombinedSurface :   BattleModes(0x40000), Fleet  //水上部隊
+    object Practice :           BattleModes(0b1000000)      // 演習
 
-    class Mixed(flag: Int) :   BattleModes(flag)
+    object CombinedUndefined :  BattleModes(0b10000000)     // 連合艦隊
+    object CombinedTaskForce :  BattleModes(0b100000000)    // 機動部隊
+    object CombinedSurface :    BattleModes(0b1000000000)   // 水上部隊
 
-    companion object {
-        const val BattlePhaseMask = 0x0000FFFF
-        const val CombinedMask =    0x7FFF0000
-    }
+    object EnemyCombinedFleet : BattleModes(0b10000000000)  // 敵連合艦隊
     //endregion @formatter:on
 
+    private class Mixed(flag: Int) : BattleModes(flag)
+
     infix fun and(other: BattleModes): BattleModes {
-        return if (when (this) {
-            is Battle -> other is Fleet
-            is Fleet -> other is Battle
-            else -> false
-        }) {
-            Mixed(this.flag or other.flag)
-        } else throw IllegalArgumentException()
+        return Mixed(this.flag or other.flag)
     }
 
-    override operator fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (this is Mixed && other is BattleModes) {
-            return when (other) {
-                is Battle -> {
-                    flag and BattlePhaseMask == other.flag
-                }
-                is Fleet -> {
-                    flag and CombinedMask == other.flag
-                }
-                is Mixed -> {
-                    flag == other.flag
-                }
-                else -> false
-            }
-        } else return false
-    }
-
-    override fun hashCode(): Int = flag
-
-    fun isCombinedBattle(): Boolean = this.flag and CombinedMask != 0
+    val isDay: Boolean
+        get() = flag and Day.flag != 0
+    val isNight: Boolean
+        get() = flag and (Night and NightOnly).flag != 0
+    val isCombined: Boolean
+        get() = flag and (CombinedUndefined and CombinedTaskForce and CombinedSurface).flag != 0
+    val isEnemyCombined: Boolean
+        get() = flag and EnemyCombinedFleet.flag != 0
+    val isPractice: Boolean
+        get() = flag and Practice.flag != 0
 }

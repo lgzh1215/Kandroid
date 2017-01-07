@@ -11,6 +11,8 @@ object api_req_quest {
         override fun onDataReceived(rawData: RawData) {
             val requestMap = rawData.requestMap
             KCDatabase.quests.loadFromRequest(name, requestMap)
+
+            // TODO do response
         }
     }
 

@@ -4,8 +4,9 @@ import com.google.gson.JsonElement
 import kandroid.data.GetAdmiralRank
 import kandroid.data.RequestDataListener
 import kandroid.data.ResponseDataListener
-import kandroid.data.battle.BattleModes.Undefined
+import kandroid.data.battle.BattleModes.*
 import kandroid.observer.kcsapi.api_get_member
+import kandroid.observer.kcsapi.api_port
 import kandroid.observer.kcsapi.api_req_map
 import kandroid.observer.kcsapi.api_req_member
 import kandroid.utils.CatException
@@ -16,138 +17,147 @@ import kandroid.utils.json.string
 
 class BattleManager : ResponseDataListener, RequestDataListener {
 
-    var Compass: CompassData? = null
+    val compass = CompassData()
 
-    var BattleDay: BattleDay? = null
+    var battleData: BattleData? = null
 
-    var BattleNight: BattleNight? = null
+    var result: BattleResultData? = null
 
-    var Result: BattleResultData? = null
+    var battleMode: BattleModes = Undefined
 
-    var BattleMode: BattleModes = Undefined
+    var droppedShipCount: Int = 0
 
-    var DroppedShipCount: Int = 0
+    var droppedEquipmentCount: Int = 0
 
-    var DroppedEquipmentCount: Int = 0
+    var droppedItemCount: SparseIntArray = SparseIntArray()
 
-    var DroppedItemCount: SparseIntArray = SparseIntArray()
+    var enemyAdmiralName: String? = null
 
-    var EnemyAdmiralName: String? = null
-
-    var EnemyAdmiralRank: String? = null
+    var enemyAdmiralRank: String? = null
 
     override fun loadFromResponse(apiName: String, responseData: JsonElement) {
         when (apiName) {
             api_req_map.start.name,
-            "api_req_map/next" -> {
-                BattleDay = null
-                BattleNight = null
-                Result = null
-                BattleMode = Undefined
-                val _compass = CompassData()
-                _compass.loadFromResponse(apiName, responseData)
-                Compass = _compass
+            api_req_map.next.name -> {
+                battleData = null
+                result = null
+                battleMode = Undefined
+                compass.loadFromResponse(apiName, responseData)
             }
+        // 通常昼战
             "api_req_sortie/battle" -> {
-                BattleMode = BattleModes.Normal
-                val _battleDay = BattleNormalDay()
-                _battleDay.loadFromResponse(apiName, responseData)
-                BattleDay = _battleDay
+                battleMode = Day
+                newDayBattle(apiName, responseData)
             }
-//            "api_req_battle_midnight/battle" -> {
-//                BattleNight = BattleNormalNight()
-//                BattleNight.TakeOverParameters(BattleDay)
-//                BattleNight.loadFromResponse(apiName, responseData)
-//            }
-//            "api_req_battle_midnight/sp_midnight" -> {
-//                BattleMode = BattleModes.NightOnly
-//                BattleNight = BattleNightOnly()
-//                BattleNight.loadFromResponse(apiName, responseData)
-//            }
-//            "api_req_sortie/airbattle" -> {
-//                BattleMode = BattleModes.AirBattle
-//                BattleDay = BattleAirBattle()
-//                BattleDay.loadFromResponse(apiName, responseData)
-//            }
-//            "api_req_sortie/ld_airbattle" -> {
-//                BattleMode = BattleModes.AirRaid
-//                BattleDay = BattleAirRaid()
-//                BattleDay.loadFromResponse(apiName, responseData)
-//            }
-//            "api_req_combined_battle/battle" -> {
-//                BattleMode = BattleModes.Normal and BattleModes.CombinedTaskForce
-//                BattleDay = BattleCombinedNormalDay()
-//                BattleDay.loadFromResponse(apiName, responseData)
-//            }
-//
-//            "api_req_combined_battle/midnight_battle" -> {
-//                BattleNight = BattleCombinedNormalNight()
-//                BattleNight.loadFromResponse(apiName, responseData)
-//            }
-//
-//            "api_req_combined_battle/sp_midnight" -> {
-//                BattleMode = BattleModes.NightOnly and BattleModes.CombinedUndefined
-//                BattleNight = BattleCombinedNightOnly()
-//                BattleNight.loadFromResponse(apiName, responseData)
-//            }
-//
-//            "api_req_combined_battle/airbattle" -> {
-//                BattleMode = BattleModes.AirBattle and BattleModes.CombinedTaskForce
-//                BattleDay = BattleCombinedAirBattle()
-//                BattleDay.loadFromResponse(apiName, responseData)
-//            }
-//
-//            "api_req_combined_battle/battle_water" -> {
-//                BattleMode = BattleModes.Normal and BattleModes.CombinedSurface
-//                BattleDay = BattleCombinedWater()
-//                BattleDay.loadFromResponse(apiName, responseData)
-//            }
-//
-//            "api_req_combined_battle/ld_airbattle" -> {
-//                BattleMode = BattleModes.AirRaid and BattleModes.CombinedTaskForce
-//                BattleDay = BattleCombinedAirRaid()
-//                BattleDay.loadFromResponse(apiName, responseData)
-//            }
-//
+        // 通常夜战
+            "api_req_battle_midnight/battle" -> {
+                battleMode = battleMode and Night
+                newNightBattle(apiName, responseData)
+            }
+        // 开幕夜战
+            "api_req_battle_midnight/sp_midnight" -> {
+                battleMode = NightOnly
+                newNightOnlyBattle(apiName, responseData)
+            }
+        // 夜转昼
+            "api_req_sortie/night_to_day" -> {
+                // 没玩过...好想玩一次(逃
+                battleMode = NightToDay
+                battleData = null
+            }
+        // 航空战
+            "api_req_sortie/airbattle" -> {
+                battleMode = AirBattle
+                newDayBattle(apiName, responseData)
+            }
+        // 长距离航空战
+            "api_req_sortie/ld_airbattle" -> {
+                battleMode = LongAirRaid
+                newDayBattle(apiName, responseData)
+            }
+        // 12V6机动昼战
+            "api_req_combined_battle/battle" -> {
+                battleMode = CombinedTaskForce and Day
+                newDayBattle(apiName, responseData)
+            }
+        // 12V6水打昼战
+            "api_req_combined_battle/battle_water" -> {
+                battleMode = CombinedSurface and Day
+                newDayBattle(apiName, responseData)
+            }
+        // 12V6夜战
+            "api_req_combined_battle/midnight_battle" -> {
+                battleMode = battleMode and Night
+                newNightBattle(apiName, responseData)
+            }
+        // 12V6开幕夜战
+            "api_req_combined_battle/sp_midnight" -> {
+                battleMode = CombinedUndefined and NightOnly
+                newNightOnlyBattle(apiName, responseData)
+            }
+        // 12V6航空战
+            "api_req_combined_battle/airbattle" -> {
+                battleMode = CombinedUndefined and AirBattle
+                newDayBattle(apiName, responseData)
+            }
+        // 12V6长距离空袭战
+            "api_req_combined_battle/ld_airbattle" -> {
+                battleMode = CombinedUndefined and LongAirRaid
+                newDayBattle(apiName, responseData)
+            }
+        // 6V12昼战
+            "api_req_combined_battle/ec_battle" -> {
+                battleMode = EnemyCombinedFleet and Day
+                newDayBattle(apiName, responseData)
+            }
+        // **V12夜战
+            "api_req_combined_battle/ec_midnight_battle" -> {
+                battleMode = battleMode and Night
+                newNightBattle(apiName, responseData)
+            }
+        // 12V12机动昼战
+            "api_req_combined_battle/each_battle" -> {
+                battleMode = CombinedTaskForce and EnemyCombinedFleet and Day
+                newDayBattle(apiName, responseData)
+            }
+        // 12V12水打昼战
+            "api_req_combined_battle/each_battle_water" -> {
+                battleMode = CombinedSurface and EnemyCombinedFleet and Day
+                newDayBattle(apiName, responseData)
+            }
+        // 演戏详细列表
             api_req_member.get_practice_enemyinfo.name -> {
-                EnemyAdmiralName = responseData["api_nickname"].string()
-                EnemyAdmiralRank = GetAdmiralRank(responseData["api_rank"].int())
+                enemyAdmiralName = responseData["api_nickname"].string()
+                enemyAdmiralRank = GetAdmiralRank(responseData["api_rank"].int())
             }
-//
-//            "api_req_practice/battle" -> {
-//                BattleMode = BattleModes.Practice
-//                BattleDay = BattlePracticeDay()
-//                BattleDay.loadFromResponse(apiName, responseData)
-//            }
-//
-//            "api_req_practice/midnight_battle" -> {
-//                BattleNight = BattlePracticeNight()
-//                BattleNight.TakeOverParameters(BattleDay)
-//                BattleNight.loadFromResponse(apiName, responseData)
-//            }
-//
-//            "api_req_sortie/battleresult",
-//            "api_req_combined_battle/battleresult",
-//            "api_req_practice/battle_result" -> {
-//                Result = BattleResultData()
-//                Result.loadFromResponse(apiName, responseData)
-//                BattleFinished()
-//            }
-            "api_port/port" -> {
-                Compass = null
-                BattleDay = null
-                BattleNight = null
-                Result = null
-                BattleMode = Undefined
-                DroppedShipCount = 0
-                DroppedEquipmentCount = 0
-                DroppedItemCount.clear()
+        // 演戏昼战
+            "api_req_practice/battle" -> {
+                battleMode = Practice
+                newDayBattle(apiName, responseData)
             }
-            "api_get_member/slot_item" -> {
-                DroppedEquipmentCount = 0
+        // 演戏夜战
+            "api_req_practice/midnight_battle" -> {
+                battleMode = battleMode and Night
+                newNightBattle(apiName, responseData)
+            }
+        // 战斗结果
+            "api_req_sortie/battleresult",
+            "api_req_combined_battle/battleresult",
+            "api_req_practice/battle_result" -> {
+                val result = BattleResultData()
+                result.loadFromResponse(apiName, responseData)
+                this.result = result
+            }
+            api_port.port.name -> {
+                battleData = null
+                result = null
+                battleMode = Undefined
+                droppedShipCount = 0
+                droppedEquipmentCount = 0
+                droppedItemCount.clear()
             }
             api_get_member.slot_item.name -> {
-                DroppedEquipmentCount = 0
+                droppedEquipmentCount = 0
             }
             else -> throw CatException()
         }
@@ -157,6 +167,24 @@ class BattleManager : ResponseDataListener, RequestDataListener {
         when (apiName) {
 
         }
+    }
+
+    private fun newDayBattle(apiName: String, responseData: JsonElement) {
+        val battleDay = BattleDay()
+        battleDay.loadFromResponse(apiName, responseData)
+        battleData = battleDay
+    }
+
+    private fun newNightBattle(apiName: String, responseData: JsonElement) {
+        val battleNight = BattleNight(battleData as? BattleDay)
+        battleNight.loadFromResponse(apiName, responseData)
+        battleData = battleNight
+    }
+
+    private fun newNightOnlyBattle(apiName: String, responseData: JsonElement) {
+        val battleNight = BattleNight(null)
+        battleNight.loadFromResponse(apiName, responseData)
+        battleData = battleNight
     }
 
 }

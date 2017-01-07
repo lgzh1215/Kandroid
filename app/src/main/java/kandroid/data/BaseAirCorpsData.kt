@@ -8,7 +8,7 @@ import kandroid.utils.IDDictionary
 import kandroid.utils.Identifiable
 import kandroid.utils.json.*
 
-class BaseAirCorpsData : ApiWrapper(), Identifiable {
+class BaseAirCorpsData : JsonWrapper(), RequestDataListener, Identifiable {
 
     /**
      * 航空队id
