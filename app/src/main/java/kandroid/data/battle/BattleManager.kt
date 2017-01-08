@@ -170,19 +170,19 @@ class BattleManager : ResponseDataListener, RequestDataListener {
     }
 
     private fun newDayBattle(apiName: String, responseData: JsonElement) {
-        val battleDay = BattleDay()
+        val battleDay = BattleDay(battleMode)
         battleDay.loadFromResponse(apiName, responseData)
         battleData = battleDay
     }
 
     private fun newNightBattle(apiName: String, responseData: JsonElement) {
-        val battleNight = BattleNight(battleData as? BattleDay)
+        val battleNight = BattleNight(battleData as? BattleDay, battleMode)
         battleNight.loadFromResponse(apiName, responseData)
         battleData = battleNight
     }
 
     private fun newNightOnlyBattle(apiName: String, responseData: JsonElement) {
-        val battleNight = BattleNight(null)
+        val battleNight = BattleNight(null, battleMode)
         battleNight.loadFromResponse(apiName, responseData)
         battleData = battleNight
     }

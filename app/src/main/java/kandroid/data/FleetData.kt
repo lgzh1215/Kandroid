@@ -33,7 +33,7 @@ class FleetData : JsonWrapper(), RequestDataListener, Identifiable {
     val expeditionTime: Date get() = Date(data["api_mission"][2].long())
     val members: List<Int> get() = data["api_ship"].list()
 
-    val membersInstance: List<ShipData?> get() = members.map { KCDatabase.ships[it] }
+    val membersInstance: List<ShipData> get() = members.map { KCDatabase.ships[it] }
     val membersWithoutEscaped: List<ShipData> get() = members.mapNotNull {
         if (_escapedShipList.contains(it)) null else KCDatabase.ships[it]
     }

@@ -1,7 +1,6 @@
 package kandroid.utils.json
 
 import com.google.gson.*
-import kandroid.config.Config
 
 val jsonNull: JsonNull = JsonNull.INSTANCE
 
@@ -28,14 +27,14 @@ val JsonElement?.obj: JsonObject? get() = if (this is JsonObject) this else null
 
 val JsonElement?.array: JsonArray? get() = if (this is JsonArray) this else null
 
-operator fun JsonElement?.get(key: String): JsonElement {
+operator fun JsonElement.get(key: String): JsonElement {
 //    if (Config.isDebugOn) {
 //        return DebugJsonElement(this, key, obj?.get(key) ?: jsonNull)
 //    } else
     return obj?.get(key) ?: jsonNull
 }
 
-operator fun JsonElement?.get(index: Int): JsonElement {
+operator fun JsonElement.get(index: Int): JsonElement {
 //    if (Config.isDebugOn) {
 //        return DebugJsonElement(this, "[$index]", array?.get(index) ?: jsonNull)
 //    } else

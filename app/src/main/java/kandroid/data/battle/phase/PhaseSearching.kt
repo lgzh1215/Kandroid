@@ -8,6 +8,7 @@ class PhaseSearching(battle: BattleData) : BasePhase(battle.data) {
 
     /**
      * 自军索敌结果
+     * 1=成功, 2=成功(索敌机未归还), 3=未归还, 4=失败, 5=成功(索敵機なし), 6=失敗(艦載機使用せず)
      */
     val searchingFriend: Int get() = data["api_search"][0].int(-1)
     /**

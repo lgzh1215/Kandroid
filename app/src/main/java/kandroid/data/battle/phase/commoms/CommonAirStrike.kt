@@ -3,6 +3,7 @@ package kandroid.data.battle.phase.commoms
 import com.google.gson.JsonElement
 import kandroid.utils.json.get
 import kandroid.utils.json.int
+import kandroid.utils.json.jsonNull
 import kandroid.utils.json.list
 
 abstract class CommonAirStrike {
@@ -11,7 +12,9 @@ abstract class CommonAirStrike {
 
     open val api_stage_flag: JsonElement get() = data["api_stage_flag"]
 
-    val stageFlag: List<Int> get() = api_stage_flag.list()
+    val hasS1: Boolean get() = if (api_stage_flag !== jsonNull) api_stage_flag[1].int() != 0 else s1.isAvailable
+    val hasS2: Boolean get() = if (api_stage_flag !== jsonNull) api_stage_flag[2].int() != 0 else s2.isAvailable
+    val hasS3: Boolean get() = if (api_stage_flag !== jsonNull) api_stage_flag[3].int() != 0 else s3.isAvailable
 
     val fPlaneFrom: List<Int> get() = data["api_plane_from"][0].list()
     val ePlaneFrom: List<Int> get() = data["api_plane_from"][1].list()
@@ -45,6 +48,8 @@ abstract class CommonAirStrike {
 
     inner class Stage1 {
         private val stage1: JsonElement get() = data["api_stage1"]
+
+        val isAvailable: Boolean get() = stage1 !== jsonNull
 
         /**
          * 我方飞机数
@@ -81,6 +86,8 @@ abstract class CommonAirStrike {
 
     inner class Stage2 {
         private val stage2: JsonElement get() = data["api_stage2"]
+
+        val isAvailable: Boolean get() = stage2 !== jsonNull
 
         /**
          * 我方舰攻+舰爆+水爆+...总数
@@ -132,6 +139,8 @@ abstract class CommonAirStrike {
 
     open inner class Stage3 {
         protected open val stage3: JsonElement get() = data["api_stage3"]
+
+        val isAvailable: Boolean get() = stage3 !== jsonNull
 
         /**
          * 我方被舰攻雷击Flag

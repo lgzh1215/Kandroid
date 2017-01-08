@@ -28,7 +28,7 @@ object KandroidMain {
      * @param json must no "svdata="
      */
     fun loadStart2(json: String) {
-        val rawData = StringRawData(api_start2.name, "", json, true)
+        val rawData = StringRawData(api_start2.name, "", json, noSvdata = true)
         ApiLoader.load(rawData)
     }
 
@@ -47,7 +47,7 @@ object KandroidMain {
      * @param json must no "svdata="
      */
     fun loadPort(json: String) {
-        val rawData = StringRawData(api_port.port.name, "", json, true)
+        val rawData = StringRawData(api_port.port.name, "", json, noSvdata = true)
         ApiLoader.load(rawData)
     }
 

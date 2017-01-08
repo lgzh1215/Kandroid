@@ -16,7 +16,8 @@ class PhaseSupport(battle: BattleData) : BasePhase(battle.data) {
     val supportFlag: Int get() = data["api_support_flag"].int()
 
     val airSupport = AirSupport()
-    val fireSupport = FireSupport()
+    val shellingSupport = ShellingOrTorpedoSupport()
+    val torpedoSupport : ShellingOrTorpedoSupport get() = shellingSupport
 
     interface BaseSupport {
         val data: JsonElement
@@ -40,7 +41,7 @@ class PhaseSupport(battle: BattleData) : BasePhase(battle.data) {
         override val api_stage_flag: JsonElement get() = data["api_stage_flag"]
     }
 
-    inner class FireSupport : BaseSupport {
+    inner class ShellingOrTorpedoSupport : BaseSupport {
         override val data: JsonElement get() = data["api_support_info"]["api_support_hourai"]
         /**
          * 暴击Flag

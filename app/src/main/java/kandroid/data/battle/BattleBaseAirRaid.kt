@@ -6,7 +6,7 @@ import kandroid.utils.json.get
 import kandroid.utils.json.int
 import kandroid.utils.json.obj
 
-class BattleBaseAirRaid : BattleData() {
+class BattleBaseAirRaid : BattleData(BattleModes.BaseAirRaid) {
     var airBattle: PhaseAirBattle? = null
 
     /**

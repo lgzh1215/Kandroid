@@ -9,8 +9,8 @@ import java.util.*
 import java.util.zip.GZIPInputStream
 
 abstract class RawData(val uri: String,
+                       val date: Date = Date(),
                        val isReady: Boolean) {
-    val date: Date = Date()
 
     abstract val requestString: String
 
@@ -39,7 +39,8 @@ abstract class RawData(val uri: String,
 class ByteArrayRawData(uri: String,
                        val request: ByteArray,
                        val response: ByteArray,
-                       isReady: Boolean = false) : RawData(uri, isReady) {
+                       date: Date = Date(),
+                       isReady: Boolean = false) : RawData(uri, date, isReady) {
 
     override fun decode(): RawData {
         if (isReady && response.isEmpty()) return this
@@ -64,7 +65,7 @@ class ByteArrayRawData(uri: String,
 
             val decodedData = IOUtils.toByteArray(stream)
 
-            return ByteArrayRawData(uri, request, decodedData, true)
+            return ByteArrayRawData(uri, request, decodedData, date, true)
         } catch (e: Exception) {
             Logger.e("处理数据时出错 -> $e", e)
             return this
@@ -79,7 +80,8 @@ class ByteArrayRawData(uri: String,
 class StringRawData(uri: String,
                     request: String,
                     response: String,
-                    noSvdata: Boolean) : RawData(uri, noSvdata) {
+                    date: Date = Date(),
+                    noSvdata: Boolean) : RawData(uri, date, noSvdata) {
 
     override val requestString: String = request
 

@@ -2,7 +2,6 @@ package kandroid.data.battle.phase
 
 import kandroid.data.FleetData
 import kandroid.data.KCDatabase
-import kandroid.data.Start2Data
 import kandroid.data.battle.BattleData
 import kandroid.utils.json.array
 import kandroid.utils.json.int
@@ -10,7 +9,7 @@ import kandroid.utils.json.list
 import kandroid.utils.json.obj
 import java.util.*
 
-class PhaseInitial(battle: BattleData) : BasePhase(battle.data) {
+class PhaseParameters(battle: BattleData) : BasePhase(battle.data) {
 
     /**
      * 自军舰队
@@ -46,7 +45,7 @@ class PhaseInitial(battle: BattleData) : BasePhase(battle.data) {
     /**
      * 敌舰队
      */
-    val enemy: List<Start2Data.MasterShipData>
+    val enemy: List<Int>
     /**
      * 敌舰队Lv
      */
@@ -71,12 +70,12 @@ class PhaseInitial(battle: BattleData) : BasePhase(battle.data) {
     /**
      * 敌二队
      */
-    var enemy2: List<Start2Data.MasterShipData>? = null
+    var enemy2: List<Int>? = null
         private set
     /**
      * 敌二队Lv
      */
-    var enemy2Lvs: List<Int>? = null
+    var enemy2Lv: List<Int>? = null
         private set
     /**
      * 敌二队Hp
@@ -111,10 +110,8 @@ class PhaseInitial(battle: BattleData) : BasePhase(battle.data) {
         }
         friendFleets.add(KCDatabase.fleets[deckId])
 
-        enemy = data["api_ship_ke"].list<Int>().filter { it > -1 }
-                .map { KCDatabase.master.masterShipData[it] }
-
-        enemyLv = data["api_ship_lv"].list<Int>().filter { it > -1 }
+        enemy = data["api_ship_ke"].list<Int>().drop(1)
+        enemyLv = data["api_ship_lv"].list<Int>().drop(1)
 
         val nowHps = data["api_nowhps"].list<Int>()
         friendNowHps = nowHps.subList(1, 7)
@@ -147,9 +144,8 @@ class PhaseInitial(battle: BattleData) : BasePhase(battle.data) {
         }
 
         if (data.has("api_eParam_combined")) {
-            enemy2 = data["api_ship_ke_combined"].list<Int>().filter { it > -1 }
-                    .map { KCDatabase.master.masterShipData[it] }
-            enemy2Lvs = data["api_ship_lv"].list<Int>().filter { it > -1 }
+            enemy2 = data["api_ship_ke_combined"].list<Int>().drop(1)
+            enemy2Lv = data["api_ship_lv_combined"].list<Int>().drop(1)
 
             if (nowHpsCombined != null)
                 enemy2NowHps = nowHpsCombined.subList(7, 13)

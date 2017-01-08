@@ -9,7 +9,7 @@ import kandroid.utils.json.array
 import kandroid.utils.json.int
 import kandroid.utils.json.obj
 
-class BattleDay : BattleData() {
+class BattleDay(battleMode: BattleModes) : BattleData(battleMode) {
 
     var jetBaseAirAttack: PhaseAirBattle? = null
     var jetAirBattle: PhaseAirBattle? = null
