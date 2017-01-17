@@ -34,7 +34,7 @@ abstract class ApiBase : Listenable {
 
     override fun toString(): String = name
 
-    protected fun RawData.api_data(): JsonElement? = JsonParser.parse(this.responseString)["api_data"]
+    protected fun RawData.api_data(): JsonElement = JsonParser.parse(this.responseString)["api_data"]
     protected operator fun Map<String, String>.get(key: String, default: Int): Int {
         return try {
             this[key]?.toInt()!!

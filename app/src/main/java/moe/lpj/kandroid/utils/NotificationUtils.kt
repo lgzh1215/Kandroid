@@ -5,8 +5,8 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.util.SparseArray
 import moe.lpj.kandroid.R
-import moe.lpj.kandroid.application.MyApplication
-import moe.lpj.kandroid.service.NotificationReceiver
+import moe.lpj.kandroid.application.App
+import moe.lpj.kandroid.receiver.NotificationReceiver
 import moe.lpj.kandroid.viewmodel.MissionViewModel
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -21,21 +21,21 @@ object NotificationUtils {
     private val log: Logger = LoggerFactory.getLogger(NotificationUtils::class.java)
 
     fun newTimedNotification(contentTitle: String, contentText: String, `when`: Long, id: Int) {
-        val intent = Intent(MyApplication.instance, NotificationReceiver::class.java)
+        val intent = Intent(App.get(), NotificationReceiver::class.java)
         intent.putExtra(CONTENT_TITLE, contentTitle)
         intent.putExtra(CONTENT_TEXT, contentText)
         intent.putExtra(WHEN, `when`)
         intent.putExtra(ID, id)
         val requestCode = id
-        val pendingIntent = PendingIntent.getBroadcast(MyApplication.instance, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-//        MyApplication.instance.getAlarmManager().set(AlarmManager.RTC_WAKEUP, `when`, pendingIntent)
-        MyApplication.instance.getAlarmManager().setExact(AlarmManager.RTC_WAKEUP, `when`, pendingIntent)
+        val pendingIntent = PendingIntent.getBroadcast(App.get(), requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+//        App.get().getAlarmManager().set(AlarmManager.RTC_WAKEUP, `when`, pendingIntent)
+        App.get().getAlarmManager().setExact(AlarmManager.RTC_WAKEUP, `when`, pendingIntent)
         System.err.println(`when`)
         map.put(id, pendingIntent)
     }
 
     fun cancelTimedNotification(pendingIntent: PendingIntent) {
-        MyApplication.instance.getAlarmManager().cancel(pendingIntent)
+        App.get().getAlarmManager().cancel(pendingIntent)
     }
 
     fun cancelTimedNotification(id: Int) {
@@ -85,7 +85,7 @@ object NotificationUtils {
     }
 
     fun registerSimpleNotification(contentTitle: String, contentText: CharSequence, `when`: Long, id: Int) {
-        val notification = MyApplication.instance.getNotificationBuilder()
+        val notification = App.get().getNotificationBuilder()
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(contentTitle)
                 .setContentText(contentText)
@@ -93,6 +93,6 @@ object NotificationUtils {
                 .setShowWhen(true)
                 .setAutoCancel(true)
                 .build()
-        MyApplication.instance.getNotificationManager().notify(id, notification)
+        App.get().getNotificationManager().notify(id, notification)
     }
 }

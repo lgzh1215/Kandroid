@@ -10,13 +10,12 @@
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
-        android:name=".application.MyApplication"
+        android:name=".application.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".activity.main.MainActivity"
             android:label="@string/app_name"
@@ -27,7 +26,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.setting.SettingsActivity"
             android:label="@string/app_name"/>
@@ -37,19 +35,37 @@
             android:enabled="true"
             android:exported="false"
             android:label="什么鬼"/>
-
         <service
             android:name=".service.DetectionService"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService"/>
             </intent-filter>
+
             <meta-data
                 android:name="android.accessibilityservice"
                 android:resource="@xml/detection_service_config"/>
         </service>
 
-        <receiver android:name=".service.NotificationReceiver"/>
+        <receiver
+            android:name=".receiver.NotificationReceiver"
+            android:enabled="true"
+            android:exported="false"/>
+        <receiver
+            android:name=".receiver.HideOverlaysReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="eu.chainfire.supersu.action.HIDE_OVERLAYS"/>
+
+                <category android:name="android.intent.category.INFO"/>
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".service.BackgroundIntentService"
+            android:exported="false">
+        </service>
     </application>
 
 </manifest>

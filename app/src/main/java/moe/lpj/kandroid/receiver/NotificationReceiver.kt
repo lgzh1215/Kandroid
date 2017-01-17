@@ -1,4 +1,4 @@
-package moe.lpj.kandroid.service
+package moe.lpj.kandroid.receiver
 
 import android.app.Notification
 import android.content.BroadcastReceiver

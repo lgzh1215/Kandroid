@@ -10,7 +10,7 @@ import android.text.TextUtils
 import android.view.MenuItem
 import kandroid.KandroidMain
 import moe.lpj.kandroid.R
-import moe.lpj.kandroid.application.MyApplication
+import moe.lpj.kandroid.application.App
 import moe.lpj.kandroid.kandroid.ConfigA
 import moe.lpj.kandroid.utils.NotificationUtils
 import org.slf4j.Logger
@@ -27,7 +27,7 @@ class SettingsActivity : AppCompatPreferenceActivity() {
             if (key.startsWith("notification")) {
                 NotificationUtils.registerMissionNotifications()
             } else if (key.startsWith("proxy")) {
-                KandroidMain.updateConfig(ConfigA.get(MyApplication.instance))
+                KandroidMain.updateConfig(ConfigA.get(App.get()))
                 KandroidMain.restart()
             }
         }

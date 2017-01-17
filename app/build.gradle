@@ -38,6 +38,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.7'
     kapt 'com.android.databinding:compiler:2.2.3'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
+    compile 'eu.chainfire:libsuperuser:1.0.0.+'
 }
 repositories {
     mavenCentral()
