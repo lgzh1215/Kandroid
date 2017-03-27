@@ -16,9 +16,6 @@ out/
 # Gradle files
 .gradle/
 build/
-gradlew
-gradlew.bat
-gradle.properties
 
 # Local configuration file (sdk path, etc)
 local.properties
@@ -43,6 +40,3 @@ captures/
 *.jks
 
 # Debug files
-/KCAPI/
-/app/src/main/java/kandroid/z/
-/log/

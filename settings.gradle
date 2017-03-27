@@ -1,1 +1,16 @@
-include ':app'
+include ':app', ':core', ':win'
+
+findProject(':app')?.with {
+    name = 'android'
+    buildFileName = 'android.gradle'
+}
+
+findProject(':core')?.with {
+    name = 'kcsapi'
+    buildFileName = 'core.gradle'
+}
+
+findProject(':win')?.with {
+    name = 'windows'
+    buildFileName = 'win.gradle'
+}
