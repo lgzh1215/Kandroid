@@ -557,6 +557,8 @@ open class IDDictionary<E : Identifiable> : AbstractMutableSet<E> {
         return if (RDCSS_ROOT(root, root.GCAS_READ(this), INode.newRootNode<E>())) Unit else clear()
     }
 
+    fun contains(id: Int): Boolean = lookup(id) != null
+
     override fun contains(element: E): Boolean = lookup(element.id) != null
 
     @Deprecated("Bridge function", ReplaceWith("add(element)"))

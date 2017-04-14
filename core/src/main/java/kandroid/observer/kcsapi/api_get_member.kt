@@ -241,7 +241,7 @@ object api_get_member {
 
                         for (equipmentId in ship.slot) {
                             if (equipmentId == -1) continue
-                            if (!KCDatabase.equipments.containsKey(equipmentId)) {
+                            if (!KCDatabase.equipments.contains(equipmentId)) {
                                 val newEquipment = EquipmentData()
                                 val jsonObject = JsonObject()
                                 jsonObject.add("api_id", JsonPrimitive(equipmentId))
