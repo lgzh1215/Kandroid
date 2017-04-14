@@ -1,14 +1,20 @@
 package kandroid
 
 import kandroid.config.Config
+import kandroid.config.FILE_START2
 import kandroid.config.IConfig
+import kandroid.data.KCDatabase
 import kandroid.data.MapInfoData
+import kandroid.data.UserData
 import kandroid.observer.ApiLoader
 import kandroid.observer.StringRawData
 import kandroid.observer.kcsapi.api_port
 import kandroid.observer.kcsapi.api_start2
 import kandroid.proxy.ProxyServer
 import kandroid.utils.collection.IDDictionary
+import kandroid.utils.json.GSON
+import kandroid.utils.json.JsonParser
+import kandroid.utils.json.list
 import kandroid.utils.log.Logger
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.delay
@@ -21,8 +27,11 @@ object KandroidMain {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        HashMap<String, String>()
-        IDDictionary<MapInfoData>().forEach {  }
+        var some: String = ""
+        println(kotlin.system.measureTimeMillis {
+            some = GSON.toJson(UserData(0))
+        })
+        println(some)
     }
 
     fun start() {
@@ -40,12 +49,12 @@ object KandroidMain {
      * @param json must no "svdata="
      */
     fun loadStart2(json: String) {
-        val rawData = StringRawData(api_start2.name, "", json, noSvdata = true)
+        val rawData = StringRawData(api_start2.name, "", json)
         ApiLoader.load(rawData)
     }
 
     fun loadStart2(): Boolean {
-        val file = Config.getSaveUserDataFile("api_start2")
+        val file = Config.getSaveUserDataFile(FILE_START2)
         if (file.exists() && file.canRead()) {
             val string = FileUtils.readFileToString(file, Charset.defaultCharset())
             loadStart2(string)
@@ -54,12 +63,8 @@ object KandroidMain {
         return false
     }
 
-    /**
-     * 恢复用户数据
-     * @param json must no "svdata="
-     */
     fun loadPort(json: String) {
-        val rawData = StringRawData(api_port.port.name, "", json, noSvdata = true)
+        val rawData = StringRawData(api_port.port.name, "", json, isFromKcServer = true)
         ApiLoader.load(rawData)
     }
 

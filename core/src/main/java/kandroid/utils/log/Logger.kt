@@ -1,7 +1,6 @@
 package kandroid.utils.log
 
 import kandroid.config.Config
-import kandroid.thread.Threads
 import kandroid.utils.Listenable
 import kandroid.utils.yyyyMMdd
 import kandroid.utils.yyyyMMdd_HHmmssSSS
@@ -44,35 +43,35 @@ object Logger : Listenable<kandroid.utils.log.Logger.LogData> {
     }
 
     private fun addLog(level: String, str: String, exception: Exception? = null) {
-        Threads.pool.execute {
-            synchronized(Logger) {
-                val logData = LogData(Date(), level, str, exception)
-
-                listeners.forEach { it(logData) }
-
-                logs.add(logData)
-                if (logs.size > 20) {
-                    saveToFile()
-                }
-            }
-        }
+//        Threads.pool.execute {
+//            synchronized(Logger) {
+//                val logData = LogData(Date(), level, str, exception)
+//
+//                listeners.forEach { it(logData) }
+//
+//                logs.add(logData)
+//                if (logs.size > 20) {
+//                    saveToFile()
+//                }
+//            }
+//        }
     }
 
     fun saveToFile() {
-        Threads.pool.execute {
-            synchronized(Logger) {
-                val file = Config.getSaveLogFile(Date().yyyyMMdd)
-                val printStream = PrintStream(FileUtils.openOutputStream(file, true))
-
-                printStream.use { ps ->
-                    logs.forEach { logData ->
-                        ps.println(logData.toString())
-                        logData.exception?.printStackTrace(ps)
-                        ps.println()
-                    }
-                }
-                logs.clear()
-            }
-        }
+//        Threads.pool.execute {
+//            synchronized(Logger) {
+//                val file = Config.getSaveLogFile(Date().yyyyMMdd)
+//                val printStream = PrintStream(FileUtils.openOutputStream(file, true))
+//
+//                printStream.use { ps ->
+//                    logs.forEach { logData ->
+//                        ps.println(logData.toString())
+//                        logData.exception?.printStackTrace(ps)
+//                        ps.println()
+//                    }
+//                }
+//                logs.clear()
+//            }
+//        }
     }
 }

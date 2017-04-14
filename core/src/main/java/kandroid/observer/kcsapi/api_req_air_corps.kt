@@ -4,7 +4,7 @@ import kandroid.data.BaseAirCorpsData
 import kandroid.data.KCDatabase
 import kandroid.observer.ApiBase
 import kandroid.observer.RawData
-import kandroid.utils.CatException
+import kandroid.utils.exception.CatException
 import kandroid.utils.json.array
 import kandroid.utils.json.obj
 import kandroid.utils.log.Logger

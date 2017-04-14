@@ -1,10 +1,9 @@
 package kandroid.observer.kcsapi
 
 import kandroid.config.Config
-import kandroid.data.KCDatabase
-import kandroid.data.Start2Data
+import kandroid.config.FILE_START2
+import kandroid.data.*
 import kandroid.observer.ApiBase
-import kandroid.observer.ByteArrayRawData
 import kandroid.observer.RawData
 import kandroid.utils.collection.SparseIntArray
 import kandroid.utils.json.*
@@ -16,13 +15,14 @@ object api_start2 : ApiBase() {
 
     override fun onDataReceived(rawData: RawData) {
         // 保存Start2以便下次载入
-        val responseString = rawData.responseString
-        if (rawData is ByteArrayRawData) {
-            val file = Config.getSaveUserDataFile("api_start2")
-            FileUtils.writeStringToFile(file, responseString, Charset.defaultCharset())
+        if (rawData.isFromKcServer) {
+            val file = Config.getSaveUserDataFile(FILE_START2)
+            FileUtils.writeStringToFile(file, rawData.responseString, Charset.defaultCharset())
         }
-        val data = JsonParser.parse(responseString)["api_data"].obj ?: return
 
+        val data = rawData["api_data"].obj ?: return
+
+        val master = KCDatabase.Master
         // 特別置換処理
         data["api_mst_stype"][7]["api_name"] = "巡洋戦艦"
 
@@ -31,11 +31,11 @@ object api_start2 : ApiBase() {
         if (api_mst_ship != null) {
             for (elem in api_mst_ship) {
                 val id = elem["api_id"].int()
-                var ship = KCDatabase.master.masterShipData[id]
+                var ship = master.ship[id]
                 if (ship == null) {
-                    ship = Start2Data.MasterShipData()
+                    ship = MasterShipData()
                     ship.loadFromResponse(name, elem)
-                    KCDatabase.master.masterShipData.put(ship)
+                    master.ship.put(ship)
                 } else {
                     ship.loadFromResponse(name, elem)
                 }
@@ -43,10 +43,10 @@ object api_start2 : ApiBase() {
         }
 
         // 改装関連のデータ設定
-        for (ship in KCDatabase.master.masterShipData) {
+        for (ship in master.ship) {
             val remodelID = ship.remodelAfterShipId
             if (remodelID != 0) {
-                KCDatabase.master.masterShipData[remodelID]?.remodelBeforeShipId = ship.shipId
+                master.ship[remodelID]?.remodelBeforeShipId = ship.shipId
             }
         }
 
@@ -57,11 +57,11 @@ object api_start2 : ApiBase() {
         if (api_mst_slotitem_equiptype != null) {
             for (elem in api_mst_slotitem_equiptype) {
                 val id = elem["api_id"].int()
-                var equipmentType = KCDatabase.master.equipmentType[id]
+                var equipmentType = master.equipmentType[id]
                 if (equipmentType == null) {
-                    equipmentType = Start2Data.EquipmentType()
+                    equipmentType = EquipmentType()
                     equipmentType.loadFromResponse(name, elem)
-                    KCDatabase.master.equipmentType.put(equipmentType)
+                    master.equipmentType.put(equipmentType)
                 } else {
                     equipmentType.loadFromResponse(name, elem)
                 }
@@ -73,11 +73,11 @@ object api_start2 : ApiBase() {
         if (api_mst_stype != null) {
             for (elem in api_mst_stype) {
                 val id = elem["api_id"].int()
-                var shipType = KCDatabase.master.shipType[id]
+                var shipType = master.shipType[id]
                 if (shipType == null) {
-                    shipType = Start2Data.ShipType()
+                    shipType = ShipType()
                     shipType.loadFromResponse(name, elem)
-                    KCDatabase.master.shipType.put(shipType)
+                    master.shipType.put(shipType)
                 } else {
                     shipType.loadFromResponse(name, elem)
                 }
@@ -89,11 +89,11 @@ object api_start2 : ApiBase() {
         if (api_mst_slotitem != null) {
             for (elem in api_mst_slotitem) {
                 val id = elem["api_id"].int()
-                var equipment = KCDatabase.master.masterEquipmentData[id]
+                var equipment = master.equipment[id]
                 if (equipment == null) {
-                    equipment = Start2Data.MasterEquipmentData()
+                    equipment = MasterEquipmentData()
                     equipment.loadFromResponse(name, elem)
-                    KCDatabase.master.masterEquipmentData.put(equipment)
+                    master.equipment.put(equipment)
                 } else {
                     equipment.loadFromResponse(name, elem)
                 }
@@ -105,11 +105,11 @@ object api_start2 : ApiBase() {
         if (api_mst_useitem != null) {
             for (elem in api_mst_useitem) {
                 val id = elem["api_id"].int()
-                var useItem = KCDatabase.master.masterUseItemData[id]
+                var useItem = master.useItem[id]
                 if (useItem == null) {
-                    useItem = Start2Data.MasterUseItemData()
+                    useItem = MasterUseItemData()
                     useItem.loadFromResponse(name, elem)
-                    KCDatabase.master.masterUseItemData.put(useItem)
+                    master.useItem.put(useItem)
                 } else {
                     useItem.loadFromResponse(name, elem)
                 }
@@ -121,11 +121,11 @@ object api_start2 : ApiBase() {
         if (api_mst_maparea != null) {
             for (elem in api_mst_maparea) {
                 val id = elem["api_id"].int()
-                var mapArea = KCDatabase.master.masterMapAreaData[id]
+                var mapArea = master.mapArea[id]
                 if (mapArea == null) {
-                    mapArea = Start2Data.MasterMapAreaData()
+                    mapArea = MasterMapAreaData()
                     mapArea.loadFromResponse(name, elem)
-                    KCDatabase.master.masterMapAreaData.put(mapArea)
+                    master.mapArea.put(mapArea)
                 } else {
                     mapArea.loadFromResponse(name, elem)
                 }
@@ -137,11 +137,11 @@ object api_start2 : ApiBase() {
         if (api_mst_mapinfo != null) {
             for (elem in api_mst_mapinfo) {
                 val id = elem["api_id"].int()
-                var mapInfo = KCDatabase.master.masterMapInfoData[id]
+                var mapInfo = master.mapInfo[id]
                 if (mapInfo == null) {
-                    mapInfo = Start2Data.MasterMapInfoData()
+                    mapInfo = MasterMapInfoData()
                     mapInfo.loadFromResponse(name, elem)
-                    KCDatabase.master.masterMapInfoData.put(mapInfo)
+                    master.mapInfo.put(mapInfo)
                 } else {
                     mapInfo.loadFromResponse(name, elem)
                 }
@@ -153,11 +153,11 @@ object api_start2 : ApiBase() {
         if (api_mst_mission != null) {
             for (elem in api_mst_mission) {
                 val id = elem["api_id"].int()
-                var mapInfo = KCDatabase.master.masterMissionData[id]
+                var mapInfo = master.mission[id]
                 if (mapInfo == null) {
-                    mapInfo = Start2Data.MasterMissionData()
+                    mapInfo = MasterMissionData()
                     mapInfo.loadFromResponse(name, elem)
-                    KCDatabase.master.masterMissionData.put(mapInfo)
+                    master.mission.put(mapInfo)
                 } else {
                     mapInfo.loadFromResponse(name, elem)
                 }
@@ -172,7 +172,7 @@ object api_start2 : ApiBase() {
                 val idAfter = elem["api_id"].int() // 本船的id
                 val idBefore = elem["api_current_ship_id"].int() // 本船改造前的id
                 val level = elem["api_upgrade_level"].int() // 这是本船第几次改造
-                val shipAfter = KCDatabase.master.masterShipData[idAfter]
+                val shipAfter = master.ship[idAfter]
 
                 // 例：太太改二咸(api_id=461)可以由太太改(id=288)和太太改二甲(id=466)改造而来
                 val valueIfKeyNotFound = -1
@@ -187,7 +187,7 @@ object api_start2 : ApiBase() {
                     upgradeTimes.put(idAfter, level)
                 }
 
-                val shipBefore = KCDatabase.master.masterShipData[idBefore]
+                val shipBefore = master.ship[idBefore]
                 if (shipBefore != null) {
                     shipBefore.needBlueprint = elem["api_drawing_count"].int()
                     shipBefore.needCatapult = elem["api_catapult_count"].int()

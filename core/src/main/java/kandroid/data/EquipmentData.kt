@@ -1,14 +1,9 @@
 package kandroid.data
 
 import com.google.gson.JsonElement
-import kandroid.data.Start2Data.MasterEquipmentData
-import kandroid.data.JsonWrapper
-import kandroid.observer.kcsapi.api_req_kousyou
-import kandroid.utils.CatException
 import kandroid.utils.collection.Identifiable
 import kandroid.utils.json.get
 import kandroid.utils.json.int
-import kandroid.utils.json.set
 
 class EquipmentData : JsonWrapper(), Identifiable {
 
@@ -35,9 +30,9 @@ class EquipmentData : JsonWrapper(), Identifiable {
     /**
      * master数据
      */
-    val masterEquipment: MasterEquipmentData get() = KCDatabase.master.masterEquipmentData[masterID]!!
+    val masterEquipment: MasterEquipmentData? get() = KCDatabase.Master.equipment[masterID]
 
-    val name: String get() = masterEquipment.name
+    val name: String get() = masterEquipment?.name ?: ""
 
     val nameWithLevel: String get() = if (level > 0) {
         if (aircraftLevel > 0) "$name+$level Lv. $aircraftLevel" else "$name+$level"
@@ -50,7 +45,6 @@ class EquipmentData : JsonWrapper(), Identifiable {
     override fun toString(): String = nameWithLevel
 
     override fun loadFromResponse(apiName: String, responseData: JsonElement) {
-        // 由于GSON轮子的缘故, 只需要api_id和api_slotitem_id即可正常运作 TODO 复查
         super.loadFromResponse(apiName, responseData)
     }
 }

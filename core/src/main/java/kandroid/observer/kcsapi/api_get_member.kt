@@ -5,7 +5,7 @@ import com.google.gson.JsonPrimitive
 import kandroid.data.*
 import kandroid.observer.ApiBase
 import kandroid.observer.RawData
-import kandroid.utils.CatException
+import kandroid.utils.exception.CatException
 import kandroid.utils.json.*
 
 object api_get_member {

@@ -53,10 +53,7 @@ open class Config : IConfig {
 
         private fun getFile(folderName: String, fileName: String?, private: Boolean): File {
             val file = File(if (private) privateStorageDir else publicStorageDir, folderName)
-            if (fileName == null)
-                return file
-            else
-                return File(file, fileName)
+            return if (fileName == null) file else File(file, fileName)
         }
 
         override fun toString(): String {

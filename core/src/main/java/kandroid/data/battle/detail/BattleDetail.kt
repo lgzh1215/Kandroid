@@ -1,8 +1,8 @@
 package kandroid.data.battle.detail
 
 import kandroid.data.*
-import kandroid.data.Start2Data.MasterEquipmentData
-import kandroid.data.Start2Data.MasterShipData
+import kandroid.data.MasterEquipmentData
+import kandroid.data.MasterShipData
 import kandroid.data.battle.BattleData
 import kandroid.data.battle.BattleDay
 import kandroid.data.battle.BattleNight
@@ -94,8 +94,8 @@ open class BattleDetail(val battleData: BattleData) {
                          val maxHp: Int,
                          val parameter: List<Int>,
                          val equipmentsId: List<Int>) : Identifiable {
-        val master: MasterShipData by lazy { KCDatabase.master.masterShipData[id] }
-        val equipments: List<MasterEquipmentData> by lazy { equipmentsId.map { KCDatabase.master.masterEquipmentData[it] } }
+        val master: MasterShipData by lazy { KCDatabase.Master.ship[id] }
+        val equipments: List<MasterEquipmentData> by lazy { equipmentsId.map { KCDatabase.Master.equipment[it] } }
 
         val firepower: Int by lazy { parameter[0] + getEquipmentParameter { firepower } }
         val torpedo: Int by lazy { parameter[1] + getEquipmentParameter { torpedo } }
@@ -103,7 +103,7 @@ open class BattleDetail(val battleData: BattleData) {
         val armor: Int by lazy { parameter[3] + getEquipmentParameter { armor } }
 
         private inline fun getEquipmentParameter(p: MasterEquipmentData.() -> Int): Int {
-            return equipmentsId.map { KCDatabase.master.masterEquipmentData[it] }.map { it.p() }.sum()
+            return equipmentsId.map { KCDatabase.Master.equipment[it] }.map { it.p() }.sum()
         }
     }
 

@@ -3,7 +3,7 @@ package kandroid.data
 import kandroid.data.JsonWrapper
 import kandroid.data.RequestDataListener
 import kandroid.observer.kcsapi.api_req_member
-import kandroid.utils.CatException
+import kandroid.utils.exception.CatException
 import kandroid.utils.collection.Identifiable
 import kandroid.utils.json.*
 import java.util.*

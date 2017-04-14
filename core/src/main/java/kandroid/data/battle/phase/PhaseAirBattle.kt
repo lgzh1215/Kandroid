@@ -3,7 +3,7 @@ package kandroid.data.battle.phase
 import com.google.gson.JsonElement
 import kandroid.data.battle.BattleData
 import kandroid.data.battle.phase.commoms.CommonAirStrike
-import kandroid.utils.CatException
+import kandroid.utils.exception.CatException
 import kandroid.utils.json.array
 import kandroid.utils.json.get
 import kandroid.utils.json.jsonNull

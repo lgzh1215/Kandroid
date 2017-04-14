@@ -2,7 +2,7 @@ package kandroid.data
 
 import com.google.gson.JsonElement
 import kandroid.observer.kcsapi.api_req_nyukyo
-import kandroid.utils.CatException
+import kandroid.utils.exception.CatException
 import kandroid.utils.collection.Identifiable
 import kandroid.utils.json.get
 import kandroid.utils.json.int

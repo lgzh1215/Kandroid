@@ -1,6 +1,6 @@
 package kandroid.data
 
-import kandroid.data.Start2Data.MasterMapInfoData
+import kandroid.data.MasterMapInfoData
 import kandroid.data.JsonWrapper
 import kandroid.utils.collection.Identifiable
 import kandroid.utils.json.get
@@ -10,7 +10,7 @@ class MapInfoData : ApiWrapper(), Identifiable {
 
     val mapID: Int get() = data["api_id"].int()
 
-    val masterMapInfo: MasterMapInfoData get() = KCDatabase.master.masterMapInfoData[mapID]!!
+    val masterMapInfo: MasterMapInfoData get() = KCDatabase.Master.mapInfo[mapID]!!
 
     val mapAreaID: Int get() = masterMapInfo.mapAreaId
 

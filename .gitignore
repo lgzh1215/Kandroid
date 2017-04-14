@@ -40,3 +40,4 @@ captures/
 *.jks
 
 # Debug files
+*.db

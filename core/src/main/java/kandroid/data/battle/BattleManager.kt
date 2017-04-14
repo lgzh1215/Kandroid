@@ -9,7 +9,7 @@ import kandroid.observer.kcsapi.api_get_member
 import kandroid.observer.kcsapi.api_port
 import kandroid.observer.kcsapi.api_req_map
 import kandroid.observer.kcsapi.api_req_member
-import kandroid.utils.CatException
+import kandroid.utils.exception.CatException
 import kandroid.utils.collection.SparseIntArray
 import kandroid.utils.json.get
 import kandroid.utils.json.int
@@ -29,7 +29,7 @@ class BattleManager : ResponseDataListener, RequestDataListener {
 
     var droppedEquipmentCount: Int = 0
 
-    var droppedItemCount: SparseIntArray = SparseIntArray()
+    var droppedItemCount = HashMap<Int, Int>()
 
     var enemyAdmiralName: String? = null
 

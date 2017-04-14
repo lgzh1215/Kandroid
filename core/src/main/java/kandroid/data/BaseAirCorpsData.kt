@@ -3,7 +3,7 @@ package kandroid.data
 import com.google.gson.JsonElement
 import kandroid.observer.kcsapi.api_get_member
 import kandroid.observer.kcsapi.api_req_air_corps
-import kandroid.utils.CatException
+import kandroid.utils.exception.CatException
 import kandroid.utils.collection.IDDictionary
 import kandroid.utils.collection.Identifiable
 import kandroid.utils.json.*
@@ -36,7 +36,7 @@ class BaseAirCorpsData : JsonWrapper(), RequestDataListener, Identifiable {
      */
     val planeInfo = IDDictionary<PlaneData>()
 
-    override val id: Int get() = getId(data!!)
+    override val id: Int get() = getId(data)
 
     inner class PlaneData(override val id: Int) : Identifiable {
         /**

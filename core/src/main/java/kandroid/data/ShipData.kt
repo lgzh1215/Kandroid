@@ -2,12 +2,11 @@ package kandroid.data
 
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
-import kandroid.data.Start2Data.MasterShipData
 import kandroid.observer.kcsapi.api_get_member
 import kandroid.observer.kcsapi.api_port
 import kandroid.observer.kcsapi.api_req_kaisou
 import kandroid.observer.kcsapi.api_req_kousyou
-import kandroid.utils.CatException
+import kandroid.utils.exception.CatException
 import kandroid.utils.collection.Identifiable
 import kandroid.utils.json.*
 
@@ -56,15 +55,15 @@ class ShipData : JsonWrapper(), RequestDataListener, Identifiable {
     /**
      * 各装备master数据id
      */
-    val slotMaster: List<Int> get() = if (slot.isEmpty()) emptyList() else slot.map { KCDatabase.equipments[it]?.equipmentID ?: 0 }
+    val slotMaster: List<Int> get() = slot.map { KCDatabase.equipments[it]?.equipmentID ?: 0 }
     /**
      * 各装备数据
      */
-    val slotInstance: List<EquipmentData?> get() = if (slot.isEmpty()) emptyList() else slot.mapNotNull { KCDatabase.equipments[it] }
+    val slotInstance: List<EquipmentData?> get() = slot.map { KCDatabase.equipments[it] }
     /**
      * 各装备master数据
      */
-    val slotInstanceMaster: List<Start2Data.MasterEquipmentData?> get() = if (slot.isEmpty()) emptyList() else slot.mapNotNull { KCDatabase.equipments[it]?.masterEquipment }
+    val slotInstanceMaster: List<MasterEquipmentData?> get() = slot.map { KCDatabase.equipments[it]?.masterEquipment }
     /**
      * 打孔洞塞的装备的固有id
      * 0=没孔, -1=空的
@@ -81,11 +80,11 @@ class ShipData : JsonWrapper(), RequestDataListener, Identifiable {
     /**
      * 打孔装备的master数据
      */
-    val expansionSlotInstanceMaster: Start2Data.MasterEquipmentData? get() = expansionSlotInstance?.masterEquipment
+    val expansionSlotInstanceMaster: MasterEquipmentData? get() = expansionSlotInstance?.masterEquipment
     val allSlot: IntArray get() = throw UnsupportedOperationException()
     val allSlotMaster: IntArray get() = throw UnsupportedOperationException()
     val allSlotInstance: Array<EquipmentData> get() = throw UnsupportedOperationException()
-    val allSlotInstanceMaster: Array<Start2Data.MasterEquipmentData> get() = throw UnsupportedOperationException()
+    val allSlotInstanceMaster: Array<MasterEquipmentData> get() = throw UnsupportedOperationException()
     val aircraft: List<Int> get() = data["api_onslot"].list()
     val aircraftTotal: Int get() = aircraft.sumBy { Math.max(it, 0) }
     val fuel: Int get() = data["api_fuel"].int()
@@ -146,7 +145,7 @@ class ShipData : JsonWrapper(), RequestDataListener, Identifiable {
     val isLocked: Boolean get() = data["api_locked"].int() != 0
     val isLockedByEquipment: Boolean get() = data["api_locked_equip"].int() != 0
     val sallyArea: Int get() = data["api_sally_area"].int(-1)
-    val masterShip: MasterShipData get() = KCDatabase.master.masterShipData.get(shipID)!!
+    val masterShip: MasterShipData get() = KCDatabase.Master.ship.get(shipID)!!
     val repairingDockID: Int get() = throw UnsupportedOperationException()
     val fleet: Int get() = throw UnsupportedOperationException()
     val fleetWithIndex: String get() = throw UnsupportedOperationException()

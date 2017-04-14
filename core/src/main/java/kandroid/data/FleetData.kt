@@ -2,7 +2,7 @@ package kandroid.data
 
 import com.google.gson.JsonElement
 import kandroid.observer.kcsapi.*
-import kandroid.utils.CatException
+import kandroid.utils.exception.CatException
 import kandroid.utils.collection.Identifiable
 import kandroid.utils.json.*
 import java.util.*

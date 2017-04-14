@@ -4,7 +4,7 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import kandroid.observer.kcsapi.*
-import kandroid.utils.CatException
+import kandroid.utils.exception.CatException
 import kandroid.utils.collection.IDDictionary
 import kandroid.utils.json.get
 import kandroid.utils.json.int
